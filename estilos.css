@@ -1,0 +1,290 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Raleway', sans-serif;
+	border:0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	font-weight:300;
+	color: #666;
+}
+
+
+img{border:0}
+body {text-align:center;background:#EAEAEA}
+
+.calendario_ajax{
+	width:600px;
+	/*width:35%;*/
+	position:relative;
+	float: left;
+	margin-left: 10%;
+}
+	.calendario_ajax h2{text-align:center;margin:0 0 10px 0;font-size:1.5em;color:#000}
+
+.calendario_ajax table.calendario {
+	margin:0;
+	width:100%;
+	border-width:0px
+}
+
+.calendario th {
+	border:0;
+	font-weight:500;
+	/*background:#666;*/
+	background:#6873EA;
+	color:white;
+	padding:10px;
+	/*font-size:0.85em;*/
+	font-size:1em;
+	height:40px
+}
+.calendario td{
+	padding:10px;
+	text-align:center;
+	/*border: solid #F7F7F7;
+	border-width:0 1px 1px 0;*/
+	white-space:pre-line;
+	font-size:2.2em;
+	width:14.28%;
+	color:#666;
+	position:relative;
+	background:#fff;
+	/*height:80px;*/
+	height:70px;
+}
+
+.calendario td.desactivada {
+	background:#FFFFFF;
+}
+
+.calendario td.hoy{
+	font-weight:500
+}
+
+a.agregar_evento{
+	display:block;
+	position:absolute;
+	/*right:0;
+	top:0;*/
+	right: 5px;
+	top: 2px;
+	background:#FFFFFF url(images/add.png) 50% 50% no-repeat;
+	border-radius:0 0 10px 10px;
+	width:24px;
+	height:	24px;
+	text-decoration:none
+}
+.calendario td a{
+	color: rgb(104, 115, 234);
+	text-decoration:none;
+}
+
+	.verde,.ok{font-weight:500;background:green;color:#fff}
+	.rojo{font-weight:500;background:red;color:#fff}
+	
+	
+.toggle {
+	background:#CF356F;
+	color:#FFF;
+}
+
+.siguiente,.anterior{
+	color:#FFF;
+	text-decoration:none;
+	line-height:40px;
+	font-size: 1.2em;
+}
+
+#mask {
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:9000;
+	background: #FFF;
+	display:none;
+	width:100%;
+	height:100%;
+}
+
+	#respuesta_form,#respuesta{clear:both;padding:20px 0}
+  
+.window {position:absolute;top:20px;right:20px;left:20px;bottom:20px;display:block;z-index:9999;padding:20px;background-color:#ffffff;overflow:auto}
+
+.window label{
+	float: left;
+	width: 120px;
+	line-height: 30px;
+	padding-right: 10px;
+	font-weight: 100;
+	letter-spacing: 1px;
+}
+
+
+		.window h2{text-align:center;margin:0 0 10px 0;font-size:1.5em;color:#000}
+		
+.window a.close{
+	position:absolute;
+	right:0;
+	top:0;
+	/*padding:10px;
+	background:#e9e9e9 url(images/delete.png) 50% 50% no-repeat;*/
+	padding: 15px;
+	background: #FFFFFF url(images/cancel11.png) 50% 50% no-repeat;
+	text-decoration:none
+}
+
+.window p{
+	margin:0 0 5px 0;
+	/* font-size:1em;border:1px solid #e9e9e9; */
+	text-align:left;
+	padding:10px;
+	clear:both;
+}
+		
+.window form{
+	padding:10px;
+	clear:both;
+	background:#FFF;
+	float:left;
+	width:100%;
+	position:relative
+}
+
+.window input[type=text]{
+	border: 1px solid #C3C3C3;
+	background:white;
+	width:64%;
+	padding:5px;
+	float:left;
+	float: right;
+}
+
+.window input[type=button]
+{
+	border:0;
+	width:35%;
+	background:#CF356F;
+	float:right;
+	padding:5px;
+	margin-top: 20px;
+	color: #fff;
+	margin-right: 10px;
+}
+		.window p img{vertical-align:middle;float:right;border:0;width:16px;height:16px}
+		label.error {position:absolute;left:13px;top:13px;padding:0;width:20px;height:20px;background:#fff url(images/delete.png) 50% 50% no-repeat;text-decoration:none;overflow:hidden;text-indent:-999em}
+		
+/*********************************************
+	Pagina de calendario
+*********************************************/
+#page_calendar{
+	position: relative;
+		margin:50px auto;
+}
+#sinScroll{
+	width: 50px;
+	overflow: hidden;
+}
+#list_players{
+	float: right;
+	margin-right: 10%;	
+	/*display: table;*/
+	/*width: 600px;*/
+	max-width: 30%;
+	/*background: #fff;*/
+	/*height: 800px;
+  overflow: auto;*/
+}
+
+#players{	
+	padding-top: 10px;
+	height: 650px;
+	overflow: auto;
+}
+#players a{	
+	text-decoration: none;
+}
+
+#list_head{
+	display: table;
+	width: 100%;	
+	/*background: #fff;*/
+	position: relative;
+}
+
+#img_coach{
+	display: table-cell;
+	width: 20%;
+	vertical-align: middle;	
+	/*float: left;*/
+	
+}
+
+#img_coach img{
+	/*width: 55%;*/
+	float: left;
+	height: 40%;
+	text-align: center;
+	vertical-align: middle;
+	border: 1px solid rgba(226, 226, 226, 1);
+}
+#img_team{
+	display: table-cell;
+	width: 20%;
+	vertical-align: middle;
+	/*float: right;*/
+	
+}
+
+#img_team img{
+	/*width: 55%;*/
+	float: right;
+	height: 40%;
+	text-align: center;
+	vertical-align: middle;
+	border: 1px solid rgba(226, 226, 226, 1);
+}
+
+#player{
+	/*display: table-row;*/
+	width: 100%;	
+	box-shadow: 0px 0px 12px -2px #353535;
+	-moz-box-shadow: 0px 0px 12px -2px #353535;
+   -webkit-box-shadow: 0px 0px 12px -2px #353535;
+	margin-top: 10px;
+	background: #fff;
+}
+
+
+#player_img{
+	border-right: 1px solid rgba(226, 226, 226, 1);
+	display: table-cell;
+	width: 20%;
+	vertical-align: middle;
+}
+
+#player_img img{
+	width: 80%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#player_name{
+	display: table-cell;
+	width: 40%;
+	vertical-align: middle;
+}
+
+#player_position{
+	display: table-cell;
+	width: 25%;
+	vertical-align: middle;
+}
+
+#player_dorsal{
+	display: table-cell;
+	width: 15%;
+	vertical-align: middle;
+}

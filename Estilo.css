@@ -1,0 +1,380 @@
+
+html{
+	 height:100%;
+     width:100%;
+}
+body {
+/*	color: #4a4949;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	margin-left:20px;
+	margin-right:20px;
+	margin: auto;*/
+	height: 100%;
+	width: 100%;
+	
+	background:#d7d7d7 url('../background/1.jpg') no-repeat center center;
+    background-size:100% 100%;
+	margin: 0px;
+		
+/*	 -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);*/
+  
+}
+.selectTeam{
+	background:#d7d7d7 url('../background/2.jpg') no-repeat center center;
+	background-size:100% 100%;
+}
+
+#login-box{
+	/*margin: 10% auto 0;*/
+	width: 500px;
+	box-shadow: 0 0 10px #353535;
+	-moz-box-shadow:  0 0 10px #353535;
+    -webkit-box-shadow:  0 0 10px #353535;
+	font-family: 'Raleway', sans-serif;
+	
+	margin: auto;
+	margin-top:15%;
+}
+
+.login-head {
+	padding: 1.5em 0;
+	background: #6873EA;
+	position:relative;
+	font-family: 'Raleway', sans-serif;
+}
+.login-head h1 {
+	color: #fff;
+	font-size: 1.5em;
+	text-align: left;
+	margin: 0 23px;
+}
+#login-box form {
+	padding: 3em 2em;
+	background: #FFFFFF;
+	padding-bottom: 3%;
+	
+}
+#login-box form li{
+	border: 2px ridge rgba(187, 185, 189, 0.11);
+	border-radius: 0.3em;
+	-webkit-border-radius:0.3em;
+	-moz-border-radius:0.3em;
+	-o-border-radius:0.3em;
+	list-style:none;
+	margin-bottom:12px;
+	background:#F0EEF0;
+	background:rgba(104, 115, 234, 0.35)
+
+}
+.icon{
+	background:url(../images/icons.png)  no-repeat 0px 0px;
+	height:30px;
+	width:30px;
+	display: block;
+	float: right;
+	margin: 12px 9px 9px 0px;
+}
+.user{
+	background: url(../images/icons.png) no-repeat 7px 1px;
+	
+}
+.lock{
+	background: url(../images/icons.png) no-repeat -22px 1px;
+}
+
+#login-box input[type="text"], input[type="password"] {
+	/*font-family: 'Droid Sans', sans-serif;*/
+	font-family: 'Raleway', sans-serif;
+	width:70%;
+	padding: 0.5em 2em 0.5em 1em;
+	color: #575353;
+	font-size:20px;
+	outline: none;
+	background: none;
+	border:none;
+}
+
+#login-box .inset h4 a{
+	/*float:left;
+	font-size: 16px;
+	
+	font-weight: 400;*/
+	font-family: 'Raleway', sans-serif;
+	/*margin-top: 15px;
+	margin-left: 21px;*/
+	text-decoration: none;
+	color: #818181;
+	text-align: center;
+}
+#login-box .submit h4 a:hover{
+	color:#8D4294;
+}
+/*************************/
+#login-box .submit{
+	padding-top:1.4em;
+	padding-bottom:2em;
+}
+#signIn input[type="submit"] {
+	float: left;
+	color: #fff;
+	cursor: pointer;
+	font-weight: 900;
+	outline: none;
+	font-family: 'Raleway', sans-serif;
+	padding: 12px 12px;
+	/*width: 35%;*/
+	font-size: 18px;
+	/*background:#6C496F;
+	background:#6873EA;*/
+	background:#009E02;
+	border:0px;
+	/*border:2px solid #6C496F;
+	border-radius: 0.5em;
+	-webkit-border-radius:0.5em;
+	-moz-border-radius:0.5em;
+	-o-border-radius:0.5em;*/
+	width: 100%;
+}
+
+#acceptRegister input[type="submit"] {
+	float: left;
+	color: #fff;
+	cursor: pointer;
+	font-weight: 900;
+	outline: none;
+	font-family: 'Raleway', sans-serif;
+	padding: 7px 7px;
+	font-size: 16px;
+	background:#009E02;
+	border:0px;	
+	width: 90%;
+}
+.register input[type="submit"] {
+	float: right;
+	color: #fff;
+	cursor: pointer;
+	font-weight: 900;
+	outline: none;
+	font-family: 'Raleway', sans-serif;
+	padding: 12px 12px;
+	/*width: 35%;*/
+	font-size: 18px;
+	/*background:#6C496F;*/
+	background:#CF356F;
+	border:0px;
+	width: 100%;
+	/*border:2px solid #6C496F;
+	border-radius: 0.5em;
+	-webkit-border-radius:0.5em;
+	-moz-border-radius:0.5em;
+	-o-border-radius:0.5em;*/
+}
+#signIn input[type="submit"]:hover {
+	background: #006E02;
+	/*color:#6C496F;
+	border:2px solid rgba(104, 115, 234, 0.35);*/
+}
+.register input[type="submit"]:hover {
+	background: #A5184D;	
+}
+
+#signIn{
+	float: left;
+	width: 40%;
+}
+
+#register{
+	float: right;
+	width: 40%;
+}
+
+
+/*******************************
+		REGISTRO
+*******************************/
+a.activator{
+	z-index:1;
+	cursor:pointer;
+}
+/* Cuadro al hacer overlay */
+.registro{ 
+	background: rgba(0,0,0,0.70);
+	position:fixed;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	z-index:1000;
+}
+.cuadroRegistro{
+	margin-top: 50px;
+	width: 600px;
+	height:auto;
+	top:-1050px;
+	left:50%;
+	margin-top:-350px;
+	margin-left: -300px;
+	/*background: rgba(255,255,255,0.90); */
+	background:#FFF; 
+	color:#7F7F7F;
+	padding:20px;
+	/*border:2px solid #53a0ff;
+	border-radius:10px;
+	-moz-border-radius:10px;
+	 -webkit-border-radius:10px;
+	-khtml-border-radius:10px;
+   -moz-box-shadow: 0 1px 5px #333;
+	-webkit-box-shadow: 0 1px 5px #333;*/
+	z-index:1001;
+	position:absolute;
+	
+}
+.cuadroRegistro h1{
+	font-family: 'Raleway', sans-serif;
+	border-bottom: 1px dashed #7F7F7F;
+	margin:-20px -20px 0px -20px;
+	padding:14px;
+	background: #6873EA;
+	color: #FFFFFF;
+	padding-left: 40px;
+	/*background: rgba(255,255,255,0.90); 
+	color:#505050;
+	border-radius:10px 10px 0 0;
+	-moz-border-radius:10px 10px 0 0;
+	 -webkit-border-radius: 10px 10px 0 0;
+	-khtml-border-radius: 10px 10px 0 0;*/
+	
+}
+.cuadroRegistro form{
+	margin-top:25px;
+}
+a.cierreCuadroRegistro{
+	float:right;
+	width:27px;
+	height:27px;
+	background:transparent url(../images/cancel11.png) repeat top left;
+	margin-top:-30px;
+	margin-right:-30px;
+	cursor:pointer;
+}
+
+.registroForm {
+  position: relative;
+  width: 400px;
+  left:50%;
+  margin-left: -200px; 
+  color: #5c5c5c;
+}
+
+
+.registroForm input, button, label {
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  font-weight: 300px;
+}
+
+.registroForm input {
+	border:1px solid #a8a8a8; /*Color borde cajas entrada al estar seleccionada*/
+	border-radius:3px; 
+}
+.registroForm input:focus{
+	border:1px solid #53a0ff; /*Color borde cajas entrada al estar marcadas*/
+	border-radius:3px; 
+
+}
+#camposRegistro   input[type=text]{
+	 width: 200px;
+  height: 30px;
+
+}
+#camposRegistro   select{
+	height: 30px;
+
+}
+#camposRegistro   input[type=password]{
+  width: 200px;
+  height: 30px;
+}
+
+.registroForm input[type=text] {
+  padding: 0 10px; 
+  color: #bbb; 
+}
+
+
+.registroForm input[type=password] {
+  padding: 0 10px; 
+  color: #bbb; 
+}
+
+.registroForm  label {
+  float: left;
+  width: 100px;
+  line-height: 30px;
+  padding-right: 10px;
+  font-weight: 100;
+  text-align: right;
+  letter-spacing: 1px;
+}
+
+/**************************************
+		Lista equipos
+**************************************/
+#listaEquipos{
+	text-align: center;
+	font-family: 'Raleway', sans-serif;
+}
+
+#listaEquipos table{
+	border-spacing: 0px;
+	margin-top:15%;
+	text-align: center;
+	background: #FFF;
+	font-family: 'Raleway', sans-serif;
+	font-size: 20px;
+}
+#listaEquipos td{
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top:12px;
+}
+#listaEquipos td a{
+	text-decoration: None;
+	color: #6873EA;
+}
+#listaEquipos img{
+	height: 50px;
+	width: 50px;
+}
+
+#addTeam{	
+	width: 100%;
+}
+
+#listaEquipos .header td{
+	
+	color: #fff;
+	background: #6873EA;
+	padding: 20px 14px;
+	box-shadow: 0 3px 0px 0px #666666;
+	-moz-box-shadow:  0 3px 0px 0px #666666;
+    -webkit-box-shadow:  0 3px 0px 0px #666666;
+}
+.boton {
+	background:#CF356F;
+	cursor: pointer;
+	color:#fff;
+	font-weight: 600;
+	padding: 7px 7px
+}
+.boton a{
+	color:#fff;
+}
+.boton td:hover{
+	background: #A5184D;	
+}
