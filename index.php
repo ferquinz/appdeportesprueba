@@ -3,21 +3,23 @@
 
 <html>
     <head>
+		<title>Inicio</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
 		
 		<link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
-		<title>Inicio</title>	  	
+		<!-- Bootstrap -->
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">	  	
 		<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
+		
+		
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
-
-			<!-- Registro jQuery -->
+		<!-- Registro jQuery -->
 		<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 		<script src="js/funciones.js" type="text/javascript"></script>
 		<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
-		
-		
-	
+		<!-- Bootstrap -->
+		<script src="bootstrap/js/bootstrap.min.js"></script>
   </head>
     <body class="selectTeam">
 	<div id='cssmenu'>
@@ -31,8 +33,7 @@
 	<?php
 		
 			//Comprueba si esta conectado
-			if(!isset($_SESSION)) 
-			{ 
+			if(!isset($_SESSION)) { 
 				session_start(); 
 			}  	
 			if(!isset($_SESSION['conectado']) || $_SESSION['conectado']!=1){  
@@ -46,16 +47,15 @@
 					left join customersweb on customersweb.id_customer = customersweb_team.id_customer
 					where customersweb.id_customer = ".$_SESSION['id_customer'] ;
 	
-			echo("<center><table style=' width: 80%'>");
+			echo("<center><table style=' width: 80%' class='span5 center-table'>");
 			echo("<tr class='header'>
-				<td> Imagen </td>
-				<td> Nombre </td>
-				<td> Deporte </td>
-				<td> Categoria </td>
-				<td>  </td>	
+					<td> Imagen </td>
+					<td> Nombre </td>
+					<td> Deporte </td>
+					<td> Categoria </td>
+					<td>  </td>	
 				</tr>");	
-			foreach ($db->query($sql) as $row)
-			{
+			foreach ($db->query($sql) as $row){
 				echo("<tr>");				
 					echo("<td> <img src='".$row['Image']."'></img></td>");	
 					echo("<td>".$row['Team']."</td>");	

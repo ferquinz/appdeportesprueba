@@ -78,7 +78,7 @@ body {
 
 }
 .icon{
-	background:url(../images/icons.png)  no-repeat 0px 0px;
+	/*background:url(../images/icons.png)  no-repeat 0px 0px;*/
 	height:30px;
 	width:30px;
 	display: block;
@@ -338,8 +338,6 @@ a.cierreCuadroRegistro{
 #listaEquipos{
 	text-align: center;
 	font-family: 'Raleway', sans-serif;
-	padding: 40px;
-	padding-top: 0px;
 }
 
 #listaEquipos table{
@@ -384,11 +382,16 @@ a.cierreCuadroRegistro{
 	font-weight: 600;
 	padding: 7px 7px
 }
-#listaEquipos .boton a{
+.boton a{
 	color:#fff;
 }
 .boton td:hover{
 	background: #A5184D;	
+}
+
+.center-table{
+  margin: 0 auto !important;
+  float: none !important;
 }
 
 /**************************************
