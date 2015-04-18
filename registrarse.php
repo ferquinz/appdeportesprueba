@@ -69,6 +69,11 @@
 			if(isset($origen, $destino)){
 				redimensionImagen($origen,$destino, $ancho, $alto);
 			}
+			else{
+				$origen="images/default/default_trainer.jpg";
+				$destino="trainers/".$idname."/default_trainer.jpg";
+				redimensionImagen($origen,$destino, $ancho, $alto);
+			}
 		}																			
 		$sql = "INSERT INTO customersweb (firstname, lastname, username, email, phone, password, img_path) VALUES ('".$_POST['nombre']."',
 				'".$_POST['apellidos']."','".$_POST['usuario']."','".$_POST['correo']."','".$_POST['tel']."',

@@ -585,3 +585,24 @@ a.cierreCuadroRegistro{
 	/*background: #f6a016;
 	color: #FFF;*/
 }
+
+/*************************************
+		MODAL POP UP
+*************************************/
+.modal-header{
+	background: #6873EA;
+	color: #FFFFFF;
+}
+
+#largeModal .modal-body{
+  height:700px;
+  overflow:auto;
+}
+
+#myModal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -50%;
+  margin-top: -20%;
+}

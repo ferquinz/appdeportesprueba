@@ -8,8 +8,8 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
 		
 		<link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
-		<!-- Bootstrap -->
-		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">	  	
+		<!-- Bootstrap 
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">	  	-->
 		<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
 		
 		
@@ -18,8 +18,8 @@
 		<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 		<script src="js/funciones.js" type="text/javascript"></script>
 		<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
-		<!-- Bootstrap -->
-		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<!-- Bootstrap 
+		<script src="bootstrap/js/bootstrap.min.js"></script>-->
   </head>
     <body class="selectTeam">
 	<div id='cssmenu'>

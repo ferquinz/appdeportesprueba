@@ -4,6 +4,7 @@
 						autoScrollingMode: "onStart"
 					});
 				});
+				
 				$(function() {
 					$('#activator').click(function(){						
 						$('#registro').fadeIn('fast',function(){
@@ -26,6 +27,7 @@
 					
 
 				});
+				
 				function RegisterForm()
 				{
 					/*Comprobacion condiciones*/
@@ -95,6 +97,7 @@
 					
 					
 				}
+				
 				function validaContacto ()
 				{
 						
