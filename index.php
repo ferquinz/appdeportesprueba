@@ -3,23 +3,19 @@
 
 <html>
     <head>
-		<title>Inicio</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
 		
 		<link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
-		<!-- Bootstrap 
-		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">	  	-->
+		<title>Inicio</title>	  	
 		<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
-		
-		
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
-		<!-- Registro jQuery -->
+
+			<!-- Registro jQuery -->
 		<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 		<script src="js/funciones.js" type="text/javascript"></script>
 		<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
-		<!-- Bootstrap 
-		<script src="bootstrap/js/bootstrap.min.js"></script>-->
+	
   </head>
     <body class="selectTeam">
 	<div id='cssmenu'>
@@ -33,7 +29,8 @@
 	<?php
 		
 			//Comprueba si esta conectado
-			if(!isset($_SESSION)) { 
+			if(!isset($_SESSION)) 
+			{ 
 				session_start(); 
 			}  	
 			if(!isset($_SESSION['conectado']) || $_SESSION['conectado']!=1){  
@@ -47,15 +44,16 @@
 					left join customersweb on customersweb.id_customer = customersweb_team.id_customer
 					where customersweb.id_customer = ".$_SESSION['id_customer'] ;
 	
-			echo("<center><table style=' width: 80%' class='span5 center-table'>");
+			echo("<center><table style=' width: 80%'>");
 			echo("<tr class='header'>
-					<td> Imagen </td>
-					<td> Nombre </td>
-					<td> Deporte </td>
-					<td> Categoria </td>
-					<td>  </td>	
+				<td> Imagen </td>
+				<td> Nombre </td>
+				<td> Deporte </td>
+				<td> Categoria </td>
+				<td>  </td>	
 				</tr>");	
-			foreach ($db->query($sql) as $row){
+			foreach ($db->query($sql) as $row)
+			{
 				echo("<tr>");				
 					echo("<td> <img src='".$row['Image']."'></img></td>");	
 					echo("<td>".$row['Team']."</td>");	
@@ -164,7 +162,124 @@
 		</form>			
 
 </div>	
+		<script type="text/javascript">
 		
+		document.getElementById("cmbdeporte").selectedIndex = "-1";
+		
+		function nuevoAjax(){ 
+				/* Crea el objeto AJAX. Esta funcion es generica para cualquier utilidad de este tipo, por
+				lo que se puede copiar tal como esta aqui */
+				var xmlhttp=false;
+				try{
+					// Creacion del objeto AJAX para navegadores no IE
+					xmlhttp=new ActiveXObject("Msxml2.XMLHTTP");
+				}
+				catch(e){
+					try{
+						// Creacion del objet AJAX para IE
+						xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+					}
+					catch(E){
+						if (!xmlhttp && typeof XMLHttpRequest!='undefined') xmlhttp=new XMLHttpRequest();
+					}
+				}
+				return xmlhttp; 
+			}
+			 
+		/*function cargaCategorias(idSelectOrigen){
+			// Obtengo el select que el usuario modifico
+			var selectOrigen=document.getElementById(idSelectOrigen);
+			// Obtengo la opcion que el usuario selecciono
+			var opcionSeleccionada=selectOrigen.options[selectOrigen.selectedIndex].value;
+			// Si el usuario eligio la opcion "Elige", no voy al servidor y pongo los selects siguientes en estado "Selecciona estado..."
+			if(opcionSeleccionada==0)
+			{
+				var selectActual=null;
+				if(idSelectOrigen == "cmbdeporte")
+					selectActual=document.getElementById("cmbcategoria");
+				selectActual.length=0;
+				var nuevaOpcion=document.createElement("option"); 
+				nuevaOpcion.value=0; 
+				nuevaOpcion.innerHTML="Seleccione Deporte";
+				selectActual.appendChild(nuevaOpcion);  
+				selectActual.disabled=true;
+			}
+			// Compruebo que el select modificado no sea el ultimo de la cadena
+			else{
+				
+				if(idSelectOrigen == "cmbdeporte")
+					var selectDestino=document.getElementById("cmbcategoria");
+				// Creo el nuevo objeto AJAX y envio al servidor la opcion seleccionada del select origen
+				var ajax=nuevoAjax();
+				ajax.open("GET", "llena_categorias.php?opcion="+opcionSeleccionada+"&select="+idSelectOrigen, true);
+				
+				ajax.onreadystatechange=function() 
+				{ 
+				
+					if (ajax.readyState==1)
+					{
+						// Mientras carga elimino la opcion "Selecciona Opcion..." y pongo una que dice "Cargando..."
+						selectDestino.length=0;
+						var nuevaOpcion=document.createElement("option"); 
+						nuevaOpcion.value=0; 
+						nuevaOpcion.innerHTML="Cargando...";
+						selectDestino.appendChild(nuevaOpcion); 
+						selectDestino.disabled=true;    
+					}
+					if (ajax.readyState==4)
+					{
+						selectDestino.parentNode.innerHTML=ajax.responseText;
+					} 
+				}
+				ajax.send(null);
+			}
+		}*/
+		
+		 function cargaCategorias(idSelectOrigen){
+			// Obtengo el select que el usuario modifico
+			var selectOrigen=document.getElementById(idSelectOrigen);
+			// Obtengo la opcion que el usuario selecciono
+			var opcionSeleccionada=selectOrigen.options[selectOrigen.selectedIndex].value;
+			// Si el usuario eligio la opcion "Elige", no voy al servidor y pongo los selects siguientes en estado "Selecciona estado..."
+			if(opcionSeleccionada==0)
+			{
+				var selectActual=null;
+				if(idSelectOrigen == "cmbdeporte")
+					selectActual=document.getElementById("cmbcategoria");
+				selectActual.length=0;
+				var nuevaOpcion=document.createElement("option"); 
+				nuevaOpcion.value=0; 
+				nuevaOpcion.innerHTML="Seleccione Deporte";
+				selectActual.appendChild(nuevaOpcion);  
+				selectActual.disabled=true;
+			}else{
+				if(idSelectOrigen == "cmbdeporte")
+					var selectDestino=document.getElementById("cmbcategoria");			
+				
+		 
+                    var xmlhttp;
+                    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp=new XMLHttpRequest();
+                    }
+                    else {// code for IE6, IE5
+						xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                   xmlhttp.onreadystatechange=function() {
+						if (xmlhttp.readyState==4 && xmlhttp.status==200){
+							document.getElementById("cmbcategoria").innerHTML=xmlhttp.responseText;
+						}
+                   }
+				   
+                  //  var precioPeli='<?php echo$precio;?>'          
+                    <!--Escribimos la direccion que contiene el contenido que deseamos actualizar -->  			
+                    xmlhttp.open("GET","llena_categorias.php?opcion="+opcionSeleccionada+"&select="+idSelectOrigen, true);
+
+                    xmlhttp.send();              
+                    
+               }  
+		}
+					
+		</script>	
 		
 	</body>
 </html>

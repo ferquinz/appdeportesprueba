@@ -24,8 +24,7 @@
 	
 		/*Comprobacion del nombre*/
 		var  user=document.forms["LoginForm"]["Username"].value;
-		if (user.length<1)
-		{
+		if (user.length<1){
 			alert("El usuario debe contener más de un caracter.");
 			return false;
 		}				
@@ -41,7 +40,7 @@
 
 		$.ajax({
 			url : "conectarse.php",
-			type: 'GET',
+			type: 'POST',
 			data: { email: user, password : pass} ,
 			async: false,					
 			success: function(data, textStatus, jqXHR)
@@ -213,6 +212,44 @@
 		return resultado;
 	}
 	
+	function enviarEmail(){
+		var mail = document.getElementById("lostemail").value;
+		if (mail.length<1){
+			alert("El email debe contener más de un caracter.");
+			return false;
+		}
+		alert(mail);
+		$.ajax({
+			url : "sendmail.php",
+			type: 'POST',
+			data: { email: mail} ,
+			async: false,					
+			dataType: 'json',				
+			success: function(data, textStatus, jqXHR)
+			{	
+				if(!data.success){
+					alert(data.data);
+					resultado = false;
+				}else {
+					console.log(jqXHR.status);
+					alert(data.data);
+					resultado = true;
+
+				}
+			},
+			error: function (xhr, status, error){
+				alert(error);
+				resultado = false;
+			}
+		});
+		
+		if(resultado){
+			//window.location.href = "index.php";
+			
+			return false;
+		}
+		return resultado;
+	}
 </script>
 
 <body>
@@ -349,12 +386,12 @@
 					<form>
 						<div class="form-group">
 							<label for="recipient-name" class="control-label">Correo:</label>
-							<input type="text" class="form-control" id="recipient-name" placeholder="example@example.com">
+							<input type="text" class="form-control" id="lostemail" placeholder="example@example.com">
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary">Enviar</button>
+					<button class="btn btn-primary" onclick="return enviarEmail();">Enviar</button>
 					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
 				</div>
 			</div>
