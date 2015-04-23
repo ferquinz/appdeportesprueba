@@ -218,11 +218,11 @@
 			alert("El email debe contener más de un caracter.");
 			return false;
 		}
-		alert(mail);
+		
 		$.ajax({
 			url : "sendmail.php",
 			type: 'POST',
-			data: { email: mail} ,
+			data: { correo: mail} ,
 			async: false,					
 			dataType: 'json',				
 			success: function(data, textStatus, jqXHR)
