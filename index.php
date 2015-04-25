@@ -7,10 +7,14 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
 		
 		<link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
+		<!-- Bootstrap -->
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/fontello/fontello-codes.css" rel="stylesheet">
 		<title>Inicio</title>	  	
 		<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
-
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="bootstrap/js/bootstrap.js"></script>
 			<!-- Registro jQuery -->
 		<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 		<script src="js/funciones.js" type="text/javascript"></script>
@@ -44,7 +48,7 @@
 					left join customersweb on customersweb.id_customer = customersweb_team.id_customer
 					where customersweb.id_customer = ".$_SESSION['id_customer'] ;
 	
-			echo("<center><table style=' width: 80%'>");
+			echo("<center><table style=' width: 80%' class='table table-hover'>");
 			echo("<tr class='header'>
 				<td> Imagen </td>
 				<td> Nombre </td>
@@ -54,12 +58,12 @@
 				</tr>");	
 			foreach ($db->query($sql) as $row)
 			{
-				echo("<tr>");				
+				echo("<tr class='active'>");				
 					echo("<td> <img src='".$row['Image']."'></img></td>");	
 					echo("<td>".$row['Team']."</td>");	
 					echo("<td>".$row['Sport']."</td>");	
 					echo("<td>".$row['Category']."</td>");	
-					echo("<td> <a href='equipoCalendario.php?team=".$row['TeamId']."'> Ir </a>   </td>");	
+					echo("<td> <a href='equipoCalendario.php?team=".$row['TeamId']."' > <i class='icon-forward'></i> </a>   </td>");	
 				echo("</tr>");			
 			}		
 			echo("<tr>			
