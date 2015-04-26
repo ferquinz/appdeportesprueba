@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<!-- Bootstrap -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
 	<!-- Animation -->
 	<link href="css/animate.css" rel="stylesheet">
 	
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="bootstrap/js/bootstrap.js"></script>
+	<script src="js/bootstrap/bootstrap.js"></script>
 	<!-- Registro jQuery -->
 	<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 	<script src="js/funciones.js" type="text/javascript"></script>
@@ -78,7 +78,7 @@
 		var phone=document.forms["formulario"]["tel"].value;
 		var pass = document.forms["formulario"]["passPrueba"].value;
 		var passConfirm = document.forms["formulario"]["pass"].value;
-		var file = document.forms["formulario"]["archivo"].value
+		var file = document.forms["formulario"]["archivo"].value;
 				
 		/*alert("Prueba");*/
 		var error = 0;

@@ -66,7 +66,7 @@
 			$ancho=250;
 			$alto=250;	
 			
-			if(isset($origen, $destino)){
+			if($_POST['archivo'] != ""){
 				redimensionImagen($origen,$destino, $ancho, $alto);
 			}
 			else{
@@ -104,8 +104,7 @@
 		
 		/*Cierra la conexion con la base de datos*/
 		$db=NULL;
-		
-		/*header('Location: http://appdeportesprueba.esy.es/index.php');*/
+
 	}
    
 	/*Cierra la conexion con la base de datos*/

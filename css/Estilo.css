@@ -13,7 +13,7 @@ body {
 	height: 100%;
 	width: 100%;
 	
-	background:#d7d7d7 url('../background/1.jpg') no-repeat center center;
+	background:#d7d7d7 url('../images/background/1.jpg') no-repeat center center;
     background-size:100% 100%;
 	margin: 0px;
    overflow: hidden;
@@ -26,12 +26,12 @@ body {
   
 }
 .selectTeam{
-	background:#d7d7d7 url('../background/2.jpg') no-repeat center center;
+	background:#d7d7d7 url('../images/background/2.jpg') no-repeat center center;
 	background-size:100% 100%;
 }
 
 .selectCalendario{
-	background: #d7d7d7 url('../background/3.jpg') no-repeat center center;
+	background: #d7d7d7 url('../images/background/3.jpg') no-repeat center center;
 	background-size: 100% 100%;
 }
 
@@ -342,7 +342,7 @@ a.cierreCuadroRegistro{
 
 #listaEquipos table{
 	border-spacing: 0px;
-	margin-top:15%;
+	margin-top:10%;
 	text-align: center;
 	background: #FFF;
 	font-family: 'Raleway', sans-serif;
@@ -383,7 +383,7 @@ a.cierreCuadroRegistro{
 	padding: 7px 7px
 }
 .boton a{
-	color:#fff;
+	color:#fff !important;
 }
 .boton td:hover{
 	background: #A5184D;	
@@ -392,6 +392,19 @@ a.cierreCuadroRegistro{
 .center-table{
   margin: 0 auto !important;
   float: none !important;
+}
+
+.combodeporte{
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 /**************************************
