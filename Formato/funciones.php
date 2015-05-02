@@ -25,6 +25,8 @@
 		$y = ( $miniatura_alto - $miniatura_alto_maximo ) / 2;
 		switch ( $imagen_tipo ){
 		  case "image/jpg":
+			$imagen = imagecreatefromjpeg( $pathOri );
+			break;
 		  case "image/jpeg":
 			$imagen = imagecreatefromjpeg( $pathOri );
 			break;

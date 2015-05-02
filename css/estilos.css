@@ -71,7 +71,7 @@ a.agregar_evento{
 	top:0;*/
 	right: 5px;
 	top: 2px;
-	background:#FFFFFF url(images/add.png) 50% 50% no-repeat;
+	background:#FFFFFF url(../images/add.png) 50% 50% no-repeat;
 	border-radius:0 0 10px 10px;
 	width:24px;
 	height:	24px;
@@ -130,9 +130,9 @@ a.agregar_evento{
 	right:0;
 	top:0;
 	/*padding:10px;
-	background:#e9e9e9 url(images/delete.png) 50% 50% no-repeat;*/
+	background:#e9e9e9 url(../images/delete.png) 50% 50% no-repeat;*/
 	padding: 15px;
-	background: #FFFFFF url(images/cancel11.png) 50% 50% no-repeat;
+	background: #FFFFFF url(../images/cancel11.png) 50% 50% no-repeat;
 	text-decoration:none
 }
 
@@ -174,7 +174,7 @@ a.agregar_evento{
 	margin-right: 10px;
 }
 		.window p img{vertical-align:middle;float:right;border:0;width:16px;height:16px}
-		label.error {position:absolute;left:13px;top:13px;padding:0;width:20px;height:20px;background:#fff url(images/delete.png) 50% 50% no-repeat;text-decoration:none;overflow:hidden;text-indent:-999em}
+		label.error {position:absolute;left:13px;top:13px;padding:0;width:20px;height:20px;background:#fff url(../images/delete.png) 50% 50% no-repeat;text-decoration:none;overflow:hidden;text-indent:-999em}
 		
 /*********************************************
 	Pagina de calendario
@@ -189,7 +189,7 @@ a.agregar_evento{
 }
 #list_players{
 	float: right;
-	margin-right: 10%;	
+	margin-right: 2%;	
 	/*display: table;*/
 	/*width: 600px;*/
 	max-width: 30%;
@@ -199,7 +199,7 @@ a.agregar_evento{
 }
 
 #players{	
-	padding-top: 10px;
+	margin-top: 10px;
 	height: 650px;
 	overflow: auto;
 }

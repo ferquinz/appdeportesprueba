@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<!-- Bootstrap -->
 	<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
-	<link href="css/fontello/fontello-codes.css" rel="stylesheet">
+	<link href="css/fontello/fontello.css" rel="stylesheet">
 	<title>Inicio</title>	  	
 	<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -22,7 +22,7 @@
 
 </head>
 
-<script>
+<script type="text/javascript">
 
 	function registerTeam(){
 	
@@ -33,8 +33,6 @@
 		var passConfirm = document.forms["formulario"]["pass"].value;
 		var deporte=document.forms["formulario"]["cmbdeporte"].value;
 		var categoria=document.forms["formulario"]["cmbcategoria"].value;
-				
-		/*alert("Prueba");*/
 		var error = 0;
 		
 		document.getElementById("divnombreequipo").className = "form-group";
@@ -95,11 +93,12 @@
 			$.ajax({
 				url : "creaequipo.php",
 				type: 'POST',
-				data: { nombre: name , idname: idname , cmbdeporte: deporte , cmbcategoria: categoria , pass: pass, archivo: file} ,
+				data: { nombre: name , idname: idname , cmbdeporte: deporte , cmbcategoria: categoria , password: pass, imagen: file } ,
 				dataType: 'json',	
 				async: false,				
 				success: function(data, textStatus, jqXHR)
 				{	
+					alert(data.data);
 					if(!data.success){
 						alert(data.data);
 						resultado = false;
@@ -109,6 +108,7 @@
 					}
 				},
 				error: function (xhr, status, error){
+					alert("Error");
 					alert(error);
 					resultado = false;
 				}
@@ -189,7 +189,7 @@
 	<div class="cuadroRegistro" id="cuadroRegistro">
 		<a class="cierreCuadroRegistro" id="cierreCuadroRegistro"></a>
 		<h1>Añadir Equipo</h1>
-		<form action="" class="form-horizontal" name="formulario" >
+		<form action="" class="form-horizontal" name="formulario">
 			<div id="divarchivoequipo" class="form-group">
 				<label for="login" class="col-sm-3 control-label">Imagen:</label>
 				<div class="col-xs-8">

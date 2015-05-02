@@ -1,4 +1,11 @@
 <?php 
+
+	header('Content-Type: application/json');
+	
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
+	error_reporting(-1);
+	
 	include('Formato/conexionsql.php');   
 	include('Formato/funciones.php'); 
 	
@@ -15,7 +22,7 @@
 		exit();
 	}
 	else{							
-		if(empty($_POST['nombre']) || empty($_POST['pass']) || empty($_POST['cmbdeporte']) || empty($_POST['cmbcategoria'])|| empty($_POST['idname'])){
+		if(empty($_POST['nombre']) || empty($_POST['password']) || empty($_POST['cmbdeporte']) || empty($_POST['cmbcategoria'])|| empty($_POST['idname'])){
 			$message='Error al crear el equipo, no están introducidos todos los campos';
 			$error=false;
 			$jsondata["success"] = $error;
@@ -24,11 +31,11 @@
 			echo json_encode($jsondata, JSON_FORCE_OBJECT);
 			exit();	
 		}else{
-			$nombre=$_REQUEST['nombre'];      
-			$pass=$_REQUEST['pass'];
-			$deporte=$_REQUEST['cmbdeporte'];      
-			$categoria=$_REQUEST['cmbcategoria']; 
-			$idname=$_REQUEST['idname']; 																								
+			$nombre=$_POST['nombre'];      
+			$pass=$_POST['password'];
+			$deporte=$_POST['cmbdeporte'];      
+			$categoria=$_POST['cmbcategoria']; 
+			$idname=$_POST['idname']; 																								
 				
 			if(is_dir("teams/".$idname)){
 				$message='Ya existe una carpeta para las imagenes con la ID de ese equipo.';
@@ -59,20 +66,23 @@
 					echo json_encode($jsondata, JSON_FORCE_OBJECT);
 					exit();
 				}	
-				
-				$origen=$_FILES['archivo']['tmp_name'];								
-				$destino="teams/".$idname."/img/".$_FILES['archivo']['name'];											
-				
+								
 				/*Almacenar imagenes redimensionadas (thumbs)*/
 				$ancho=250;
 				$alto=250;	
 				
-				if(isset($origen, $destino)){
+				/*$origen="images/default/default_trainer.jpg";
+				$destino="teams/".$idname."/img/default_trainer.jpg";
+
+				redimensionImagen($origen,$destino, $ancho, $alto);*/
+				if(empty($_FILES['imagen']['tmp_name'])){
+					$origen=$_FILES['imagen']['tmp_name'];								
+					$destino="teams/".$idname."/img/".$_FILES['imagen']['name'];
 					redimensionImagen($origen,$destino, $ancho, $alto);
 				}
 				else{
 					$origen="images/default/default_trainer.jpg";
-					$destino="trainers/".$idname."/default_trainer.jpg";
+					$destino="teams/".$idname."/img/default_trainer.jpg";
 					redimensionImagen($origen,$destino, $ancho, $alto);
 				}
 			}
