@@ -23,14 +23,15 @@
 </head>
 
 <script type="text/javascript">
+$(document).ready(function () {
 
-	function registerTeam(){
-	
+	$("#formulario").submit(function (event) {
+
 		var file = document.forms["formulario"]["archivo"].value;
 		var name=document.forms["formulario"]["nombre"].value;
 		var idname=document.forms["formulario"]["idname"].value;
 		var pass = document.forms["formulario"]["passPrueba"].value;
-		var passConfirm = document.forms["formulario"]["pass"].value;
+		var passConfirm = document.forms["formulario"]["password"].value;
 		var deporte=document.forms["formulario"]["cmbdeporte"].value;
 		var categoria=document.forms["formulario"]["cmbcategoria"].value;
 		var error = 0;
@@ -90,10 +91,15 @@
 		var resultado = false;
 
 		if (error == 0) {
+			 //disable the default form submission
+			event.preventDefault();
+			//grab all form data  
+			var formData = $(this).serialize();
+
 			$.ajax({
 				url : "creaequipo.php",
 				type: 'POST',
-				data: { nombre: name , idname: idname , cmbdeporte: deporte , cmbcategoria: categoria , password: pass, imagen: file } ,
+				data: formData,
 				dataType: 'json',	
 				async: false,				
 				success: function(data, textStatus, jqXHR)
@@ -120,7 +126,9 @@
 			return false;
 		}
 		return resultado;
-	}
+	});
+});
+
 
 </script>	
 
@@ -135,7 +143,7 @@
 	<!--
 		TABLA LISTA EQUIPOS
 	-->
-	<div id="listaEquipos">
+	<div id="listaEquipos" style="display: table; margin-left: 20%; width: 80%;">
 		<?php	
 			//Comprueba si esta conectado
 			if(!isset($_SESSION)) 
@@ -153,29 +161,78 @@
 					left join customersweb on customersweb.id_customer = customersweb_team.id_customer
 					where customersweb.id_customer = ".$_SESSION['id_customer'] ;
 
-			echo("<center><table style=' width: 80%' class='table table-hover'>");
-			echo("<tr class='header'>
-				<td> Imagen </td>
-				<td> Nombre </td>
-				<td> Deporte </td>
-				<td> Categoria </td>
-				<td>  </td>	
-				</tr>");	
-			foreach ($db->query($sql) as $row)
-			{
-				echo("<tr class='active'>");				
-					echo("<td> <img src='".$row['Image']."'></img></td>");	
-					echo("<td>".$row['Team']."</td>");	
-					echo("<td>".$row['Sport']."</td>");	
-					echo("<td>".$row['Category']."</td>");	
-					echo("<td> <a href='equipoCalendario.php?team=".$row['TeamId']."' > <i class='icon-forward'></i> </a>   </td>");	
-				echo("</tr>");			
-			}		
-			echo("<tr>					
-					<td class='boton' colspan='5'><a id='activator'> Añadir Equipo </a> </td>
-				</tr>");
+			// echo("<div style='overflow-y:auto; width: 80%; height: 550px; margin-top: 10%;' >");
+			// echo("<table class='table table-hover'>");
+			// echo("<thead><tr class='header'>
+				// <td> Imagen </td>
+				// <td> Nombre </td>
+				// <td> Deporte </td>
+				// <td> Categoria </td>
+				// <td>  </td>	
+				// </tr></thead><tbody style=' overflow-y: scroll; '>");	
+			// foreach ($db->query($sql) as $row)
+			// {
+				// echo("<tr class='active'>");				
+					// echo("<td> <img src='".$row['Image']."'></img></td>");	
+					// echo("<td>".$row['Team']."</td>");	
+					// echo("<td>".$row['Sport']."</td>");	
+					// echo("<td>".$row['Category']."</td>");	
+					// echo("<td> <a href='equipoCalendario.php?team=".$row['TeamId']."' > <i class='icon-forward'></i> </a>   </td>");	
+				// echo("</tr>");			
+			// }		
+			// echo("<tr>					
+					// <td class='boton' colspan='5'><a id='activator'> Añadir Equipo </a> </td>
+				// </tr>");
 			
-			echo("</table></center>");			
+			// echo("</tbody></table>");
+			// echo("</div>");
+			
+echo("<div style='width: 80%; height: 550px; margin-top: 10%;'>
+	<table class='table table-hover' width='325'>
+		<tr>
+			<td>
+			   <table class='table table-hover'>
+				 <tr class='header'>
+					<td> Imagen </td>
+					<td> Nombre </td>
+					<td> Deporte </td>
+					<td> Categoria </td>
+					<td>  </td>	
+				 </tr>
+			   </table>
+			</td>
+	    </tr>
+		<tr>
+			<td>
+			   <div style='width:100%; height:480px; overflow:auto;'>
+				 <table class='table table-hover' >");
+				   foreach ($db->query($sql) as $row)
+					{
+						echo("<tr class='active'>");				
+							echo("<td> <img src='".$row['Image']."'></img></td>");	
+							echo("<td>".$row['Team']."</td>");	
+							echo("<td>".$row['Sport']."</td>");	
+							echo("<td>".$row['Category']."</td>");	
+							echo("<td> <a href='equipoCalendario.php?team=".$row['TeamId']."' > <i class='icon-forward'></i> </a>   </td>");	
+						echo("</tr>");			
+					}		
+			echo("</table>
+				<div>
+				</td>
+			</tr>
+					<tr>					
+					<td class='boton' colspan='5'><a id='activator'> Añadir Equipo </a> </td>
+				</tr>
+				 </table>  
+			   </div>
+			</td>
+		  </tr>
+		</table>
+		</div>");			
+			/*echo("<div>
+					<input type='submit' id='activator' class='btn btn-primary' value='Añadir Equipo'
+						style='background: #CF356F; cursor: pointer; color:#fff; font-weight: 600; padding: 7px 7px; width: 80%; float: left;'>
+				</div>");*/
 		?>
 		<div class="clear">  </div>			
 	</div>		
@@ -189,7 +246,9 @@
 	<div class="cuadroRegistro" id="cuadroRegistro">
 		<a class="cierreCuadroRegistro" id="cierreCuadroRegistro"></a>
 		<h1>Añadir Equipo</h1>
-		<form action="" class="form-horizontal" name="formulario">
+		
+		<form name="formulario" class="form-horizontal" id="formulario" action="javascript:;" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+		<!--<form action="" class="form-horizontal" name="formulario">-->
 			<div id="divarchivoequipo" class="form-group">
 				<label for="login" class="col-sm-3 control-label">Imagen:</label>
 				<div class="col-xs-8">
@@ -217,7 +276,7 @@
 			<div id="divpassequipo" class="form-group">
 				<label for="password" class="col-sm-3 control-label">Confirmación:</label>
 				<div class="col-xs-8">
-					<input type="password" class="form-control" name="pass" placeholder="Confirmacion contraseña" value="">
+					<input type="password" class="form-control" name="password" placeholder="Confirmacion contraseña" value="">
 				</div>
 			</div>
 			<div id="divdeporteequipo" class="form-group">
@@ -246,7 +305,8 @@
 			</div>					
 			<div class="form-group">
 				<div class="col-xs-8 col-sm-offset-3">
-					<input type="submit" id="activator" class="btn btn-primary" value="Aceptar" onclick="return registerTeam();">
+					<!--<input type="submit" id="activator" class="btn btn-primary" value="Aceptar" onclick="return registerTeam();">-->
+					<input type="submit" id="activator" class="btn btn-primary" value="Aceptar">
 				</div>
 			</div>		 
 		</form>			

@@ -342,7 +342,7 @@ a.cierreCuadroRegistro{
 
 #listaEquipos table{
 	border-spacing: 0px;
-	margin-top:10%;
+	/*margin-top:10%;*/
 	text-align: center;
 	background: #FFF;
 	font-family: 'Raleway', sans-serif;
