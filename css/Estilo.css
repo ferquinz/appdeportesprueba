@@ -513,11 +513,11 @@ a.cierreCuadroRegistro{
 ********************************/
 #charts{
 	/*width: 800px;*/
-	height: 720px;
+	/*height: 720px;*/
 	background: #FFF;
 	/*display: table;*/
     margin: 0 auto;
-	margin-top: 5%;
+	margin-top: 10%;
 	box-shadow: 0 0 10px #353535;
 	-moz-box-shadow:  0 0 10px #353535;
     -webkit-box-shadow:  0 0 10px #353535;

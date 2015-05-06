@@ -1,3 +1,4 @@
+<?php include 'mobile/funciones/GoogleCloudMessaging.php' ?>
 <?php
 error_reporting(-1);
 require_once("config.inc.php");
@@ -57,8 +58,18 @@ switch ($_GET["accion"])
 		$query=$db->query("insert into ".$tabla." (training_date,description, id_customer, id_team, title, place, hour_training) values ('".$_GET["fecha"]."','".strip_tags($_GET["evento"])."',".$_SESSION['id_customer']."
 		,".$_SESSION['id_team'].",'".$_GET["title"]."','".$_GET["place"]."','".$_GET["hour_training"]."')");
 		
-		if ($query) echo "<p class='ok'>Evento guardado correctamente.</p>";
-		else echo "<p class='error'>Se ha producido un error guardando el evento.</p>";
+		if ($query){
+			echo "<p class='ok'>Evento guardado correctamente.</p>";
+			
+			//Envia la notificacion a todos los moviles asociados al equipo
+			$date=date_create($_GET["fecha"]);
+			$msg="calendar$".$db->insert_id."$".$_SESSION['team_name']."$".date_format($date, 'd-m-Y')."$".$_GET["place"];
+	
+			//include 'gcmMessageTeam.php';
+			$page = file_get_contents("http://appdeportesprueba.esy.es/mobile/gcmMessageTeam.php?msg=".$msg."&idTeam=".$_SESSION['id_team']);
+
+		}else echo "<p class='error'>Se ha producido un error guardando el evento.</p>";
+	
 		break;
 	}
 	case "borrar_evento":
@@ -167,7 +178,7 @@ switch ($_GET["accion"])
 						echo "'>";
 						
 						/* recorremos el array de eventos para mostrar los eventos del día de hoy */
-						if ($hayevento>0) echo "<a href='#' data-evento='#evento".$dia_actual."' class='modal' rel='".$fecha_completa."' title='Hay ".$hayevento." eventos'>".$dia."</a>";
+						if ($hayevento>0) echo "<a href='#' data-evento='#evento".$dia_actual."' class='modal' style='position: static !important; display: block !important;' rel='".$fecha_completa."' title='Hay ".$hayevento." eventos'>".$dia."</a>";
 						else echo "$dia";
 						
 						/* agregamos enlace a nuevo evento si la fecha no ha pasado */

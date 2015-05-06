@@ -72,9 +72,9 @@
 				$alto=250;	
 				
 				/*$origen="images/default/default_trainer.jpg";
-				$destino="teams/".$idname."/img/default_trainer.jpg";
+				$destino="teams/".$idname."/img/default_trainer.jpg";*/				$origen=$_FILES['archivo']['tmp_name'];																								$destino="teams/".$idname."/img/default_trainer.jpg";
 
-				redimensionImagen($origen,$destino, $ancho, $alto);*/
+				redimensionImagen($origen,$destino, $ancho, $alto);
 				if(empty($_FILES['imagen']['tmp_name'])){
 					$origen=$_FILES['imagen']['tmp_name'];								
 					$destino="teams/".$idname."/img/".$_FILES['imagen']['name'];

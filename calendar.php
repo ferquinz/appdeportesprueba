@@ -117,7 +117,7 @@
 						echo("	
 								<tr class='active'>
 									<td>
-										<a href='grafica.php?id_player=".$row['id_player']."'>
+										<a href='grafica.php?id_player=".$row['id_player']."&mes=".date("j")."&anio=".date('Y')."'>
 											<img src='".$row['img_path']."' style='height: 100px;'>
 										</a>
 									</td>
