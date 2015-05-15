@@ -101,41 +101,44 @@
 							LEFT JOIN customersweb_team ON customersweb_team.id_customer = customersweb.id_customer
 							LEFT JOIN player_position ON customersweb_players.position_id = player_position.id_position
 							WHERE mister = 0 AND id_team =".$_SESSION['id_team'] ;	
-					echo("<div id='players'>");
-					echo("<table class='table table-bordered'>
-							<thead>
-								<tr class='info'>
-									<th>Imagen</th>
-									<th>Nombre</th>
-									<th>Posicion</th>
-									<th>Dorsal</th>
-								</tr>
-							</thead>
-						<tbody>");
+					echo("<div id='players'>
+								<table class='table'>
+									<tr>
+										<td>
+											<table class='table' style='margin-bottom: 0px !important;'>
+												<tr class='info'>
+													<td>Imagen</td>
+													<td>Nombre</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+									<tr>
+									<td>
+									<div style='height: 600px; overflow: auto;'>
+										<table class='table table-bordered'>");
 					foreach ($db->query($sql) as $row)
 					{		
 						echo("	
 								<tr class='active'>
 									<td>
-										<a href='grafica.php?id_player=".$row['id_player']."&mes=".date("j")."&anio=".date('Y')."'>
-											<img src='".$row['img_path']."' style='height: 100px;'>
+										<a href='grafica.php?id_player=".$row['id_player']."&mes=".date("n")."&anio=".date('Y')."'>
+											<img src='".$row['img_path']."' style='height: 100px;' class='img-circle'>
 										</a>
 									</td>
-									<td>
+									<td style='text-align: center;  vertical-align: middle;'>
 										".$row['username']."
-									</td>
-									<td>
-										".$row['posicion']."
-									</td>
-									<td>
-										".$row['dorsal']."
 									</td>
 								</tr>
 							");				
 												
 					}
-					echo("</tbody></table>");
-					echo("</div>");			
+					echo("</table>
+						</div>
+						</td>
+						</tr>
+						</table>
+					</div>");			
 				?>				
 			</div>
 		</div>

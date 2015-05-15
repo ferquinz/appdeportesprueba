@@ -1,6 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">
-
+<?php
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
+?>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -114,7 +117,6 @@ $(document).ready(function () {
 					}
 				},
 				error: function (xhr, status, error){
-					alert("Error");
 					alert(error);
 					resultado = false;
 				}
@@ -129,10 +131,53 @@ $(document).ready(function () {
 	});
 });
 
+	function eliminarEquipo(){
+	
+		var resultado = false;
+		$.ajax({
+			url : "deleteTeam.php",
+			type: 'POST',
+			data: { team: document.getElementById("EquipoId").value} ,
+			dataType: 'json',	
+			async: false,				
+			success: function(data, textStatus, jqXHR)
+			{	
+				if(!data.success){
+					alert(data.data);
+					resultado = false;
+				}else {
+					console.log(jqXHR.status);
+					resultado = true;
+				}
+			},
+			error: function (xhr, status, error){
+				alert(error);
+				resultado = false;
+			}
+		});
+		
+		if(resultado){
+			$('#myModal').modal('hide');
+			window.location.reload();
+			return false;
+		}
 
+		return resultado;
+	}
+
+	$(document).ready(function (e) {
+		$('body').on('click','#eliminar',function () {
+			var data_id = '';
+			if (typeof $(this).data('id') !== 'undefined') {
+				data_id = $(this).data('id');
+			}
+			document.getElementById("EquipoId").value = data_id;
+		})
+	});
 </script>	
 
 <body class="selectTeam">
+	<input type="hidden" id="EquipoId" value="">
 	<div id='cssmenu'>
 		<ul>	   
 		   <li><a href='deletesession.php'>Desconexión</a></li>
@@ -161,33 +206,8 @@ $(document).ready(function () {
 					left join customersweb on customersweb.id_customer = customersweb_team.id_customer
 					where customersweb.id_customer = ".$_SESSION['id_customer'] ;
 
-			// echo("<div style='overflow-y:auto; width: 80%; height: 550px; margin-top: 10%;' >");
-			// echo("<table class='table table-hover'>");
-			// echo("<thead><tr class='header'>
-				// <td> Imagen </td>
-				// <td> Nombre </td>
-				// <td> Deporte </td>
-				// <td> Categoria </td>
-				// <td>  </td>	
-				// </tr></thead><tbody style=' overflow-y: scroll; '>");	
-			// foreach ($db->query($sql) as $row)
-			// {
-				// echo("<tr class='active'>");				
-					// echo("<td> <img src='".$row['Image']."'></img></td>");	
-					// echo("<td>".$row['Team']."</td>");	
-					// echo("<td>".$row['Sport']."</td>");	
-					// echo("<td>".$row['Category']."</td>");	
-					// echo("<td> <a href='equipoCalendario.php?team=".$row['TeamId']."' > <i class='icon-forward'></i> </a>   </td>");	
-				// echo("</tr>");			
-			// }		
-			// echo("<tr>					
-					// <td class='boton' colspan='5'><a id='activator'> Añadir Equipo </a> </td>
-				// </tr>");
 			
-			// echo("</tbody></table>");
-			// echo("</div>");
-			
-echo("<div style='width: 80%; height: 550px; margin-top: 10%;'>
+echo("<div style='width: 80%; height: 550px; margin-top: 5%;'>
 	<table class='table table-hover' width='325'>
 		<tr>
 			<td>
@@ -213,7 +233,10 @@ echo("<div style='width: 80%; height: 550px; margin-top: 10%;'>
 							echo("<td>".$row['Team']."</td>");	
 							echo("<td>".$row['Sport']."</td>");	
 							echo("<td>".$row['Category']."</td>");	
-							echo("<td> <a href='equipoCalendario.php?team=".$row['TeamId']."' > <i class='icon-forward'></i> </a>   </td>");	
+							echo("<td> 
+									<a id='eliminar' href='#myModal' data-toggle='modal' data-id='".$row['TeamId']."' > <i class='icon-cancel'></i> </a>
+									<a href='equipoCalendario.php?team=".$row['TeamId']."' > <i class='icon-forward'></i> </a>   
+									</td>");	
 						echo("</tr>");			
 					}		
 			echo("</table>
@@ -229,10 +252,6 @@ echo("<div style='width: 80%; height: 550px; margin-top: 10%;'>
 		  </tr>
 		</table>
 		</div>");			
-			/*echo("<div>
-					<input type='submit' id='activator' class='btn btn-primary' value='Añadir Equipo'
-						style='background: #CF356F; cursor: pointer; color:#fff; font-weight: 600; padding: 7px 7px; width: 80%; float: left;'>
-				</div>");*/
 		?>
 		<div class="clear">  </div>			
 	</div>		
@@ -313,7 +332,7 @@ echo("<div style='width: 80%; height: 550px; margin-top: 10%;'>
 	</div>
 <!-- Función para cargar el combo de categorias del registro de equipo -->
 <script type="text/javascript">
-		
+	
 	document.getElementById("cmbdeporte").selectedIndex = "-1";
 	function nuevoAjax(){ 
 		/* Crea el objeto AJAX. Esta funcion es generica para cualquier utilidad de este tipo, por lo que se puede copiar tal como esta aqui */
@@ -374,5 +393,28 @@ echo("<div style='width: 80%; height: 550px; margin-top: 10%;'>
 	}
 					
 </script>	
+
+<!-- 
+		Modal HTML para los terminos y condiciones
+	-->
+	<div class="modal fade animated bounceIn" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<a class="cierreCuadroRegistro" id="cierrelargeModal" data-dismiss="modal" aria-hidden="true"></a>
+						<h4 class="modal-title" id="myModalLabel">Eliminar</h4>
+					</div>
+					<div class="modal-body">
+						<p>
+							Estas seguro de querere eliminar el equipo
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button id="btnEliminar" class="btn btn-primary" onclick="return eliminarEquipo();">Aceptar</button>
+						<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+					</div>
+				</div>
+		  </div>
+	</div>
 </body>
 </html>

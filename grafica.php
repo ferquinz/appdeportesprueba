@@ -80,6 +80,34 @@
 
 }
 	
+	function left(){
+		if (document.getElementById('chart2').style.display == 'block'){
+			document.getElementById('chart1').style.display = 'block';
+			document.getElementById('chart2').style.display = 'none';
+		}
+		else if (document.getElementById('chart1').style.display == 'block'){
+		
+		}
+		else{
+			document.getElementById('chart2').style.display = 'block';
+			document.getElementById('chart3').style.display = 'none';
+		}
+	}
+	
+	function right(){
+		if (document.getElementById('chart2').style.display == 'block'){
+			document.getElementById('chart2').style.display = 'none';
+			document.getElementById('chart3').style.display = 'block';
+		}
+		else if (document.getElementById('chart3').style.display == 'block'){
+		
+		}
+		else{
+			document.getElementById('chart1').style.display = 'none';
+			document.getElementById('chart2').style.display = 'block';
+		}
+	}
+	
 	function goLastMonth(month, year){
 		// If the month is January, decrement the year
 		if(month == 1){
@@ -153,10 +181,76 @@
 					WHERE a.id_team = ".$_SESSION['id_team']." and b.id_customer <> ".$idPlayer." and c.start_time is not null
 					AND MONTH(DATE(c.start_time)) = ".$month." AND YEAR(DATE(c.start_time)) = ".$year."
 					GROUP BY DATE(c.start_time)
-					ORDER BY c.start_time";		
+					ORDER BY c.start_time";	
+
+		$sqlPlayerId = " SELECT concat(concat(a.username, ' '), a.lastname) as Nombre, a.email, a.phone, a.img_path, b.date_born, b.Dorsal, c.name as Position
+						FROM customersweb a
+						LEFT JOIN customersweb_players b ON a.id_customer = b.id_customer	
+						LEFT JOIN player_position c ON c.id_position = b.position_id
+						WHERE a.id_customer = ".$idPlayer."
+						";
 		
 	?>
-
+		<div class="col-xs-4 col-sm-6 col-md-6" style="  width: 25%;  margin-top: 4%;">
+			<div style='width: 80%; height: 550px; margin-top: 10%;'>
+				<table class='table' width='325'>
+					<?php
+						foreach ($db->query($sqlPlayerId) as $row)
+						{
+							echo("
+								<tr>
+									<td style='border-top: 0px !important;'></td>
+									<td style='border-top: 0px !important;'> <img src='".$row['img_path']."' style='height: 160px;' class='img-circle'> </td>
+								</tr>
+								<tr style='  background: aquamarine;'>
+									<td> Nombre </td>
+									<td style='text-align: center;  vertical-align: middle;'>
+										".$row['Nombre']."
+									</td>
+								</tr>
+								<tr style='  background: aquamarine;'>
+									<td> Email </td>
+									<td style='text-align: center;  vertical-align: middle;'>
+										".$row['email']."
+									</td>
+								</tr>
+								<tr style='  background: aquamarine;'>
+									<td> Telefono </td>
+									<td style='text-align: center;  vertical-align: middle;'>
+										".$row['phone']."
+									</td>
+								</tr>
+								<tr style='  background: aquamarine;'>
+									<td> Fecha de Nacimiento </td>
+									<td style='text-align: center;  vertical-align: middle;'>
+										".$row['date_born']."
+									</td>
+								</tr>
+								<tr style='  background: aquamarine;'>
+									<td> Dorsal </td>
+									<td style='text-align: center;  vertical-align: middle;'>
+										".$row['Dorsal']."
+									</td>
+								</tr>
+								 <tr style='  background: aquamarine;'>
+									<td> Posicion </td>
+									<td style='text-align: center;  vertical-align: middle;'>
+										".$row['Position']."
+									</td>
+								</tr>
+							 ");
+						 }
+					 ?>
+			   </table>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-8">
+		<div>
+			<img style="float: left;  width: 50px;  height: 50px;  margin-top: 25%;  margin-left: -30px;  cursor: pointer;" src="images/icons/leftrow.png" onclick="left()"></img>
+		</div>
+		<div>
+			<img style="float: right;  width: 50px;  height: 50px;  margin-top: 25%;  margin-right: -30px;  cursor: pointer;" src="images/icons/rightrow.png" onclick="right()"></img>
+		</div>
 		<div id = "charts" >
 				<div id = "chart1" style="border: 1px solid #CFCFCF; margin: 2%; display: none;">	
 					<div id="chartTitle" >
@@ -218,6 +312,7 @@
 			<button id="btnSiguiente" type="button" class="btn btn-primary btn-lg" style="display: inline;" 
 					onclick="goNextMonth(<?php echo $month . ", " . $year; ?>)">Siguiente</button>
 		</div>
+		<div>
 	<?php 
 		include 'Formato/piepag.php' 
 	?>	

@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+<?php
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
+?>
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -182,7 +188,7 @@
 
 		if (error == 0) {
 			$.ajax({
-				url : "registrarse.php",
+				url : "http://appdeportesprueba.esy.es/registrarse.php",
 				type: 'POST',
 				data: { nombre: name , apellidos: firstname , usuario: user , correo: email , tel: phone , pass: pass, archivo: file} ,
 				dataType: 'json',	

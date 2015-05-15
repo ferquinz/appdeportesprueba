@@ -71,20 +71,22 @@
 				$ancho=250;
 				$alto=250;	
 				
-				/*$origen="images/default/default_trainer.jpg";
-				$destino="teams/".$idname."/img/default_trainer.jpg";*/				$origen=$_FILES['archivo']['tmp_name'];																								$destino="teams/".$idname."/img/default_trainer.jpg";
+				$origen="images/default/default_trainer.jpg";
+				$destino="teams/".$idname."/img/default_trainer.jpg";				
+				/*$origen=$_FILES['archivo']['tmp_name'];																								
+				$destino="teams/".$idname."/img/".$_FILES['archivo']['name'];*/
 
 				redimensionImagen($origen,$destino, $ancho, $alto);
-				if(empty($_FILES['imagen']['tmp_name'])){
-					$origen=$_FILES['imagen']['tmp_name'];								
-					$destino="teams/".$idname."/img/".$_FILES['imagen']['name'];
+				/*if(empty($_FILES['archivo']['tmp_name'])){
+					$origen=$_FILES['archivo']['tmp_name'];								
+					$destino="teams/".$idname."/img/".$_FILES['archivo']['name'];
 					redimensionImagen($origen,$destino, $ancho, $alto);
 				}
 				else{
 					$origen="images/default/default_trainer.jpg";
 					$destino="teams/".$idname."/img/default_trainer.jpg";
 					redimensionImagen($origen,$destino, $ancho, $alto);
-				}
+				}*/
 			}
 				
 			$sql = "INSERT INTO team (name, id_category, password, img_path, id_sport, idname) VALUES ('".$nombre."','".$categoria."','".$pass."','".$destino."','".$deporte."','".$idname."')" ;
