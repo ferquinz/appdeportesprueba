@@ -1,6 +1,6 @@
 <?php 
 
-	header('Content-Type: application/json');
+	//header('Content-Type: application/json');
 	
 	error_reporting(E_ALL);
 	ini_set('display_errors', '1');
@@ -71,13 +71,14 @@
 				$ancho=250;
 				$alto=250;	
 				
-				$origen="images/default/default_trainer.jpg";
-				$destino="teams/".$idname."/img/default_trainer.jpg";				
+				/*$origen="images/default/default_trainer.jpg";
+				$destino="teams/".$idname."/img/default_trainer.jpg";*/				
 				/*$origen=$_FILES['archivo']['tmp_name'];																								
 				$destino="teams/".$idname."/img/".$_FILES['archivo']['name'];*/
 
-				redimensionImagen($origen,$destino, $ancho, $alto);
-				/*if(empty($_FILES['archivo']['tmp_name'])){
+				/*redimensionImagen($origen,$destino, $ancho, $alto);*/
+				//if(empty($_FILES['archivo']['tmp_name'])){
+				if(isset($_FILES['archivo'])){
 					$origen=$_FILES['archivo']['tmp_name'];								
 					$destino="teams/".$idname."/img/".$_FILES['archivo']['name'];
 					redimensionImagen($origen,$destino, $ancho, $alto);
@@ -86,7 +87,7 @@
 					$origen="images/default/default_trainer.jpg";
 					$destino="teams/".$idname."/img/default_trainer.jpg";
 					redimensionImagen($origen,$destino, $ancho, $alto);
-				}*/
+				}
 			}
 				
 			$sql = "INSERT INTO team (name, id_category, password, img_path, id_sport, idname) VALUES ('".$nombre."','".$categoria."','".$pass."','".$destino."','".$deporte."','".$idname."')" ;

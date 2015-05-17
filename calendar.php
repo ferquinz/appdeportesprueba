@@ -10,7 +10,8 @@
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	
-	<title>Calendario en PHP, AJAX y jQuery con eventos actualizado a 2014</title>
+	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
+	<title>AppdeportesPrueba</title>
 	
 	<meta http-equiv="PRAGMA" content="NO-CACHE">
 	<meta http-equiv="EXPIRES" content="-1">

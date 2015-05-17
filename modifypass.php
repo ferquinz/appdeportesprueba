@@ -2,6 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
+	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
+	<title>AppdeportesPrueba</title>
     <link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<!-- Bootstrap -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -80,7 +82,7 @@
 				<h1>Modificar Contraseña</h1>
 				 <div class="alert-close"> </div> 			
 			</div>
-			<form name="LoginForm" action="login.php" class="form-horizontal">
+			<form name="LoginForm" action="login.php" class="form-horizontal" style="padding-bottom: 12% !important;">
 				<div class="form-group logindiv" >
 					<input type="Password" class="passwordlogin" name="Pass" value="" placeholder="Password" >
 					<span id="iconuser" class="icon glyphicon glyphicon-lock"></span>

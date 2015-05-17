@@ -6,13 +6,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
 		<meta http-equiv="Content-Type" content="text/html; charset= utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
-		
+		<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
+		<title>AppdeportesPrueba</title>
 		<link rel="stylesheet" type="text/css" href="css/Estilo.css">
 		<!-- Bootstrap -->
 		<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">		
 		<link rel="stylesheet" type="text/css" href="css/xcharts.css"> 
 		<link rel="stylesheet" type="text/css" href="css/xcharts.min.css"> 
-		<title>Inicio</title>	  	
+	  	
 		<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
 		<!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->

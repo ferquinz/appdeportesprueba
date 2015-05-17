@@ -8,6 +8,8 @@
 <html>
 <head>
     <meta charset="utf-8">
+	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
+	<title>AppdeportesPrueba</title>
     <link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<!-- Bootstrap -->
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">

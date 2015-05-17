@@ -8,13 +8,14 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
-	
+	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
+	<title>AppdeportesPrueba</title>
 	<link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<!-- Bootstrap -->
 	<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
-	<link href="css/fontello/fontello.css" rel="stylesheet">
-	<title>Inicio</title>	  	
+	<link href="css/fontello/fontello.css" rel="stylesheet">  	
 	<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
+	
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
@@ -97,17 +98,38 @@ $(document).ready(function () {
 			 //disable the default form submission
 			event.preventDefault();
 			//grab all form data  
-			var formData = $(this).serialize();
+			//var formData = $(this).serialize();
+			//var formData = JSON.parse(JSON.stringify(jQuery('#formulario').serializeArray()))
+			//formData.Append("archivo", $(this).files[0]);
+			//var formData = new FormData(this);
+			//formData.append("archivo", document.forms["formulario"]["archivo"].value);
+			
+			var $form    = $(event.target),
+                formData = new FormData(),
+                params   = $form.serializeArray(),
+                files    = $form.find('[name="archivo"]')[0].files;
 
+            $.each(files, function(i, file) {
+                // Prefix the name of uploaded files with "uploadedFiles-"
+                // Of course, you can change it to any string
+                //formData.append('uploadedFiles-' + i, file);
+				formData.append('archivo', file);
+            });
+
+            $.each(params, function(i, val) {
+                formData.append(val.name, val.value);
+            });
+			
 			$.ajax({
 				url : "creaequipo.php",
 				type: 'POST',
 				data: formData,
 				dataType: 'json',	
-				async: false,				
+				async: false,	
+				contentType: false,
+				processData: false,				
 				success: function(data, textStatus, jqXHR)
 				{	
-					alert(data.data);
 					if(!data.success){
 						alert(data.data);
 						resultado = false;
