@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+<?php
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
+?>
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -23,12 +29,10 @@
 
 	function validateForm() {			
 	
-		alert(<?php echo($_REQUEST["correo"]); ?>);
-		alert("Prueba");
 		/*Comprobacion del nombre*/
 		var  pass=document.forms["LoginForm"]["Pass"].value;
 		if (pass.length<1){
-			alert("El usuario debe contener más de un caracter.");
+			alert("La contraseña debe contener más de un caracter.");
 			return false;
 		}				
 	
@@ -40,32 +44,32 @@
 		}		
 		
 		var resultado = false;
-
+		var mail = "<?php echo($_REQUEST["correo"]); ?>";
+		
 		$.ajax({
 			url : "modificar.php",
 			type: 'POST',
-			data: { password: pass, correo : <?php $_REQUEST["correo"] ?>} ,
+			data: { password: pass, correo : mail} ,
 			async: false,					
-			dataType: 'json',	
-				async: false,				
-				success: function(data, textStatus, jqXHR)
-				{
-					if(!data.success){
-						alert(data.data);
-						resultado = false;
-					}else {
-						console.log(jqXHR.status);
-						resultado = true;
-					}
-				},
-				error: function (xhr, status, error){
-					alert(error);
+			dataType: 'json',					
+			success: function(data, textStatus, jqXHR)
+			{
+				if(!data.success){
+					alert(data.data);
 					resultado = false;
+				}else {
+					console.log(jqXHR.status);
+					resultado = true;
 				}
-			});
-		}
+			},
+			error: function (xhr, status, error){
+				alert(error);
+				resultado = false;
+			}
+		});
+		
 		if(resultado){
-			window.location.href = "http://appdeportesprueba.esy.es/index.php";
+			window.location.href = "login.php";
 			return false;
 		}
 		return resultado;
@@ -82,7 +86,7 @@
 				<h1>Modificar Contraseña</h1>
 				 <div class="alert-close"> </div> 			
 			</div>
-			<form name="LoginForm" action="login.php" class="form-horizontal" style="padding-bottom: 12% !important;">
+			<form name="LoginForm" action="" class="form-horizontal" style="padding-bottom: 12% !important;">
 				<div class="form-group logindiv" >
 					<input type="Password" class="passwordlogin" name="Pass" value="" placeholder="Password" >
 					<span id="iconuser" class="icon glyphicon glyphicon-lock"></span>

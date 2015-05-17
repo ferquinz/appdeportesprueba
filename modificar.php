@@ -7,31 +7,22 @@
 	$jsondata = array();
 	$correo=$_POST['correo'];           
 	/*Realiza la consulta para obtener el usuario*/
-	$sql = "SELECT email from customersweb where email='".$correo."'" ;
+	$sql = "SELECT email from customersweb where email=".$correo."" ;
 	foreach ($db->query($sql) as $row){                                                   
-			$customerid = $row['email'];
+		$customerid = $row['email'];
 	}
 
 	if($customerid!=NULL){
-		$message='El correo introducido ya existe';
-		$error=false;
-		$jsondata["success"] = $error;
-		$jsondata["data"] = $message;
-		header('Content-type: application/json; charset=utf-8');
-		echo json_encode($jsondata, JSON_FORCE_OBJECT);
-		exit();
-	}
-	else{
 		$pass = $_POST['password'];		
 																		
-		$sql = "UPDATE customersweb SET password = '".md5( $_POST['password'])."'";
+		$sql = "UPDATE customersweb SET password = '".md5( $_POST['password'])."' WHERE email=".$correo."";
 		$db->query($sql);
 		 
 		$message='Modificación completado con exito';
 		$error=true;
 		
 		/*Realiza la consulta para obtener el usuario que acabamos de insertar*/
-		$sql = "SELECT password, email, firstname, id_customer from customersweb where email='".$_POST['correo']."' AND password='".md5( $_POST['pass'])."'" ; 
+		$sql = "SELECT password, email, firstname, id_customer from customersweb where email=".$correo." AND password='".md5( $_POST['pass'])."'" ; 
 		/*echo($sql);*/
 		foreach ($db->query($sql) as $row){
 				$nombre = $row['firstname'];
@@ -51,7 +42,15 @@
 		
 		/*Cierra la conexion con la base de datos*/
 		$db=NULL;
-		
+	}
+	else{	
+		$message='El usuario al que desea cambiar la contraseña no existe';
+		$error=false;
+		$jsondata["success"] = $error;
+		$jsondata["data"] = $message;
+		header('Content-type: application/json; charset=utf-8');
+		echo json_encode($jsondata, JSON_FORCE_OBJECT);
+		exit();
 	}
    
 	/*Cierra la conexion con la base de datos*/
