@@ -258,6 +258,173 @@
 		}
 		return resultado;
 	}
+
+$(document).ready(function () {
+
+	$("#formulario").submit(function (event) {
+	
+		var name=document.forms["formulario"]["nombre"].value;
+		var firstname=document.forms["formulario"]["apellidos"].value;
+		var user=document.forms["formulario"]["usuario"].value;
+		var email=document.forms["formulario"]["correo"].value;
+		var phone=document.forms["formulario"]["tel"].value;
+		var pass = document.forms["formulario"]["passPrueba"].value;
+		var passConfirm = document.forms["formulario"]["pass"].value;
+		var file = document.forms["formulario"]["archivo"].value;
+				
+		/*alert("Prueba");*/
+		var error = 0;
+		
+		document.getElementById("divterminos").className = "form-group";
+		if (!document.forms["formulario"]["condiciones"].checked){						
+			 /*alert("Debe aceptar las condiciones para continuar."); */
+			 document.getElementById("divterminos").className += " has-error";
+			 error = 1;
+		}
+		
+
+		document.getElementById("divnombre").className = "form-group";
+		if (name.length<1){
+			document.formulario.nombre.placeholder = "Falta el nombre";
+			document.getElementById("divnombre").className += " has-error";
+			error = 1;
+		}
+		document.getElementById("divapellidos").className = "form-group";
+		if (firstname.length<1){
+			document.formulario.apellidos.placeholder = "Falta el apellido";
+			document.getElementById("divapellidos").className += " has-error";
+			error = 1;
+		}
+		document.getElementById("divusuario").className = "form-group";
+		if (user.length<1){
+			document.formulario.usuario.placeholder = "Falta el usuario";
+			document.getElementById("divusuario").className += " has-error";
+			error = 1;
+		}
+		document.getElementById("divcorreo").className = "form-group";
+		if (email.length<1){
+			document.formulario.correo.placeholder = "Falta el correo";
+			document.getElementById("divcorreo").className += " has-error";
+			error = 1;
+		}
+		
+		/* Comprobamos el telefono */
+		document.getElementById("divtel").className = "form-group";
+		var numeros = "0123456789";
+		if (phone.length<1){
+			document.formulario.tel.placeholder = "Falta el telefono";
+			document.getElementById("divtel").className += " has-error";
+			error = 1;
+		}
+		else if (phone.length<9){
+			document.formulario.tel.placeholder = "El telefono debe contener al menos 9 números";
+			document.getElementById("divtel").className += " has-error";
+			error = 1;
+		}
+		else{
+			for(var i=0; i<phone.length;i++){ /*si hay algun caracter que no sea numérico devuelve error*/
+				if(numeros.indexOf(phone.charAt(i))==-1){
+					document.formulario.tel.placeholder = "Telefono incorrecto: solo puede contener números";
+					document.getElementById("divtel").className += " has-error";
+					error = 1;
+				}
+			}
+		}
+		
+		/* Comprobamos el correo */
+		var atpos=email.indexOf("@"); /*Debe contener @*/
+		var dotpos=email.lastIndexOf(".");
+		if (atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length){
+			document.formulario.correo.placeholder = "Correo invalido";
+			document.getElementById("divcorreo").className += " has-error";
+			error = 1;
+		}	
+		
+		/* Comprobamos la contraseña */
+		document.getElementById("divpassPrueba").className = "form-group";
+		document.getElementById("divpass").className = "form-group";
+		var alfaNum = "abcdefghijklmnopqrstuvwxyz0123456789";
+		if (pass.length<8 || passConfirm.length<8){
+			document.formulario.passPrueba.placeholder = "La contraseña debe tener al menos 8 caracteres";
+			document.getElementById("divpassPrueba").className += " has-error";
+			document.getElementById("divpass").className += " has-error";
+			error = 1;
+		}
+		else if(pass.indexOf(' ')== 0){
+			document.formulario.passPrueba.placeholder = "La contraseña no puede contener espacios";
+			document.getElementById("divpassPrueba").className += " has-error";
+			error = 1;                       
+		}
+		else if(pass.localeCompare(passConfirm)){ /*Las dos contraseñas introducidas tienen que coincidir*/
+			document.formulario.pass.placeholder = "La contraseña no coincide";
+			document.getElementById("divpass").className += " has-error";
+			error = 1;
+		}
+		else{
+			for(var i=0; i<pass.length;i++){ /*si hay algun caracter que no sea alfanumerico devuelve error*/
+				if(alfaNum.indexOf(pass.charAt(i))==-1){
+					document.formulario.passPrueba.placeholder = "La contraseña debe tener caracteres alfanumericos";
+					document.getElementById("divpassPrueba").className += " has-error";
+					error = 1;                            
+				}
+			}  
+		}
+							
+		var resultado = false;
+
+		if (error == 0) {
+		
+			event.preventDefault();
+			
+			var $form    = $(event.target),
+                formData = new FormData(),
+                params   = $form.serializeArray(),
+                files    = $form.find('[name="archivo"]')[0].files;
+
+            $.each(files, function(i, file) {
+                // Prefix the name of uploaded files with "uploadedFiles-"
+                // Of course, you can change it to any string
+                //formData.append('uploadedFiles-' + i, file);
+				formData.append('archivo', file);
+            });
+
+            $.each(params, function(i, val) {
+                formData.append(val.name, val.value);
+            });
+			
+			
+			$.ajax({
+				url : "registrarse.php",
+				type: 'POST',
+				data: formData ,
+				dataType: 'json',	
+				async: false,
+				contentType: false,
+				processData: false,					
+				success: function(data, textStatus, jqXHR)
+				{	
+					if(!data.success){
+						alert(data.data);
+						resultado = false;
+					}else {
+						console.log(jqXHR.status);
+						resultado = true;
+
+					}
+				},
+				error: function (xhr, status, error){
+					alert(error);
+					resultado = false;
+				}
+			});
+		}
+		if(resultado){
+			window.location.href = "index.php";
+			return false;
+		}
+		return resultado;
+	});
+});
 </script>
 
 <body>
@@ -308,7 +475,7 @@
 	<div class="cuadroRegistro" id="cuadroRegistro">
 		<a class="cierreCuadroRegistro" id="cierreCuadroRegistro"></a>
 		<h1>Registro</h1>
-		    <form action="" class="form-horizontal" name="formulario">
+		    <form id="formulario" class="form-horizontal" name="formulario" action="javascript:;" enctype="multipart/form-data" method="post" accept-charset="utf-8">
 				<div class="form-group">
 					<label for="login" class="col-sm-3 control-label">Imagen:</label>
 					<div class="col-xs-8">
@@ -369,7 +536,8 @@
 				</div>				
 				<div class="form-group">
 					<div class="col-xs-8 col-sm-offset-3">
-						<input type="submit" id="activator" class="btn btn-primary" value="Aceptar" onclick="return registerForm();">
+						<!--<input type="submit" id="activator" class="btn btn-primary" value="Aceptar" onclick="return registerForm();">-->
+						<input type="submit" id="activator" class="btn btn-primary" value="Aceptar" >
 					</div>
 				</div>	
 			</form>			

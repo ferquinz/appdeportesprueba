@@ -59,14 +59,15 @@
 				exit();
 			}																
 			
-			$origen=$_FILES['archivo']['tmp_name'];
-			$destino="trainers/".$idname."/".$_FILES['archivo']['name'];											
+														
 			
 			/*Almacenar imagenes redimensionadas (thumbs)*/
 			$ancho=250;
 			$alto=250;	
 			
-			if($_POST['archivo'] != ""){
+			if(isset($_FILES['archivo'])){
+				$origen=$_FILES['archivo']['tmp_name'];
+				$destino="trainers/".$idname."/".$_FILES['archivo']['name'];
 				redimensionImagen($origen,$destino, $ancho, $alto);
 			}
 			else{
