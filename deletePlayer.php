@@ -22,7 +22,7 @@ header('Content-Type: application/json');
 		exit();
 	}
 	else{							
-		if(empty($_POST['team'])){
+		if(empty($_POST['player'])){
 			$message='Error al pasar parametros';
 			$error=false;
 			$jsondata["success"] = $error;
@@ -31,23 +31,30 @@ header('Content-Type: application/json');
 			echo json_encode($jsondata, JSON_FORCE_OBJECT);
 			exit();	
 		}else{
-			$equipo=$_POST['team'];      																								
+			$player=$_POST['player'];      																								
 
-			$sql = "SELECT name FROM team WHERE id_team = ".$equipo."" ;
-			foreach ($db->query($sql) as $row)
-			{
-				$ruta = "teams/".$row['name']."";
-				eliminarDir($ruta);
-			}
+			$sql = "DELETE FROM customersweb_team  WHERE id_customer =".$player." AND id_team=".$_SESSION['id_team']."";
+			$db->query($sql);
 			
-			$sql = "DELETE FROM team WHERE id_team = ".$equipo."" ;
+			$sql = "DELETE FROM customersweb_players WHERE id_customer = ".$player."" ;
+			$db->query($sql);
+			
+			$sql = "DELETE FROM customersweb WHERE id_customer = ".$player."" ;
 			$db->query($sql); 	
 			
-			$sql = "DELETE FROM customersweb_team  WHERE id_team =".$equipo."" ;
-			$db->query($sql); 
-			
-			
-			
+			$sql = "SELECT id_training FROM training_event WHERE id_team = ".$_SESSION['id_team']."" ;
+			foreach ($db->query($sql) as $row)
+			{
+				$sql1 = "SELECT id_training_player FROM training_player WHERE id_training = ".$row['id_training']." AND id_customer=".$player."" ;
+				foreach ($db->query($sql1) as $row1)
+				{
+					$sql2 = "DELETE FROM training_data WHERE id_training_player = ".$row1['id_training_player']."" ;
+					$db->query($sql2);
+				}
+				$sql1 = "DELETE FROM training_player WHERE id_training = ".$row['id_training']." AND id_customer=".$player."" ;
+				$db->query($sql1);
+			}
+
 			$message='Eliminacion completada con exito';
 			$error=true;
 		}														   
@@ -59,26 +66,6 @@ header('Content-Type: application/json');
 		echo json_encode($jsondata, JSON_FORCE_OBJECT);
 		exit();
 		
-	}
-	
-	
-	function eliminarDir($carpeta)
-	{
-		foreach(glob($carpeta . "/*") as $archivos_carpeta)
-		{
-			//echo $archivos_carpeta;
-	 
-			if (is_dir($archivos_carpeta))
-			{
-				eliminarDir($archivos_carpeta);
-			}
-			else
-			{
-				unlink($archivos_carpeta);
-			}
-		}
-	 
-		rmdir($carpeta);
 	}
 
 ?>

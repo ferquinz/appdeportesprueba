@@ -1,10 +1,16 @@
-<?php require_once("config.inc.php"); ?><!DOCTYPE html>
+<?php 
+	require_once("config.inc.php"); 
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
+?>
+<!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="es"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="es"> <![endif]-->
 <!--[if IE 8 ]><html class="ie ie8" lang="es"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="es"> <!--<![endif]-->
 <head>
-	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
 	
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -19,16 +25,62 @@
 	<link type="text/css" rel="stylesheet" media="all" href="css/estilos.css">
 	<!-- Bootstrap -->
 	<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+	<link href="css/fontello/fontello.css" rel="stylesheet">  
 	<link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
+		<!-- Registro jQuery -->
+	<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+	<script src="js/funciones.js" type="text/javascript"></script>
+	<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
 </head>
+
+<script type="text/javascript">
+	
+	function eliminarJugador(){
+	
+		var resultado = false;
+		$.ajax({
+			url : "deletePlayer.php",
+			type: 'POST',
+			data: { player: document.getElementById("PlayerId").value} ,
+			dataType: 'json',	
+			async: false,				
+			success: function(data, textStatus, jqXHR)
+			{	
+				if(!data.success){
+					alert(data.data);
+					resultado = false;
+				}else {
+					console.log(jqXHR.status);
+					resultado = true;
+				}
+			},
+			error: function (xhr, status, error){
+				alert(error);
+				resultado = false;
+			}
+		});
+		if(resultado){
+			//$('#ModalDelete').modal('hide');
+			window.location.reload();
+			return false;
+		}
+
+		return resultado;
+	}	
+		
+</script>
 	
 <body class="selectCalendario">
+	<input type="hidden" id="PlayerId" value="">
 	<div id='cssmenu'>
 		<ul>	   
 		   <li><a href='deletesession.php'>Desconexión</a></li>
-		   <li class='active'><a href='index.php'>Home</a></li>
+		   <li><a href='configuracion.php'>Configuración</a></li>
+		   <li class='active'><a href='calendar.php'>Equipo</a></li>
+		   <li><a href='index.php'>Home</a></li>
 		</ul>
 	</div>
 
@@ -110,6 +162,7 @@
 												<tr class='info'>
 													<td>Imagen</td>
 													<td>Nombre</td>
+													<td></td>
 												</tr>
 											</table>
 										</td>
@@ -120,15 +173,19 @@
 										<table class='table table-bordered'>");
 					foreach ($db->query($sql) as $row)
 					{		
+						$idcustomer = $row['id_player'];
 						echo("	
 								<tr class='active'>
 									<td>
-										<a href='grafica.php?id_player=".$row['id_player']."&mes=".date("n")."&anio=".date('Y')."'>
+										<a href='grafica.php?id_player=".$idcustomer."&mes=".date("n")."&anio=".date('Y')."'>
 											<img src='".$row['img_path']."' style='height: 100px;' class='img-circle'>
 										</a>
 									</td>
 									<td style='text-align: center;  vertical-align: middle;'>
 										".$row['username']."
+									</td>
+									<td style='text-align: center;  vertical-align: middle;'>
+										<a id='eliminar' href='#ModalDelete' data-toggle='modal' data-id='".$idcustomer."' > <i class='icon-cancel'></i> </a>
 									</td>
 								</tr>
 							");				
@@ -150,6 +207,7 @@
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/localization/messages_es.js "></script>
 		
 	<script>
+	
 	function generar_calendario(mes,anio){
 		var agenda=$(".cal");
 		agenda.html("<img src='images/loading.gif'>");
@@ -289,8 +347,18 @@
 			generar_calendario(nueva_fecha[1],nueva_fecha[0]);
 		});
 
+		/* Cogemos el id del jugador que deseamos eliminar */
+		$('body').on('click','#eliminar',function () {
+			var data_id = '';
+			if (typeof $(this).data('id') !== 'undefined') {
+				data_id = $(this).data('id');
+			}
+			document.getElementById("PlayerId").value = data_id;
+		})
+		
 	});
-</script>
+
+	</script>
 
 	<!-- 
 		Modal Calendario 
@@ -308,6 +376,27 @@
 			</div>
 		</div>
 	</div>
-	
+	<!-- 
+		Modal HTML para los terminos y condiciones
+	-->
+	<div class="modal fade animated bounceIn" id="ModalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<a class="cierreCuadroRegistro" id="cierrelargeModal" data-dismiss="modal" aria-hidden="true"></a>
+						<h4 class="modal-title" id="myModalLabel">Eliminar</h4>
+					</div>
+					<div class="modal-body">
+						<p>
+							Estas seguro de quiere eliminar el jugador
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button id="btnEliminar" class="btn btn-primary" onclick="return eliminarJugador();">Aceptar</button>
+						<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+					</div>
+				</div>
+		  </div>
+	</div>
 </body>
 </html>

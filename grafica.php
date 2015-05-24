@@ -133,8 +133,9 @@
 		<div id='cssmenu'>
 			<ul>	   
 			   <li><a href='deletesession.php'>Desconexión</a></li>
+			   <li><a href='configuracion.php'>Configuración</a></li>
 			   <li><a href='calendar.php'>Equipo</a></li>
-			   <li class='active'><a href='index.php'>Home</a></li>
+			   <li><a href='index.php'>Home</a></li>
 			   
 			</ul>
 		</div>

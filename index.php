@@ -203,6 +203,7 @@ $(document).ready(function () {
 	<div id='cssmenu'>
 		<ul>	   
 		   <li><a href='deletesession.php'>Desconexión</a></li>
+		   <li><a href='configuracion.php'>Configuración</a></li>
 		   <li class='active'><a href='index.php'>Home</a></li>
 		</ul>
 	</div>
@@ -416,7 +417,7 @@ echo("<div style='width: 80%; height: 550px; margin-top: 5%;'>
 					
 </script>	
 
-<!-- 
+	<!-- 
 		Modal HTML para los terminos y condiciones
 	-->
 	<div class="modal fade animated bounceIn" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

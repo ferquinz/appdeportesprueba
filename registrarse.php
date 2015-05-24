@@ -36,7 +36,7 @@
 			if(!is_dir("trainers/".$idname)){
 				/*Crear carpeta que almacena las imagenes visor*/
 				if(!is_dir("trainers")){
-					if(!mkdir("trainers", 0700)){
+					if(!mkdir("trainers", 0777)){
 						$message='Error al crear carpeta trainers';
 						$error=false;
 						$jsondata["success"] = $error;
@@ -49,7 +49,7 @@
 			}
 			
 			/*Crear carpeta que almacena las imagenes visor*/
-			if(!mkdir("trainers/".$idname, 0700, true)){
+			if(!mkdir("trainers/".$idname, 0777, true)){
 				$message='Error al crear carpeta '.$idname.'';
 				$error=false;
 				$jsondata["success"] = $error;
