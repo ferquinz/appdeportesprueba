@@ -428,10 +428,13 @@ $(document).ready(function () {
 </script>
 
 <body>
+	<span style="text-align: center; display: block; margin-top: 2%;">
+		<img src="images/Logos/TituloV1.png" alt="TituloV1" style="max-width: 80%; max-height: 99%; margin: auto;" >
+	</span>
 	<!--
 		CUADRO DIALOGO LOGIN
 	-->	
-	<div id="login-box">
+	<div id="login-box" style="margin-top: auto !important;">
 		<div class="inset">
 			<div class="login-head">
 				<h1>Login</h1>

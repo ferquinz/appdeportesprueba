@@ -1,5 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 
 <?php
 	error_reporting(E_ALL);
@@ -9,7 +8,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
-	<meta http-equiv="Content-Type" content="text/html; charset= utf-8">
+	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
 	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
 	<title>AppdeportesPrueba</title>
@@ -28,6 +27,10 @@
 	<link href="css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
     <script src="js/fileinput.min.js" type="text/javascript"></script>
     <script src="js/fileinput_locale_es.js" type="text/javascript"></script>
+	
+	<!--[if lt IE 9]>
+	  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
 </head>
 
 <script>
@@ -105,50 +108,52 @@
         });
 
 		
-		$("#btnguardar").click(function () {
+		$("#formulario").submit(function (event) {
 
-			var file = document.getElementById("Imagen").value;
-			var name=document.getElementById("Nombre").value;
-			var surname=document.getElementById("Apellidos").value;
-			var phone = document.getElementById("Telefono").value;
-			var email = document.getElementById("Correo").value;
-			var user=document.getElementById("Username").value;
-			var pass=document.getElementById("Password").value;
+			var file = document.forms["formulario"]["Imagen"].value;
+			var name = document.forms["formulario"]["Nombre"].value;
+			var surname = document.forms["formulario"]["Apellidos"].value;
+			var phone = document.forms["formulario"]["Telefono"].value;
+			var email = document.forms["formulario"]["Correo"].value;
+			var user = document.forms["formulario"]["Username"].value;
+			var pass = document.forms["formulario"]["Password"].value;
 			var error = 0;
 			
 			document.getElementById("nombreusuario").className = "form-group col-xs-6 col-sm-6 col-md-6";
 			if (name.length<1){
-				document.Nombre.placeholder = "Falta el nombre";
+				document.formulario.nombre.placeholder = "Falta el nombre";
 				document.getElementById("nombreusuario").className += " has-error";
 				error = 1;
 			}
 			document.getElementById("apellidosusuario").className = "form-group col-xs-6 col-sm-6 col-md-6";
 			if (surname.length<1){
-				document.Apellidos.placeholder = "Falta el id del equipo";
+				document.formulario.apellidos.placeholder = "Falta el id del equipo";
 				document.getElementById("apellidosusuario").className += " has-error";
 				error = 1;
 			}
-			/* Comprobamos la contraseña */
+			/* Comprobamos si ha introducido una nueva contraseña */
 			document.getElementById("passusuario").className = "form-group col-xs-6 col-sm-6 col-md-6";
 			var alfaNum = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-			if (pass.length<8){
-				document.Password.placeholder = "La contraseña debe tener al menos 8 caracteres";
-				document.getElementById("passusuario").className += " has-error";
-				error = 1;
-			}
-			else if(pass.indexOf(' ')== 0){
-				document.Password.placeholder = "La contraseña no puede contener espacios";
-				document.getElementById("passusuario").className += " has-error";
-				error = 1;                       
-			}
-			else{
-				for(var i=0; i<pass.length;i++){ /*si hay algun caracter que no sea alfanumerico devuelve error*/
-					if(alfaNum.indexOf(pass.charAt(i))==-1){
-						document.Password.placeholder = "La contraseña debe tener caracteres alfanumericos";
-						document.getElementById("passusuario").className += " has-error";
-						error = 1;                            
-					}
-				}  
+			if (pass.length > 0){
+				if (pass.length<8){
+					document.formulario.password.placeholder = "La contraseña debe tener al menos 8 caracteres";
+					document.getElementById("passusuario").className += " has-error";
+					error = 1;
+				}
+				else if(pass.indexOf(' ')== 0){
+					document.formulario.password.placeholder = "La contraseña no puede contener espacios";
+					document.getElementById("passusuario").className += " has-error";
+					error = 1;                       
+				}
+				else{
+					for(var i=0; i<pass.length;i++){ /*si hay algun caracter que no sea alfanumerico devuelve error*/
+						if(alfaNum.indexOf(pass.charAt(i))==-1){
+							document.formulario.password.placeholder = "La contraseña debe tener caracteres alfanumericos";
+							document.getElementById("passusuario").className += " has-error";
+							error = 1;                            
+						}
+					}  
+				}
 			}
 			document.getElementById("telefonousuario").className = "form-group col-xs-6 col-sm-6 col-md-6";
 			if (phone.length<1){
@@ -165,14 +170,7 @@
 				document.getElementById("userusuario").className += " has-error";
 				error = 1;
 			}
-			var values = {
-					'nombre'       		: name,
-					'apellidos'        	: surname,
-					'telefono'       	: phone,
-					'correo'        	: email,
-					'usuario'       	: user,
-					'contrasena'        : pass
-			};
+
 			var resultado = false;
 			if (error == 0) {
 				event.preventDefault();
@@ -186,7 +184,7 @@
 					formData.append('archivo', file);
 				});
 
-				$.each(values, function(i, val) {
+				$.each(params, function(i, val) {
 					formData.append(val.name, val.value);
 				});
 				
@@ -200,6 +198,7 @@
 					processData: false,				
 					success: function(data, textStatus, jqXHR)
 					{	
+						alert(data.data);
 						if(!data.success){
 							alert(data.data);
 							resultado = false;
@@ -238,86 +237,88 @@
 			<div class="modal-header">
 				<h4> Configuracion </h4>
 			</div>
-			<div class="modal-body">
-				<?php
-				
-					include ('Formato/conexionsql.php'); 
-					if(!isset($_SESSION)) { 
-						session_start(); 
-					}
-					if(empty($_SESSION['id_customer']) || !isset($_SESSION['id_customer'])){
-						header("Location: index.php");								
-					}
-		
-					$sql = "SELECT firstname, lastname, email, phone, img_path, username, password FROM customersweb WHERE id_customer = ".$_SESSION['id_customer'];
+			<form name="formulario" class="" id="formulario" action="javascript:;" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+				<div class="modal-body">
+					<?php
 					
-					// <div class='input-group col-xs-3 col-sm-3 col-md-3' style='display: inline-table; padding-left: 10px;'>
-						// <div class='container kv-main'>
-							// <input id='file-5' class='file' type='file' data-preview-file-type='file' overwriteInitial='false' data-upload-url='http://appdeportesprueba.esy.es' data-preview-file-icon='".$row['img_path']."'
-							 // data-file-preview-image='images/mary-poppins1.jpg'>
+						include ('Formato/conexionsql.php'); 
+						if(!isset($_SESSION)) { 
+							session_start(); 
+						}
+						if(empty($_SESSION['id_customer']) || !isset($_SESSION['id_customer'])){
+							header("Location: index.php");								
+						}
+			
+						$sql = "SELECT firstname, lastname, email, phone, img_path, username, password FROM customersweb WHERE id_customer = ".$_SESSION['id_customer'];
+						
+						// <div class='input-group col-xs-3 col-sm-3 col-md-3' style='display: inline-table; padding-left: 10px;'>
+							// <div class='container kv-main'>
+								// <input id='file-5' class='file' type='file' data-preview-file-type='file' overwriteInitial='false' data-upload-url='http://appdeportesprueba.esy.es' data-preview-file-icon='".$row['img_path']."'
+								 // data-file-preview-image='images/mary-poppins1.jpg'>
+							// </div>
 						// </div>
-					// </div>
-					
-					foreach ($db->query($sql) as $row)
-					{
-						echo("	<div class='row'>
-									<div class='form-group col-xs-12 col-sm-4 col-md-4' style='text-align: center;'>
-										<img src='".$row['img_path']."' style='height: 250px; box-shadow: 6px 10px 16px #8B8282;' class='img-circle'>
-									</div>
-									<div class='col-sm-8 col-md-8'>
-										<div class='row'>
-											<div class='form-group col-xs-12 col-sm-12 col-md-12'>
-												<div class='input-group'>
-													<span class='input-group-btn'>
-														<span class='btn btn-primary btn-file'>
-															Examinar<input type='file'>
+						
+						foreach ($db->query($sql) as $row)
+						{
+							echo("	<div class='row'>
+										<div class='form-group col-xs-12 col-sm-4 col-md-4' style='text-align: center;'>
+											<img src='".$row['img_path']."' style='height: 250px; box-shadow: 6px 10px 16px #8B8282;' class='img-circle'>
+										</div>
+										<div class='col-sm-8 col-md-8'>
+											<div class='row'>
+												<div class='form-group col-xs-12 col-sm-12 col-md-12'>
+													<div class='input-group'>
+														<span class='input-group-btn'>
+															<span class='btn btn-primary btn-file'>
+																Examinar<input type='file' name='archivo'>
+															</span>
 														</span>
-													</span>
-													<input id='Imagen' type='text' class='form-control' name='archivo' readonly>
+														<input id='Imagen' type='text' class='form-control' readonly>
+													</div>
+												</div>
+											</div>
+											<div class='row'>
+												<div id='nombreusuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
+													<label for='Nombre'>Nombre</label>
+													<input type='text' class='form-control' id='Nombre' name='nombre' value='".$row['firstname']."' placeholder=''>
+												</div>
+												<div id='apellidosusuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
+													<label for='Apellidos'>Apellidos</label>
+													<input type='text' class='form-control' id='Apellidos' name='apellidos' value='".$row['lastname']."' placeholder=''>
+												</div>
+											</div>
+											<div class='row'>
+												<div id='telefonousuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
+													<label for='Telefono'>Telefono</label>
+													<input type='text' class='form-control' id='Telefono' name='telefono' value='".$row['phone']."' placeholder=''>
+												</div>
+												<div id='correousuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
+													<label for='Correo'>Correo</label>
+													<input type='text' class='form-control' id='Correo' name='correo' value='".$row['email']."' placeholder=''>
+												</div>
+											</div>
+											<div class='row'>
+												<div id='userusuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
+													<label for='Username'>Usuario</label>
+													<input type='text' class='form-control' id='Username' name='username' value='".$row['username']."' placeholder=''>
+												</div>
+												<div id='passusuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
+													<label for='Password'>Nueva Password</label>
+													<input type='password' class='form-control' id='Password' name='password' value='' placeholder=''>
+												</div>
+											</div>
+											<div class='row'>
+												<div class='form-group col-xs-12 col-sm-12 col-md-12' style='text-align: center;'>
+													<button id='btnguardar' type='submit' class='btn btn-primary' style='width: 200px;'>Guardar</button>
 												</div>
 											</div>
 										</div>
-										<div class='row'>
-											<div id='nombreusuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
-												<label for='Nombre'>Nombre</label>
-												<input type='text' class='form-control' id='Nombre' value='".$row['firstname']."' placeholder=''>
-											</div>
-											<div id='apellidosusuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
-												<label for='Apellidos'>Apellidos</label>
-												<input type='text' class='form-control' id='Apellidos' value='".$row['lastname']."' placeholder=''>
-											</div>
-										</div>
-										<div class='row'>
-											<div id='telefonousuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
-												<label for='Telefono'>Telefono</label>
-												<input type='text' class='form-control' id='Telefono' value='".$row['phone']."' placeholder=''>
-											</div>
-											<div id='correousuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
-												<label for='Correo'>Correo</label>
-												<input type='text' class='form-control' id='Correo' value='".$row['email']."' placeholder=''>
-											</div>
-										</div>
-										<div class='row'>
-											<div id='userusuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
-												<label for='Username'>Usuario</label>
-												<input type='text' class='form-control' id='Username' value='".$row['username']."' placeholder=''>
-											</div>
-											<div id='passusuario' class='form-group col-xs-6 col-sm-6 col-md-6'>
-												<label for='Password'>Password</label>
-												<input type='password' class='form-control' id='Password' value='".$row['password']."' placeholder=''>
-											</div>
-										</div>
-										<div class='row'>
-											<div class='form-group col-xs-12 col-sm-12 col-md-12' style='text-align: center;'>
-												<button id='btnguardar' type='submit' class='btn btn-primary' style='width: 200px;'>Guardar</button>
-											</div>
-										</div>
-									</div>
-								</div>	
-							");
-					}
-				?>	
-			</div>		
+									</div>	
+								");
+						}
+					?>	
+				</div>
+			</form>
 		</div>
 	</div>
 </body>

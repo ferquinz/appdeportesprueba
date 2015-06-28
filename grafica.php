@@ -281,7 +281,7 @@
 					<figure style="width: 400px; height: 300px; margin: 0 auto;" id="myChart3"></figure>
 				</div>
 		</div>
-		<div style="text-align: center; margin-top: 10px;">
+		<div style="text-align: center; margin-top: 0px !IMPORTANT;BACKGROUND-COLOR: WHITE;MARGIN: 1%;">
 			<button id="btnAnterior" type="button" class="btn btn-primary btn-lg" style="display: inline;" 
 					onclick="goLastMonth(<?php echo $month . ", " . $year; ?>)">Anterior</button>
 			<?php
