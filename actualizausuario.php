@@ -3,6 +3,20 @@
 	include('Formato/conexionsql.php');   
 	include('Formato/funciones.php'); 
  
+	//Comprobamos si existe la session
+	if(!isset($_SESSION)){ 
+		session_start();
+	}  	
+	if(!isset($_SESSION['conectado']) || $_SESSION['conectado']!=1){   
+		$message='Acceso restringido';
+		$error=false;
+		$jsondata["success"] = $error;
+		$jsondata["data"] = $message;
+		header('Content-type: application/json; charset=utf-8');
+		echo json_encode($jsondata, JSON_FORCE_OBJECT);
+		exit();
+	}
+	
 	//<!--------------- Bloque del cuerpo ----------------->
 	$jsondata = array();
 	$correo=$_POST['correo'];           
@@ -13,8 +27,8 @@
 	}
 
 	if($customemail!=NULL){
-		//$message='El correo introducido ya existe';
-		$message = $sql;
+		$message='El correo introducido ya existe';
+		//$message = $sql;
 		$error=false;
 		$jsondata["success"] = $error;
 		$jsondata["data"] = $message;
@@ -40,19 +54,19 @@
 			redimensionImagen($origen,$destino, $ancho, $alto);
 		}
 		
-		if(isset($_POST['contraseña'])){
-			$sql = " UPDATE customersweb SET firstname = '".$_POST['nombre']."', lastname = '".$_POST['apellidos']."', username = '".$_POST['usuario']."', email = '".$_POST['correo']."', 
-						phone = '".$_POST['telefono']."', password = '".md5( $_POST['contraseña'])."', img_path = '".$destino."' WHERE id_customer = '".$_SESSION['id_customer']."'";
+		if($_POST['password'] <> ""){
+			$sql = " UPDATE customersweb SET firstname = '".$_POST['nombre']."', lastname = '".$_POST['apellidos']."', username = '".$_POST['username']."', email = '".$_POST['correo']."', 
+						phone = '".$_POST['telefono']."', password = '".md5( $_POST['password'])."', img_path = '".$destino."' WHERE id_customer = '".$_SESSION['id_customer']."'";
 		}
 		else{
-			$sql = " UPDATE customersweb SET firstname = '".$_POST['nombre']."', lastname = '".$_POST['apellidos']."', username = '".$_POST['usuario']."', email = '".$_POST['correo']."', 
+			$sql = " UPDATE customersweb SET firstname = '".$_POST['nombre']."', lastname = '".$_POST['apellidos']."', username = '".$_POST['username']."', email = '".$_POST['correo']."', 
 						phone = '".$_POST['telefono']."', img_path = '".$destino."' WHERE id_customer = '".$_SESSION['id_customer']."'";
 		}
 		
 		$db->query($sql);
 		 
 		//$message='Actualizacion completada con exito';
-		$message = $sql;
+		$message = $_FILES['archivo'];
 		$error=true;
 			
 		/*Cierra la conexion con la base de datos*/

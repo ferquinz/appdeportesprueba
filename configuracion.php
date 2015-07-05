@@ -59,58 +59,10 @@
 
 <script>
 
-    // $('#file-es').fileinput({
-        // language: 'es',
-        // uploadUrl: '#',
-        // allowedFileExtensions : ['jpg', 'png','gif'],
-    // });
-    // $("#file-0").fileinput({
-        // 'allowedFileExtensions' : ['jpg', 'png','gif'],
-    // });
-    // $("#file-1").fileinput({
-        // uploadUrl: '#', // you must set a valid URL here else you will get an error
-        // allowedFileExtensions : ['jpg', 'png','gif'],
-        // overwriteInitial: false,
-        // maxFileSize: 1000,
-        // maxFilesNum: 10,
-        // //allowedFileTypes: ['image', 'video', 'flash'],
-        // slugCallback: function(filename) {
-            // return filename.replace('(', '_').replace(']', '_');
-        // }
-	// });
-
-	// $("#file-3").fileinput({
-		// showUpload: false,
-		// showCaption: false,
-		// browseClass: "btn btn-primary btn-lg",
-		// fileType: "any",
-        // previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"
-	// });
-	// $("#file-4").fileinput({
-		// uploadExtraData: {kvId: '10'}
-	// });
-    // $(".btn-warning").on('click', function() {
-        // if ($('#file-4').attr('disabled')) {
-            // $('#file-4').fileinput('enable');
-        // } else {
-            // $('#file-4').fileinput('disable');
-        // }
-    // });    
-    // $(".btn-info").on('click', function() {
-        // $('#file-4').fileinput('refresh', {previewClass:'bg-info'});
-    // });
-
     $(document).ready(function() {
-        $("#test-upload").fileinput({
-            'showPreview' : false,
-            'allowedFileExtensions' : ['jpg', 'png','gif'],
-            'elErrorContainer': '#errorBlock'
-        });
-
-		
 		$("#formulario").submit(function (event) {
 
-			var file = document.forms["formulario"]["Imagen"].value;
+			var file = document.forms["formulario"]["archivo"].value;
 			var name = document.forms["formulario"]["Nombre"].value;
 			var surname = document.forms["formulario"]["Apellidos"].value;
 			var phone = document.forms["formulario"]["Telefono"].value;
@@ -178,15 +130,21 @@
 				var $form    = $(event.target),
 					formData = new FormData(),
 					params   = $form.serializeArray(),
-					files    = file;
+					files    = $form.find('[name="archivo"]')[0].files;
 
 				$.each(files, function(i, file) {
 					formData.append('archivo', file);
 				});
 
 				$.each(params, function(i, val) {
+					console.log(val.name + ":" + val.value);
 					formData.append(val.name, val.value);
 				});
+				
+				$.each(formData, function(key, value){
+					console.log(key + ":" + value)
+				});
+
 				
 				$.ajax({
 					url : "actualizausuario.php",
@@ -198,7 +156,6 @@
 					processData: false,				
 					success: function(data, textStatus, jqXHR)
 					{	
-						alert(data.data);
 						if(!data.success){
 							alert(data.data);
 							resultado = false;
@@ -250,24 +207,17 @@
 						}
 			
 						$sql = "SELECT firstname, lastname, email, phone, img_path, username, password FROM customersweb WHERE id_customer = ".$_SESSION['id_customer'];
-						
-						// <div class='input-group col-xs-3 col-sm-3 col-md-3' style='display: inline-table; padding-left: 10px;'>
-							// <div class='container kv-main'>
-								// <input id='file-5' class='file' type='file' data-preview-file-type='file' overwriteInitial='false' data-upload-url='http://appdeportesprueba.esy.es' data-preview-file-icon='".$row['img_path']."'
-								 // data-file-preview-image='images/mary-poppins1.jpg'>
-							// </div>
-						// </div>
-						
+												
 						foreach ($db->query($sql) as $row)
 						{
 							echo("	<div class='row'>
 										<div class='form-group col-xs-12 col-sm-4 col-md-4' style='text-align: center;'>
 											<img src='".$row['img_path']."' style='height: 250px; box-shadow: 6px 10px 16px #8B8282;' class='img-circle'>
 										</div>
-										<div class='col-sm-8 col-md-8'>
+										<div class='form-group col-sm-8 col-md-8'>
 											<div class='row'>
 												<div class='form-group col-xs-12 col-sm-12 col-md-12'>
-													<div class='input-group'>
+													<div id='divexaminar' class='input-group'>
 														<span class='input-group-btn'>
 															<span class='btn btn-primary btn-file'>
 																Examinar<input type='file' name='archivo'>
