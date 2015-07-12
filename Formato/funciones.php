@@ -8,6 +8,7 @@
 		$imagen_alto = $info_imagen[1];
 		$imagen_tipo = $info_imagen['mime'];
 
+
 		$proporcion_imagen = $imagen_ancho / $imagen_alto;
 		$proporcion_miniatura = $miniatura_ancho_maximo / $miniatura_alto_maximo;
 
@@ -37,10 +38,17 @@
 			$imagen = imagecreatefromgif( $pathOri );
 			break;
 		}
+		$valores=split("[/]",$pathDest);
+		$valores[count($valores)-1] = "Original_".$valores[count($valores)-1];
+		$originalImage = implode("/", $valores);
+		move_uploaded_file($pathOri, $originalImage);
+		
 		$lienzo = imagecreatetruecolor( $miniatura_ancho_maximo, $miniatura_alto_maximo );
 		$lienzo_temporal = imagecreatetruecolor( $miniatura_ancho, $miniatura_alto );
 		imagecopyresampled($lienzo_temporal, $imagen, 0, 0, 0, 0, $miniatura_ancho, $miniatura_alto, $imagen_ancho, $imagen_alto);
 		imagecopy($lienzo, $lienzo_temporal, 0,0, $x, $y, $miniatura_ancho_maximo, $miniatura_alto_maximo);
 		imagejpeg($lienzo, $pathDest, 80);	
-	}		
+		imagedestroy($lienzo);
+	}
+	
 ?>

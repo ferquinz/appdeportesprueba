@@ -49,7 +49,18 @@
 		$alto=250;	
 		
 		if(isset($_FILES['archivo'])){
+			//Borramos todas las imagenes previas del usuario
+			$dir = "trainers/".$idname."/"; 
+			$handle = opendir($dir); 
+			while ($file = readdir($handle)){   
+				if (is_file($dir.$file)){
+					unlink($dir.$file);
+				}
+			} 
+			//Guardamos la imagen redimensionada
 			$origen=$_FILES['archivo']['tmp_name'];
+			//Guardamos el tamaño real de la imagen
+			list($width, $height) = getimagesize($origen);
 			$destino="trainers/".$idname."/".$_FILES['archivo']['name'];
 			redimensionImagen($origen,$destino, $ancho, $alto);
 		}

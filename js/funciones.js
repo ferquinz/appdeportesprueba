@@ -3,6 +3,14 @@
 					$("div#makeMeScrollable").smoothDivScroll({
 						autoScrollingMode: "onStart"
 					});
+					
+					$(".fancybox").fancybox({
+							width       : 400,
+							height      : 400,
+							minWidth	: 400,
+							minHeight	: 400,
+							aspectRatio : true
+					});
 				});
 				
 				$(function() {

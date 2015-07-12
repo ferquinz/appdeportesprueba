@@ -23,10 +23,18 @@
 	<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 	<script src="js/funciones.js" type="text/javascript"></script>
 	<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
-	<!-- File Input -->
-	<link href="css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
-    <script src="js/fileinput.min.js" type="text/javascript"></script>
-    <script src="js/fileinput_locale_es.js" type="text/javascript"></script>
+	
+	<!-- Add fancyBox main JS and CSS files -->
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+	<!-- Add Button helper (this is optional) -->
+	<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox-buttons.css?v=1.0.5" />
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox-buttons.js?v=1.0.5"></script>
+
+	<!-- Add Thumbnail helper (this is optional) -->
+	<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox-thumbs.css?v=1.0.7" />
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox-thumbs.js?v=1.0.7"></script>
 	
 	<!--[if lt IE 9]>
 	  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -210,9 +218,15 @@
 												
 						foreach ($db->query($sql) as $row)
 						{
+							$valores=explode('/',$row['img_path']);
+							$valores[count($valores)-1] = "Original_".$valores[count($valores)-1];
+							$originalImage = implode("/", $valores);
+							
 							echo("	<div class='row'>
 										<div class='form-group col-xs-12 col-sm-4 col-md-4' style='text-align: center;'>
-											<img src='".$row['img_path']."' style='height: 250px; box-shadow: 6px 10px 16px #8B8282;' class='img-circle'>
+											<a class='fancybox' href='".$originalImage."' title='Foto de Perfil' >
+												<img src='".$row['img_path']."' id='imagen_perfil' style='height: 250px; box-shadow: 6px 10px 16px #8B8282;' class='img-circle'>
+											</a>
 										</div>
 										<div class='form-group col-sm-8 col-md-8'>
 											<div class='row'>
