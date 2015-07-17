@@ -1,26 +1,82 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
-
+<!DOCTYPE html>
+<?php 
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
+?>
 <html>
     <head>
-		<meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
-		<meta http-equiv="Content-Type" content="text/html; charset= utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
 		<title>AppdeportesPrueba</title>
+		<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
 		<link rel="stylesheet" type="text/css" href="css/Estilo.css">
 		<!-- Bootstrap -->
 		<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">		
 		<link rel="stylesheet" type="text/css" href="css/xcharts.css"> 
 		<link rel="stylesheet" type="text/css" href="css/xcharts.min.css"> 
 	  	
-		<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
-		<!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
-		<script src="http://d3js.org/d3.v3.min.js"></script>
-		<script src="js/xcharts.js"></script>	
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="js/bootstrap/bootstrap.js"></script>
+
+		<!-- Add fancyBox main JS and CSS files -->
+		<script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
+		<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+		
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+		<script src="js/xcharts.js"></script>	
+		<style>
+		<style>
+			.axis path,
+			.axis line {
+			  fill: none;
+			  stroke: #000;
+			  shape-rendering: crispEdges;
+			}
+
+			.bar {
+			  fill: orange;
+			}
+
+			.bar:hover {
+			  fill: orangered ;
+			}
+
+			.x.axis path {
+			  display: none;
+			}
+
+			.d3-tip {
+			  line-height: 1;
+			  font-weight: bold;
+			  padding: 12px;
+			  background: rgba(0, 0, 0, 0.8);
+			  color: #fff;
+			  border-radius: 2px;
+			}
+
+			/* Creates a small triangle extender for the tooltip */
+			.d3-tip:after {
+			  box-sizing: border-box;
+			  display: inline;
+			  font-size: 10px;
+			  width: 100%;
+			  line-height: 1;
+			  color: rgba(0, 0, 0, 0.8);
+			  content: "\25BC";
+			  position: absolute;
+			  text-align: center;
+			}
+
+			/* Style northward tooltips differently */
+			.d3-tip.n:after {
+			  margin: -1px 0 0 0;
+			  top: 100%;
+			  left: 0;
+			}
+		</style>		
 	</head>
 
 <script>
@@ -130,10 +186,10 @@
 </script>	
 
     <body class="selectTeam">
-		<div id='cssmenu'>
+		<div class="col-xs-12 col-sm-12 col-md-12" id='cssmenu'>
 			<ul>	   
-			   <li><a href='deletesession.php'>Desconexión</a></li>
-			   <li><a href='configuracion.php'>Configuración</a></li>
+			   <li><a href='deletesession.php'>Desconexion</a></li>
+			   <li><a href='configuracion.php'>Configuracion</a></li>
 			   <li><a href='calendar.php'>Equipo</a></li>
 			   <li><a href='index.php'>Home</a></li>
 			   
@@ -185,7 +241,7 @@
 					GROUP BY DATE(c.start_time)
 					ORDER BY c.start_time";	
 
-		$sqlPlayerId = " SELECT concat(concat(a.username, ' '), a.lastname) as Nombre, a.email, a.phone, a.img_path, b.date_born, b.Dorsal, c.name as Position
+		$sqlPlayerId = " SELECT concat(concat(a.firstname, ' '), a.lastname) as Nombre, a.email, a.phone, a.img_path, b.date_born, b.Dorsal, c.name as Position
 						FROM customersweb a
 						LEFT JOIN customersweb_players b ON a.id_customer = b.id_customer	
 						LEFT JOIN player_position c ON c.id_position = b.position_id
@@ -193,48 +249,57 @@
 						";
 		
 	?>
-		<div class="col-xs-4 col-sm-6 col-md-6" style="  width: 25%;  margin-top: 4%;">
-			<div style='width: 80%; height: 550px; margin-top: 10%;'>
-				<table class='table' width='325'>
+		<div class="col-xs-3 col-sm-3 col-md-3" style="margin-top: 4%;">
+			<div style='width: 90%; margin-top: 10%;'>
+				<table class='table'>
 					<?php
 						foreach ($db->query($sqlPlayerId) as $row)
 						{
+							$valores=explode('/',$row['img_path']);
+							$valores[count($valores)-1] = "Original_".$valores[count($valores)-1];
+							$originalImage = implode("/", $valores);
+							
 							echo("
-								<tr>
-									<td style='border-top: 0px !important;'></td>
-									<td style='border-top: 0px !important;'> <img src='".$row['img_path']."' style='height: 160px;' class='img-circle'> </td>
+								<tr style='text-align: center;'>
+									<td style='border-top: 0px !important;'>
+										<a class='fancybox' href='".$originalImage."' title='Foto de jugador' >
+											<img src='".$row['img_path']."' style='height: 160px;' class='img-circle'> 
+										</a>
+									</td>
 								</tr>
-								<tr style='  background: aquamarine;'>
+								</table>
+								<table class='table table-striped' style='background: rgb(71, 201, 175);'>
+								<tr>
 									<td> Nombre </td>
 									<td style='text-align: center;  vertical-align: middle;'>
 										".$row['Nombre']."
 									</td>
 								</tr>
-								<tr style='  background: aquamarine;'>
+								<tr>
 									<td> Email </td>
 									<td style='text-align: center;  vertical-align: middle;'>
 										".$row['email']."
 									</td>
 								</tr>
-								<tr style='  background: aquamarine;'>
+								<tr>
 									<td> Telefono </td>
 									<td style='text-align: center;  vertical-align: middle;'>
 										".$row['phone']."
 									</td>
 								</tr>
-								<tr style='  background: aquamarine;'>
+								<tr>
 									<td> Fecha de Nacimiento </td>
 									<td style='text-align: center;  vertical-align: middle;'>
 										".$row['date_born']."
 									</td>
 								</tr>
-								<tr style='  background: aquamarine;'>
+								<tr>
 									<td> Dorsal </td>
 									<td style='text-align: center;  vertical-align: middle;'>
 										".$row['Dorsal']."
 									</td>
 								</tr>
-								 <tr style='  background: aquamarine;'>
+								 <tr>
 									<td> Posicion </td>
 									<td style='text-align: center;  vertical-align: middle;'>
 										".$row['Position']."
@@ -246,7 +311,7 @@
 			   </table>
 			</div>
 		</div>
-		<div class="col-xs-12 col-sm-6 col-md-8">
+		<div class="col-xs-8 col-sm-8 col-md-8">
 		<div>
 			<img style="float: left;  width: 50px;  height: 50px;  margin-top: 25%;  margin-left: -30px;  cursor: pointer;" src="images/icons/leftrow.png" onclick="left()"></img>
 		</div>
@@ -256,7 +321,7 @@
 		<div id = "charts" >
 				<div id = "chart1" style="border: 1px solid #CFCFCF; margin: 2%; display: none;">	
 					<div id="chartTitle" >
-						<h4> Gráfica calificaciones diarias Jugador </h4>
+						<h4> Grafica calificaciones diarias Jugador </h4>
 					</div>
 					<p style="color: #E624FF;   margin: 0; padding: 0;  margin-left: 5%; font-weight: 600;  font-family: 'Raleway', sans-serif;"> 
 						 <?php echo($playerName) ?> </p> 
@@ -264,7 +329,7 @@
 				</div>
 				<div id = "chart2" style="border: 1px solid #CFCFCF; margin: 2%; ">		
 					<div id="chartTitle">
-						<h4> Gráfica calificaciones diarias Equipo </h4>
+						<h4> Grafica calificaciones diarias Equipo </h4>
 					</div>
 					<p style="color: #3880aa;  margin: 0; padding: 0;  margin-left: 5%; font-weight: 600;  font-family: 'Raleway', sans-serif;">
 						 <?php echo($teamName) ?></p>
@@ -272,7 +337,7 @@
 				</div>
 				<div id = "chart3" style="border: 1px solid #CFCFCF; margin: 2%; display: none;">		
 					<div id="chartTitle">
-						<h4> Gráfica calificaciones diarias Jugador / Equipo </h4>
+						<h4> Grafica calificaciones diarias Jugador / Equipo </h4>
 					</div>
 					<p style="color: #E624FF;   margin: 0; padding: 0;  margin-left: 5%; font-weight: 600;  font-family: 'Raleway', sans-serif;"> 
 						 <?php echo($playerName) ?> </p> 
@@ -281,7 +346,7 @@
 					<figure style="width: 400px; height: 300px; margin: 0 auto;" id="myChart3"></figure>
 				</div>
 		</div>
-		<div style="text-align: center; margin-top: 0px !IMPORTANT;BACKGROUND-COLOR: WHITE;MARGIN: 1%;">
+		<div style="text-align: center; margin-top: 1%;">
 			<button id="btnAnterior" type="button" class="btn btn-primary btn-lg" style="display: inline;" 
 					onclick="goLastMonth(<?php echo $month . ", " . $year; ?>)">Anterior</button>
 			<?php
@@ -315,9 +380,83 @@
 					onclick="goNextMonth(<?php echo $month . ", " . $year; ?>)">Siguiente</button>
 		</div>
 		<div>
-	<?php 
-		include 'Formato/piepag.php' 
-	?>	
+		<script>
+
+			var margin = {top: 40, right: 20, bottom: 30, left: 40},
+				width = 960 - margin.left - margin.right,
+				height = 500 - margin.top - margin.bottom;
+
+			var formatPercent = d3.format(".0%");
+
+			var x = d3.scale.ordinal()
+				.rangeRoundBands([0, width], .1);
+
+			var y = d3.scale.linear()
+				.range([height, 0]);
+
+			var xAxis = d3.svg.axis()
+				.scale(x)
+				.orient("bottom");
+
+			var yAxis = d3.svg.axis()
+				.scale(y)
+				.orient("left")
+				.tickFormat(formatPercent);
+
+			var tip = d3.tip()
+			  .attr('class', 'd3-tip')
+			  .offset([-10, 0])
+			  .html(function(d) {
+				return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
+			  })
+
+			var svg = d3.select("body").append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.attr("fill", 'white')
+			  .append("g")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			svg.call(tip);
+			
+			d3.tsv("data.tsv", type, function(error, data) {
+			  x.domain(data.map(function(d) { return d.letter; }));
+			  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+			  svg.append("g")
+				  .attr("class", "x axis")
+				  .attr("transform", "translate(0," + height + ")")
+				  .call(xAxis);
+
+			  svg.append("g")
+				  .attr("class", "y axis")
+				  .call(yAxis)
+				.append("text")
+				  .attr("transform", "rotate(-90)")
+				  .attr("y", 6)
+				  .attr("dy", ".71em")
+				  .style("text-anchor", "end")
+				  .text("Frequency");
+
+			  svg.selectAll(".bar")
+				  .data(data)
+				.enter().append("rect")
+				  .attr("class", "bar")
+				  .attr("x", function(d) { return x(d.letter); })
+				  .attr("width", x.rangeBand())
+				  .attr("y", function(d) { return y(d.frequency); })
+				  .attr("height", function(d) { return height - y(d.frequency); })
+				  .on('mouseover', tip.show)
+				  .on('mouseout', tip.hide)
+
+			});
+
+			function type(d) {
+			  d.frequency = +d.frequency;
+			  return d;
+			}
+
+		</script>
 <script>
 (function($){
 var data1 = {

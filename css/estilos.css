@@ -180,8 +180,9 @@ a.agregar_evento{
 	Pagina de calendario
 *********************************************/
 #page_calendar{
-	position: relative;
-		margin:50px auto;
+	/*position: relative;
+	margin:50px auto;*/
+	margin-top: 2%;
 }
 #sinScroll{
 	width: 50px;

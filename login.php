@@ -9,14 +9,14 @@
 <head>
     <meta charset="utf-8">
 	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
-	<title>AppdeportesPrueba</title>
+	<title>Monitorizando Lab</title>
     <link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<!-- Bootstrap -->
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
 	<!-- Animation -->
 	<link href="css/animate.css" rel="stylesheet">
 	
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
 	<!-- Registro jQuery -->
@@ -24,23 +24,38 @@
 	<script src="js/funciones.js" type="text/javascript"></script>
 	<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
 	
+	<!-- Bootstrap Dialog -->
+	<link href="css/bootstrap/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+	<script src="js/bootstrap/bootstrap-dialog.min.js"></script>
 </head>
 
 <script>
 
+	var bg = ['selectRandom', 'selectTeam', 'selectCalendario'];
+	$.each(bg, function(index, ui) {
+		setTimeout(function() {
+			$('body').removeAttr('class').addClass(ui);
+			$('body').fadeIn('slow', function() {
+				setTimeout(function() {
+					$('body').fadeOut('slow', run);
+				}, 6000 * index);
+			});
+		}, 6000 * index)
+	});
+	
 	function validateForm() {			
 	
 		/*Comprobacion del nombre*/
 		var  user=document.forms["LoginForm"]["Username"].value;
 		if (user.length<1){
-			alert("El usuario debe contener más de un caracter.");
+			mostrarModal("El usuario debe contener más de un caracter.",2);
 			return false;
 		}				
 	
 		var  pass=document.forms["LoginForm"]["Password"].value;
 		if (pass.length<1)
 		{
-			alert("No se puede dejar en blanco el campo contraseña.");
+			mostrarModal("No se puede dejar en blanco el campo contraseña.",2);
 			return false;
 		}		
 		
@@ -58,7 +73,7 @@
 			},
 			error: function (jqXHR, textStatus, errorThrown)
 			{
-				alert("Error al realizar el login");						
+				mostrarModal("Error al realizar el login",2);						
 			}
 		});		
 		
@@ -67,10 +82,10 @@
 	
 	function calledFromAjaxSuccess(cad) {
 		if(cad.indexOf("2")>0){
-			alert("Rellene todos los campos para realizar el login.");
+			mostrarModal("Rellene todos los campos para realizar el login.",2);
 			return false;
 		}else if(cad.indexOf("3")>0){
-			alert("Usuario o contraseña incorrectos.");
+			mostrarModal("Usuario o contraseña incorrectos.",2);
 			return false;
 		}else if(cad.indexOf("1")>0){						 
 			return true;							 
@@ -199,7 +214,7 @@
 				{	
 					//alert(data.success);
 					if(!data.success){
-						alert(data.data);
+						mostrarModal(data.data,2);
 						resultado = false;
 					}else {
 						console.log(jqXHR.status);
@@ -208,7 +223,7 @@
 					}
 				},
 				error: function (xhr, status, error){
-					alert(error);
+					mostrarModal(error,2);
 					resultado = false;
 				}
 			});
@@ -223,7 +238,7 @@
 	function enviarEmail(){
 		var mail = document.getElementById("lostemail").value;
 		if (mail.length<1){
-			alert("El email debe contener más de un caracter.");
+			mostrarModal("El email debe contener más de un caracter.",2);
 			return false;
 		}
 		
@@ -236,17 +251,17 @@
 			success: function(data, textStatus, jqXHR)
 			{	
 				if(!data.success){
-					alert(data.data);
+					mostrarModal(data.data,2);
 					resultado = false;
 				}else {
 					console.log(jqXHR.status);
-					alert(data.data);
+					mostrarModal(data.data,1);
 					resultado = true;
 
 				}
 			},
 			error: function (xhr, status, error){
-				alert(error);
+				mostrarModal(error,2);
 				resultado = false;
 			}
 		});
@@ -259,7 +274,54 @@
 		return resultado;
 	}
 
+	function mostrarModal(mensaje, tipo){
+		
+		var types;
+		var titulo;
+		if (tipo == 1){
+			types = BootstrapDialog.TYPE_SUCCESS;
+			titulo = "";
+		}
+		else{
+			types = BootstrapDialog.TYPE_DANGER;
+			titulo = "<span class='glyphicon glyphicon-exclamation-sign gi-2x'> ERROR</span>";
+		}
+
+		BootstrapDialog.show({
+			type: types,
+			title: titulo,
+			message: mensaje
+		});     
+
+	}
+	
 $(document).ready(function () {
+
+	// var timeToDisplay = 2000;
+
+	// //var bg = ['selectRandom', 'selectTeam', 'selectCalendario'];
+	// var bg = ['../images/background/1.jpg','../images/background/2.jpg','../images/background/3.jpg']
+	// var index = 0;
+	// var transition = function() {
+		
+		// $('body').css('backgroundImage', 'url('+bg[index]+')');
+		
+		// index = index + 1;
+		// if (index > bg.length - 1) {
+			// index = 0;
+		// }
+	// };
+
+	// var run = function() {
+		// transition();
+		// $('body').fadeIn('slow', function() {
+			// setTimeout(function() {
+				// $('body').fadeOut('slow', run);
+			// }, timeToDisplay);
+		// });
+	// }
+
+	// run();
 
 	$("#formulario").submit(function (event) {
 	
@@ -404,7 +466,7 @@ $(document).ready(function () {
 				success: function(data, textStatus, jqXHR)
 				{	
 					if(!data.success){
-						alert(data.data);
+						mostrarModal(data.data,2);
 						resultado = false;
 					}else {
 						console.log(jqXHR.status);
@@ -413,7 +475,7 @@ $(document).ready(function () {
 					}
 				},
 				error: function (xhr, status, error){
-					alert(error);
+					mostrarModal(error,2);
 					resultado = false;
 				}
 			});
@@ -424,46 +486,51 @@ $(document).ready(function () {
 		}
 		return resultado;
 	});
+
 });
 </script>
 
 <body>
-	<span style="text-align: center; display: block; margin-top: 2%;">
-		<img src="images/Logos/TituloV1.png" alt="TituloV1" style="max-width: 80%; max-height: 99%; margin: auto;" >
-	</span>
+	<div class='col-xs-12 col-sm-12 col-md-12'>
+		<span style="text-align: center; display: block; margin-top: 2%;">
+			<img src="images/Logos/TituloV1.png" alt="TituloV1" style="max-width: 80%; max-height: 99%; margin: auto;" >
+		</span>
+	</div>
 	<!--
 		CUADRO DIALOGO LOGIN
 	-->	
-	<div id="login-box" style="margin-top: auto !important;">
-		<div class="inset">
-			<div class="login-head">
-				<h1>Login</h1>
-				 <div class="alert-close"> </div> 			
-			</div>
-			<form name="LoginForm" action="index.php" class="form">
-				<div class="form-group logindiv" >
-					<input type="text" class="textlogin" name="Username" value="" placeholder="Correo" >
-					<span id="iconuser" class="icon glyphicon glyphicon-user"></span>
+	<div class="col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4" id="content">
+		<div id="login-box" style="margin-top: auto !important;">
+			<div class="inset">
+				<div class="login-head">
+					<h1>Login</h1>
+					 <div class="alert-close"> </div> 			
 				</div>
-				<div class="clear"></div>
-				<div class="form-group logindiv" >
-					<input type="Password" class="passwordlogin" name="Password" value=""  placeholder="Password">
-					<span id="iconuser" class="icon glyphicon glyphicon-lock"></span>
-				</div>
-				<div class="clear">  </div>	
-				<div class="submit">
-					<div id="signIn">
-						<input type="submit" onclick="return validateForm();" value="Entrar" >					
-					</div>							
-					<div class="register" id="register">
-						<input type="submit" id="activator" value="Registro" >
-					</div>			
-					<div class="clear">  </div>		
-				</div>
-				<br>
-				<center><h4><a href="#myModal" data-toggle="modal">¿Olvidó su contraseña?</a></h4></center>
-			</form>
-		</div>	
+				<form name="LoginForm" action="index.php" class="form">
+					<div class="form-group logindiv" >
+						<input type="text" class="textlogin" name="Username" value="" placeholder="Correo" >
+						<span id="iconuser" class="icon glyphicon glyphicon-user"></span>
+					</div>
+					<div class="clear"></div>
+					<div class="form-group logindiv" >
+						<input type="Password" class="passwordlogin" name="Password" value=""  placeholder="Password">
+						<span id="iconuser" class="icon glyphicon glyphicon-lock"></span>
+					</div>
+					<div class="clear">  </div>	
+					<div class="submit">
+						<div id="signIn">
+							<input type="submit" onclick="return validateForm();" value="Entrar" >					
+						</div>							
+						<div class="register" id="register">
+							<input type="submit" id="activator" value="Registro" >
+						</div>			
+						<div class="clear">  </div>		
+					</div>
+					<br>
+					<center><h4><a href="#myModal" data-toggle="modal">¿Olvidó su contraseña?</a></h4></center>
+				</form>
+			</div>	
+		 </div>
 	 </div>
 	 <!--
 		CIERRE CUADRO DIALOGO LOGIN
@@ -553,7 +620,7 @@ $(document).ready(function () {
 	<!-- 
 		Modal HTML para el correo 
 	-->
-	<div id="myModal" class="modal fade animated rotateInDownLeft" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div id="myModal" class="modal fade animated bounce" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">

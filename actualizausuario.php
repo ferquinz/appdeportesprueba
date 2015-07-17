@@ -28,7 +28,6 @@
 
 	if($customemail!=NULL){
 		$message='El correo introducido ya existe';
-		//$message = $sql;
 		$error=false;
 		$jsondata["success"] = $error;
 		$jsondata["data"] = $message;
@@ -49,6 +48,33 @@
 		$alto=250;	
 		
 		if(isset($_FILES['archivo'])){
+			$file_size = $_FILES['archivo']['size'];
+			$acceptable = array(
+				'image/jpeg',
+				'image/jpg',
+				'image/gif',
+				'image/png'
+			);
+
+			if ($file_size > 1048576){      
+				$message = 'Archivo demasiado grande. La imagen debe ser menor de un 1 megabytes.'; 
+				$error=false;
+				$jsondata["success"] = $error;
+				$jsondata["data"] = $message;
+				header('Content-type: application/json; charset=utf-8');
+				echo json_encode($jsondata, JSON_FORCE_OBJECT);
+				exit();
+			}
+			if((!in_array($_FILES['archivo']['type'], $acceptable)) && (!empty($_FILES['archivo']['type']))) {
+				$message = 'Tipo de archivo invalido. Solo son validos los tipo JPG, JPEG, PNG y GIF.'; 
+				$error=false;
+				$jsondata["success"] = $error;
+				$jsondata["data"] = $message;
+				header('Content-type: application/json; charset=utf-8');
+				echo json_encode($jsondata, JSON_FORCE_OBJECT);
+				exit();
+			}
+			
 			//Borramos todas las imagenes previas del usuario
 			$dir = "trainers/".$idname."/"; 
 			$handle = opendir($dir); 
@@ -62,7 +88,7 @@
 			//Guardamos el tamaño real de la imagen
 			list($width, $height) = getimagesize($origen);
 			$destino="trainers/".$idname."/".$_FILES['archivo']['name'];
-			redimensionImagen($origen,$destino, $ancho, $alto);
+			redimensionImagen($origen, $destino, $ancho, $alto);
 		}
 		
 		if($_POST['password'] <> ""){
@@ -76,8 +102,7 @@
 		
 		$db->query($sql);
 		 
-		//$message='Actualizacion completada con exito';
-		$message = $_FILES['archivo'];
+		$message='Actualizacion completada con exito';
 		$error=true;
 			
 		/*Cierra la conexion con la base de datos*/

@@ -32,7 +32,34 @@
 			header('Content-type: application/json; charset=utf-8');
 			echo json_encode($jsondata, JSON_FORCE_OBJECT);
 			exit();
-		}else{		
+		}else{	
+			$file_size = $_FILES['archivo']['size'];
+			$acceptable = array(
+				'image/jpeg',
+				'image/jpg',
+				'image/gif',
+				'image/png'
+			);
+
+			if ($file_size > 1048576){      
+				$message = 'Archivo demasiado grande. La imagen debe ser menor de un 1 megabytes.'; 
+				$error=false;
+				$jsondata["success"] = $error;
+				$jsondata["data"] = $message;
+				header('Content-type: application/json; charset=utf-8');
+				echo json_encode($jsondata, JSON_FORCE_OBJECT);
+				exit();
+			}
+			if((!in_array($_FILES['archivo']['type'], $acceptable)) && (!empty($_FILES['archivo']['type']))) {
+				$message = 'Tipo de archivo invalido. Solo son validos los tipo JPG, JPEG, PNG y GIF.'; 
+				$error=false;
+				$jsondata["success"] = $error;
+				$jsondata["data"] = $message;
+				header('Content-type: application/json; charset=utf-8');
+				echo json_encode($jsondata, JSON_FORCE_OBJECT);
+				exit();
+			}
+			
 			if(!is_dir("trainers/".$idname)){
 				/*Crear carpeta que almacena las imagenes visor*/
 				if(!is_dir("trainers")){

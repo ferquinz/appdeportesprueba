@@ -7,17 +7,16 @@
 
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
-	<title>AppdeportesPrueba</title>
+	<title>Monitorizando Lab</title>
     <link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<!-- Bootstrap -->
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
 	
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
 	<!-- Registro jQuery -->
 	<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
@@ -27,14 +26,10 @@
 	<!-- Add fancyBox main JS and CSS files -->
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
 	<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
-
-	<!-- Add Button helper (this is optional) -->
-	<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox-buttons.css?v=1.0.5" />
-	<script type="text/javascript" src="js/fancybox/jquery.fancybox-buttons.js?v=1.0.5"></script>
-
-	<!-- Add Thumbnail helper (this is optional) -->
-	<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox-thumbs.css?v=1.0.7" />
-	<script type="text/javascript" src="js/fancybox/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+	
+	<!-- Bootstrap Dialog -->
+	<link href="css/bootstrap/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+	<script src="js/bootstrap/bootstrap-dialog.min.js"></script>
 	
 	<!--[if lt IE 9]>
 	  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -58,7 +53,7 @@
 			if( input.length ) {
 				input.val(log);
 			} else {
-				if( log ) alert(log);
+				if( log ) mostrarModal(log,2);
 			}       
 		});
 	});
@@ -68,6 +63,7 @@
 <script>
 
     $(document).ready(function() {
+	
 		$("#formulario").submit(function (event) {
 
 			var file = document.forms["formulario"]["archivo"].value;
@@ -165,7 +161,9 @@
 					success: function(data, textStatus, jqXHR)
 					{	
 						if(!data.success){
-							alert(data.data);
+							document.getElementById("nameImagen").value = '';
+							document.getElementById("Imagen").value = '';
+							mostrarModal(data.data,2);
 							resultado = false;
 						}else {
 							console.log(jqXHR.status);
@@ -173,11 +171,15 @@
 						}
 					},
 					error: function (xhr, status, error){
-						alert(error);
+						mostrarModal(error,2);
 						resultado = false;
 					}
 				});
 			}
+			else{
+			
+			}
+			
 			if(resultado){
 				window.location.reload();
 				window.location.href = "configuracion.php";
@@ -185,19 +187,60 @@
 			}
 			return resultado;
 		});
-    });
 		
-	</script>
+		$(".fancybox").fancybox({
+			width       : 400,
+			height      : 400,
+			minWidth	: 200,
+			minHeight	: 200,
+			maxWidth	: 600,
+			maxHeight	: 600,
+			autoResize	: true,
+			aspectRatio : true
+		});
+	
+    });
+	
+	function mostrarModal(mensaje, tipo){
+		var types;
+		var titulo;
+		if (tipo == 1){
+			types = BootstrapDialog.TYPE_SUCCESS;
+			titulo = "";
+		}
+		else{
+			types = BootstrapDialog.TYPE_DANGER;
+			titulo = "<span class='glyphicon glyphicon-exclamation-sign gi-2x'> ERROR</span>";
+		}
+		// var types = [BootstrapDialog.TYPE_DEFAULT, 
+					 // BootstrapDialog.TYPE_INFO, 
+					 // BootstrapDialog.TYPE_PRIMARY, 
+					 // BootstrapDialog.TYPE_SUCCESS, 
+					 // BootstrapDialog.TYPE_WARNING, 
+					 // BootstrapDialog.TYPE_DANGER];
 
-<body>
-	<div id='cssmenu'>
+		BootstrapDialog.show({
+			type: types,
+			title: titulo,
+			message: mensaje
+			// buttons: [{
+				// label: 'Aceptar'
+			// }]
+		});     
+
+	}
+	
+</script>
+
+<body class="selectRandom">
+	<div class="col-xs-12 col-sm-12 col-md-12" id='cssmenu' >
 		<ul>	   
 		   <li><a href='deletesession.php'>Desconexion</a></li>
 		   <li class='active'><a href='configuracion.php'>Configuracion</a></li>
 		   <li><a href='index.php'>Home</a></li>
 		</ul>
 	</div>
-	<div class="col-xs-12 col-sm-12 col-md-12">
+	<div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1" id="content">
 		<div id = "panelconfig" style="background: #FFF; margin-top: 5%; overflow: auto;" >
 			<div class="modal-header">
 				<h4> Configuracion </h4>
@@ -234,10 +277,10 @@
 													<div id='divexaminar' class='input-group'>
 														<span class='input-group-btn'>
 															<span class='btn btn-primary btn-file'>
-																Examinar<input type='file' name='archivo'>
+																Examinar<input type='file' name='archivo' id='nameImagen'>
 															</span>
 														</span>
-														<input id='Imagen' type='text' class='form-control' readonly>
+														<input id='Imagen' type='text' name='imagen' class='form-control' readonly>
 													</div>
 												</div>
 											</div>
@@ -284,6 +327,9 @@
 				</div>
 			</form>
 		</div>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-12" id="footer">
+		<p>&copy; 2015 Monitorizando Lab. All rights reserved.</p>
 	</div>
 </body>
 </html>

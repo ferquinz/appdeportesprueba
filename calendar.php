@@ -1,39 +1,42 @@
+<!DOCTYPE html>
 <?php 
-	require_once("config.inc.php"); 
+	// require_once("config.inc.php"); 
 	error_reporting(E_ALL);
 	ini_set('display_errors', '1');
 ?>
-<!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="es"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="es"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="es"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="es"> <!--<![endif]-->
+
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
-	
-	<!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
-	<title>AppdeportesPrueba</title>
+	<title>Monitorizando Lab</title>
+	<link type="text/css" rel="stylesheet" media="all" href="css/estilos.css" />
+	<link rel="stylesheet" type="text/css" href="css/Estilo.css" /> 
 	
-	<meta http-equiv="PRAGMA" content="NO-CACHE">
-	<meta http-equiv="EXPIRES" content="-1">
-	
-	<link type="text/css" rel="stylesheet" media="all" href="css/estilos.css">
 	<!-- Bootstrap -->
-	<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
-	<link href="css/fontello/fontello.css" rel="stylesheet">  
-	<link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/fontello/fontello.css" rel="stylesheet" />  	
+	
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/localization/messages_es.js "></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
-		<!-- Registro jQuery -->
+	
+	<!-- Registro jQuery -->
 	<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 	<script src="js/funciones.js" type="text/javascript"></script>
 	<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
+
+	<!-- Add fancyBox main JS and CSS files -->
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+	
+	<!-- Bootstrap Dialog -->
+	<link href="css/bootstrap/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+	<script src="js/bootstrap/bootstrap-dialog.min.js"></script>
+
 </head>
 
 <script type="text/javascript">
@@ -50,7 +53,7 @@
 			success: function(data, textStatus, jqXHR)
 			{	
 				if(!data.success){
-					alert(data.data);
+					mostrarModal(data.data,2);
 					resultado = false;
 				}else {
 					console.log(jqXHR.status);
@@ -58,7 +61,7 @@
 				}
 			},
 			error: function (xhr, status, error){
-				alert(error);
+				mostrarModal(error,2);
 				resultado = false;
 			}
 		});
@@ -71,14 +74,58 @@
 		return resultado;
 	}	
 		
+	function mostrarModal(mensaje, tipo){
+		var types;
+		var titulo;
+		if (tipo == 1){
+			types = BootstrapDialog.TYPE_SUCCESS;
+			titulo = "";
+		}
+		else{
+			types = BootstrapDialog.TYPE_DANGER;
+			titulo = "<span class='glyphicon glyphicon-exclamation-sign gi-2x'> ERROR</span>";
+		}
+		// var types = [BootstrapDialog.TYPE_DEFAULT, 
+					 // BootstrapDialog.TYPE_INFO, 
+					 // BootstrapDialog.TYPE_PRIMARY, 
+					 // BootstrapDialog.TYPE_SUCCESS, 
+					 // BootstrapDialog.TYPE_WARNING, 
+					 // BootstrapDialog.TYPE_DANGER];
+
+		BootstrapDialog.show({
+			type: types,
+			title: titulo,
+			message: mensaje
+			// buttons: [{
+				// label: 'Aceptar'
+			// }]
+		});     
+
+	}
+	
+$(document).ready(function(){
+
+	$(".fancybox").fancybox({
+		width       : 400,
+		height      : 400,
+		minWidth	: 200,
+		minHeight	: 200,
+		maxWidth	: 600,
+		maxHeight	: 600,
+		autoResize	: true,
+		aspectRatio : true
+	})
+
+});
+
 </script>
 	
 <body class="selectCalendario">
 	<input type="hidden" id="PlayerId" value="">
-	<div id='cssmenu'>
+	<div class="col-xs-12 col-sm-12 col-md-12" id='cssmenu'>
 		<ul>	   
-		   <li><a href='deletesession.php'>Desconexión</a></li>
-		   <li><a href='configuracion.php'>Configuración</a></li>
+		   <li><a href='deletesession.php'>Desconexion</a></li>
+		   <li><a href='configuracion.php'>Configuracion</a></li>
 		   <li class='active'><a href='calendar.php'>Equipo</a></li>
 		   <li><a href='index.php'>Home</a></li>
 		</ul>
@@ -101,24 +148,23 @@
 			header ("Location: index.php");
 		}	
 	?>
-	<div id="page_calendar">
-		<div class="row">
+	<div id="page_calendar" class="col-xs-12 col-sm-12 col-md-12">
 			<!--
 				CALENDARIO
 			-->
-			<div class="col-xs-6 col-sm-4 col-md-2">
+			<div class="col-xs-2 col-sm-2 col-md-2">
 				<a href="#myModal" data-toggle="modal">
 					<img src='images/icons/calendar.png' style="height: 150px;">
 				</a>
 			</div>
 			
-			<div class="col-xs-6 col-sm-4 col-md-6">
+			<div class="col-xs-6 col-sm-6 col-md-6">
 			
 			</div>
 			<!--
 				TABLA JUGADORES E IMAGENES
 			-->
-			<div id="list_players" class="col-xs-6 col-md-6">	
+			<div id="list_players" class="col-xs-4 col-sm-4 col-md-4">	
 				<?php
 					$sql = "select customersweb.img_path AS img_trainer, team.img_path AS img_team from team 
 					left join customersweb_team on customersweb_team.id_team = team.id_team
@@ -137,12 +183,24 @@
 										</div>			
 									</div>");
 						}else{
+							$valores=explode('/',$row['img_trainer']);
+							$valores[count($valores)-1] = "Original_".$valores[count($valores)-1];
+							$originalImage = implode("/", $valores);
+							
+							$valores1=explode('/',$row['img_team']);
+							$valores1[count($valores1)-1] = "Original_".$valores1[count($valores1)-1];
+							$originalImage1 = implode("/", $valores1);
+							
 							echo("	<div id='list_head'>
 										<div id='img_coach'>
-											<img src='".$row['img_trainer']."' class='img-circle'>
+											<a class='fancybox' href='".$originalImage."' title='Foto de entrenador' >
+												<img src='".$row['img_trainer']."' class='img-circle'>
+											</a>
 										</div>
 										<div id='img_team'>
-											<img src='".$row['img_team']."' class='img-circle'>
+											<a class='fancybox' href='".$originalImage1."' title='Foto de equipo' >
+												<img src='".$row['img_team']."' class='img-circle'>
+											</a>
 										</div>			
 									</div>");
 						}									
@@ -199,14 +257,11 @@
 					</div>");			
 				?>				
 			</div>
-		</div>
 	</div>
-	<?php include 'Formato/piepag.php' ?>	
-	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/localization/messages_es.js "></script>
 		
-	<script>
+
+		
+<script>
 	
 	function generar_calendario(mes,anio){
 		var agenda=$(".cal");
@@ -232,8 +287,7 @@
 	$(document).ready(function(){
 		/* GENERAMOS CALENDARIO CON FECHA DE HOY */
 		generar_calendario("<?php if (isset($_GET["mes"])) echo $_GET["mes"]; ?>","<?php if (isset($_GET["anio"])) echo $_GET["anio"]; ?>");
-		
-		
+
 		/* AGREGAR UN EVENTO */
 		$(document).on("click",'a.add',function(e) 
 		{
@@ -354,11 +408,11 @@
 				data_id = $(this).data('id');
 			}
 			document.getElementById("PlayerId").value = data_id;
-		})
-		
+		});
+
 	});
 
-	</script>
+</script>
 
 	<!-- 
 		Modal Calendario 

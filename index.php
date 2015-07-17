@@ -1,29 +1,35 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <?php
 	error_reporting(E_ALL);
 	ini_set('display_errors', '1');
 ?>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=7,8,9" />
+	<meta charset="utf-8">
 	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
-	<title>AppdeportesPrueba</title>
+	<title>Monitorizando Lab</title>
 	<link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<!-- Bootstrap -->
 	<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
 	<link href="css/fontello/fontello.css" rel="stylesheet">  	
 	<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
 	
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
 		<!-- Registro jQuery -->
 	<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 	<script src="js/funciones.js" type="text/javascript"></script>
 	<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
 
+	<!-- Add fancyBox main JS and CSS files -->
+	<script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+	
+	<!-- Bootstrap Dialog -->
+	<link href="css/bootstrap/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+	<script src="js/bootstrap/bootstrap-dialog.min.js"></script>
+	
 </head>
 
 <script type="text/javascript">
@@ -131,7 +137,7 @@ $(document).ready(function () {
 				success: function(data, textStatus, jqXHR)
 				{	
 					if(!data.success){
-						alert(data.data);
+						mostrarModal(data.data,2);
 						resultado = false;
 					}else {
 						console.log(jqXHR.status);
@@ -139,7 +145,7 @@ $(document).ready(function () {
 					}
 				},
 				error: function (xhr, status, error){
-					alert(error);
+					mostrarModal(error,2);
 					resultado = false;
 				}
 			});
@@ -151,6 +157,23 @@ $(document).ready(function () {
 		}
 		return resultado;
 	});
+	
+	$(".fancybox").fancybox({
+			width       : 400,
+			height      : 400,
+			minWidth	: 400,
+			minHeight	: 400,
+			aspectRatio : true
+	});
+	
+	$('body').on('click','#eliminar',function () {
+		var data_id = '';
+		if (typeof $(this).data('id') !== 'undefined') {
+			data_id = $(this).data('id');
+		}
+		document.getElementById("EquipoId").value = data_id;
+	})
+		
 });
 
 	function eliminarEquipo(){
@@ -165,7 +188,7 @@ $(document).ready(function () {
 			success: function(data, textStatus, jqXHR)
 			{	
 				if(!data.success){
-					alert(data.data);
+					mostrarModal(data.data,2);
 					resultado = false;
 				}else {
 					console.log(jqXHR.status);
@@ -173,7 +196,7 @@ $(document).ready(function () {
 				}
 			},
 			error: function (xhr, status, error){
-				alert(error);
+				mostrarModal(error,2);
 				resultado = false;
 			}
 		});
@@ -186,21 +209,41 @@ $(document).ready(function () {
 
 		return resultado;
 	}
+	
+	function mostrarModal(mensaje, tipo){
+		var types;
+		var titulo;
+		if (tipo == 1){
+			types = BootstrapDialog.TYPE_SUCCESS;
+			titulo = "";
+		}
+		else{
+			types = BootstrapDialog.TYPE_DANGER;
+			titulo = "<span class='glyphicon glyphicon-exclamation-sign gi-2x'> ERROR</span>";
+		}
+		// var types = [BootstrapDialog.TYPE_DEFAULT, 
+					 // BootstrapDialog.TYPE_INFO, 
+					 // BootstrapDialog.TYPE_PRIMARY, 
+					 // BootstrapDialog.TYPE_SUCCESS, 
+					 // BootstrapDialog.TYPE_WARNING, 
+					 // BootstrapDialog.TYPE_DANGER];
 
-	$(document).ready(function (e) {
-		$('body').on('click','#eliminar',function () {
-			var data_id = '';
-			if (typeof $(this).data('id') !== 'undefined') {
-				data_id = $(this).data('id');
-			}
-			document.getElementById("EquipoId").value = data_id;
-		})
-	});
+		BootstrapDialog.show({
+			type: types,
+			title: titulo,
+			message: mensaje
+			// buttons: [{
+				// label: 'Aceptar'
+			// }]
+		});     
+
+	}
+
 </script>	
 
 <body class="selectTeam">
 	<input type="hidden" id="EquipoId" value="">
-	<div id='cssmenu'>
+	<div class="col-xs-12 col-sm-12 col-md-12" id='cssmenu'>
 		<ul>	   
 		   <li><a href='deletesession.php'>Desconexión</a></li>
 		   <li><a href='configuracion.php'>Configuración</a></li>
@@ -211,7 +254,7 @@ $(document).ready(function () {
 	<!--
 		TABLA LISTA EQUIPOS
 	-->
-	<div id="listaEquipos" style="display: table; margin-left: 20%; width: 80%;">
+	<div class="col-xs-12 col-sm-12 col-md-12" id="listaEquipos">
 		<?php	
 			//Comprueba si esta conectado
 			if(!isset($_SESSION)) 
@@ -230,7 +273,7 @@ $(document).ready(function () {
 					where customersweb.id_customer = ".$_SESSION['id_customer'] ;
 
 			
-echo("<div style='width: 80%; height: 550px; margin-top: 5%;'>
+echo("<div class='col-md-8 col-md-offset-2' style='margin-top: 5%;'>
 	<table class='table table-hover' width='325'>
 		<tr>
 			<td>
@@ -251,8 +294,15 @@ echo("<div style='width: 80%; height: 550px; margin-top: 5%;'>
 				 <table class='table table-hover' >");
 				   foreach ($db->query($sql) as $row)
 					{
+						$valores=explode('/',$row['Image']);
+						$valores[count($valores)-1] = "Original_".$valores[count($valores)-1];
+						$originalImage = implode("/", $valores);
 						echo("<tr class='active'>");				
-							echo("<td> <img src='".$row['Image']."'></img></td>");	
+							echo("<td> 
+									<a class='fancybox' href='".$originalImage."' title='Foto de equipo' >
+										<img src='".$row['Image']."'></img>
+									<a>
+								</td>");	
 							echo("<td>".$row['Team']."</td>");	
 							echo("<td>".$row['Sport']."</td>");	
 							echo("<td>".$row['Category']."</td>");	
