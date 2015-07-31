@@ -27,7 +27,11 @@
 		<script src="http://d3js.org/d3.v3.min.js"></script>
 		<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 		<script src="js/xcharts.js"></script>	
-		<style>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		
+		<!--[if lt IE 9]>
+		  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
 		<style>
 			.axis path,
 			.axis line {
@@ -379,7 +383,8 @@
 			<button id="btnSiguiente" type="button" class="btn btn-primary btn-lg" style="display: inline;" 
 					onclick="goNextMonth(<?php echo $month . ", " . $year; ?>)">Siguiente</button>
 		</div>
-		<div>
+		<div id="dual_y_div" style="width: 900px; height: 500px;"></div>
+		<div id="chart_div" style="width: 900px; height: 500px;"></div>
 		<script>
 
 			var margin = {top: 40, right: 20, bottom: 30, left: 40},
@@ -457,176 +462,240 @@
 			}
 
 		</script>
-<script>
-(function($){
-var data1 = {
-  "xScale": "ordinal",
-  "yScale": "linear",
-  "type": "bar", 
-  "main": [
-    {
-      "className": ".pizza",
-      "type": "line-dotted",
-      "data": [
-       <?php
-			$primero = 0;
-			foreach ($db->query($sqlPlayer) as $row)
-			{                                                   
-				$avgTeamCalification = $row['totalCalification'];
-				$day = $row['Day'];
-							
-				if($day!=null){
-					if($primero==0){
-					 $primero=1;
-						echo("
-						{
-							'x': '".$day."',
-							'y':  ".$avgTeamCalification."
-						}
-						");
-					}else{
-						echo("
-						,{
-							'x': '".$day."',
-							'y':  ".$avgTeamCalification."
-						}
-						");
-					}
+		<script>
+			(function($){
+			var data1 = {
+			  "xScale": "ordinal",
+			  "yScale": "linear",
+			  "type": "bar", 
+			  "main": [
+				{
+				  "className": ".pizza",
+				  "type": "line-dotted",
+				  "data": [
+				   <?php
+						$primero = 0;
+						foreach ($db->query($sqlPlayer) as $row)
+						{                                                   
+							$avgTeamCalification = $row['totalCalification'];
+							$day = $row['Day'];
+										
+							if($day!=null){
+								if($primero==0){
+								 $primero=1;
+									echo("
+									{
+										'x': '".$day."',
+										'y':  ".$avgTeamCalification."
+									}
+									");
+								}else{
+									echo("
+									,{
+										'x': '".$day."',
+										'y':  ".$avgTeamCalification."
+									}
+									");
+								}
+							}
+						}	
+					?>     
+				  ]
 				}
-			}	
-		?>     
-      ]
-    }
-  ]
-};
-var myChart1 = new xChart('bar', data1, '#myChart1');
-})(jQuery);
+			  ]
+			};
+			var myChart1 = new xChart('bar', data1, '#myChart1');
+			})(jQuery);
 
-(function($){
-var data2 = {
-  "xScale": "ordinal",
-  "yScale": "linear",
-  "type": "bar", 
-  "main": [
-    {
-      "className": ".pizza",
-      "data": [
-		<?php			
-			$primero = 0;
-			foreach ($db->query($sqlTeam) as $row)
-			{                                                   
-				$avgTeamCalification = $row['totalCalification'];
-				$day = $row['Day'];
-							
-				if($day!=null){
-					if($primero==0){
-					 $primero=1;
-						echo("
-						{
-							'x': '".$day."',
-							'y':  ".$avgTeamCalification."
-						}
-						");
-					}else{
-						echo("
-						,{
-							'x': '".$day."',
-							'y':  ".$avgTeamCalification."
-						}
-						");
-					}
+			(function($){
+			var data2 = {
+			  "xScale": "ordinal",
+			  "yScale": "linear",
+			  "type": "bar", 
+			  "main": [
+				{
+				  "className": ".pizza",
+				  "data": [
+					<?php			
+						$primero = 0;
+						foreach ($db->query($sqlTeam) as $row)
+						{                                                   
+							$avgTeamCalification = $row['totalCalification'];
+							$day = $row['Day'];
+										
+							if($day!=null){
+								if($primero==0){
+								 $primero=1;
+									echo("
+									{
+										'x': '".$day."',
+										'y':  ".$avgTeamCalification."
+									}
+									");
+								}else{
+									echo("
+									,{
+										'x': '".$day."',
+										'y':  ".$avgTeamCalification."
+									}
+									");
+								}
+							}
+						}	
+					?>     
+				  ]
 				}
-			}	
-		?>     
-      ]
-    }
-  ]
-};
-var opts = {
-  "empty": function (self, selector, data) {d3.select(selector).text('SVG is not supported on your browser');}
-};
-var myChart2 = new xChart('bar', data2, '#myChart2');
-})(jQuery);
+			  ]
+			};
+			var opts = {
+			  "empty": function (self, selector, data) {d3.select(selector).text('SVG is not supported on your browser');}
+			};
+			var myChart2 = new xChart('bar', data2, '#myChart2');
+			})(jQuery);
 
-(function($){
-var data3 = {
-  "xScale": "ordinal",
-  "yScale": "linear",
-  "type": "bar", 
-  "main": [
-    {
-      "className": ".pizza",
-      "data": [
-		<?php	
-			$primero = 0;
-			foreach ($db->query($sqlTeam) as $row)
-			{                                                   
-				$avgTeamCalification = $row['totalCalification'];
-				$day = $row['Day'];
-							
-				if($day!=null){
-					if($primero==0){
-					 $primero=1;
-						echo("
-						{
-							'x': '".$day."',
-							'y':  ".$avgTeamCalification."
-						}
-						");
-					}else{
-						echo("
-						,{
-							'x': '".$day."',
-							'y':  ".$avgTeamCalification."
-						}
-						");	
-					}
+			(function($){
+			var data3 = {
+			  "xScale": "ordinal",
+			  "yScale": "linear",
+			  "type": "bar", 
+			  "main": [
+				{
+				  "className": ".pizza",
+				  "data": [
+					<?php	
+						$primero = 0;
+						foreach ($db->query($sqlTeam) as $row)
+						{                                                   
+							$avgTeamCalification = $row['totalCalification'];
+							$day = $row['Day'];
+										
+							if($day!=null){
+								if($primero==0){
+								 $primero=1;
+									echo("
+									{
+										'x': '".$day."',
+										'y':  ".$avgTeamCalification."
+									}
+									");
+								}else{
+									echo("
+									,{
+										'x': '".$day."',
+										'y':  ".$avgTeamCalification."
+									}
+									");	
+								}
+							}
+						}	
+					?>     
+				  ]
 				}
-			}	
-		?>     
-      ]
-    }
-  ],
-   "comp": [
-    {
-      "className": ".pizza",
-      "type": "line-dotted",
-      "data": [
-       <?php	
-			$primero = 0;
-			foreach ($db->query($sqlPlayer) as $row)
-			{                                                   
-				$avgTeamCalification = $row['totalCalification'];
-				$day = $row['Day'];
-							
-				if($day!=null){
-					if($primero==0){
-					 $primero=1;
-						echo("
-						{
-							'x': '".$day."',
-							'y':  ".$avgTeamCalification."
-						}
-						");
-					}else{
-						echo("
-						,{
-							'x': '".$day."',
-							'y':  ".$avgTeamCalification."
-						}
-						");
-					}
+			  ],
+			   "comp": [
+				{
+				  "className": ".pizza",
+				  "type": "line-dotted",
+				  "data": [
+				   <?php	
+						$primero = 0;
+						foreach ($db->query($sqlPlayer) as $row)
+						{                                                   
+							$avgTeamCalification = $row['totalCalification'];
+							$day = $row['Day'];
+										
+							if($day!=null){
+								if($primero==0){
+								 $primero=1;
+									echo("
+									{
+										'x': '".$day."',
+										'y':  ".$avgTeamCalification."
+									}
+									");
+								}else{
+									echo("
+									,{
+										'x': '".$day."',
+										'y':  ".$avgTeamCalification."
+									}
+									");
+								}
+							}
+						}	
+					?>     
+				  ]
 				}
-			}	
-		?>     
-      ]
-    }
-  ]
-};
-var myChart3 = new xChart('bar', data3, '#myChart3');
-})(jQuery);
-	
-</script>
+			  ]
+			};
+			var myChart3 = new xChart('bar', data3, '#myChart3');
+			})(jQuery);
+		
+		</script>
+		
+		<script type="text/javascript">
+			  google.load("visualization", "1.1", {packages:["bar"]});
+			  google.setOnLoadCallback(drawStuff);
+
+			  function drawStuff() {
+				var data = new google.visualization.arrayToDataTable([
+				  ['Galaxy', 'Distance', 'Brightness'],
+				  ['Canis Major Dwarf', 8000, 23.3],
+				  ['Sagittarius Dwarf', 24000, 4.5],
+				  ['Ursa Major II Dwarf', 30000, 14.3],
+				  ['Lg. Magellanic Cloud', 50000, 0.9],
+				  ['Bootes I', 60000, 13.1]
+				]);
+
+				var options = {
+				  width: 900,
+				  chart: {
+					title: 'Nearby galaxies',
+					subtitle: 'distance on the left, brightness on the right'
+				  },
+				  series: {
+					0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
+					1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
+				  },
+				  axes: {
+					y: {
+					  distance: {label: 'parsecs'}, // Left y-axis.
+					  brightness: {side: 'right', label: 'apparent magnitude'} // Right y-axis.
+					}
+				  }
+				};
+
+			  var chart = new google.charts.Bar(document.getElementById('dual_y_div'));
+			  chart.draw(data, options);
+			};
+		</script>
+		<script type="text/javascript">
+			google.load("visualization", "1", {packages:["corechart"]});
+			google.setOnLoadCallback(drawVisualization);
+
+			function drawVisualization() {
+			  // Some raw data (not necessarily accurate)
+			  var data = google.visualization.arrayToDataTable([
+				['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+				['2004/05',  165,      938,         522,             998,           450,      614.6],
+				['2005/06',  135,      1120,        599,             1268,          288,      682],
+				['2006/07',  157,      1167,        587,             807,           397,      623],
+				['2007/08',  139,      1110,        615,             968,           215,      609.4],
+				['2008/09',  136,      691,         629,             1026,          366,      569.6]
+			  ]);
+
+			  var options = {
+				title : 'Monthly Coffee Production by Country',
+				vAxis: {title: "Cups"},
+				hAxis: {title: "Month"},
+				seriesType: "bars",
+				series: {5: {type: "line"}}
+			  };
+
+			  var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+			  chart.draw(data, options);
+			}
+		</script>
 
 	</body>
 </html>

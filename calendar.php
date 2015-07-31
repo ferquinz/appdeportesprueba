@@ -37,6 +37,11 @@
 	<link href="css/bootstrap/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 	<script src="js/bootstrap/bootstrap-dialog.min.js"></script>
 
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	
+	<!--[if lt IE 9]>
+	  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
 </head>
 
 <script type="text/javascript">
@@ -122,14 +127,14 @@ $(document).ready(function(){
 	
 <body class="selectCalendario">
 	<input type="hidden" id="PlayerId" value="">
-	<div class="col-xs-12 col-sm-12 col-md-12" id='cssmenu'>
+	<header class="col-xs-12 col-sm-12 col-md-12" id='cssmenu'>
 		<ul>	   
 		   <li><a href='deletesession.php'>Desconexion</a></li>
 		   <li><a href='configuracion.php'>Configuracion</a></li>
 		   <li class='active'><a href='calendar.php'>Equipo</a></li>
 		   <li><a href='index.php'>Home</a></li>
 		</ul>
-	</div>
+	</header>
 
 	<!-- 
 		Comprueba si esta conectado 
@@ -158,13 +163,20 @@ $(document).ready(function(){
 				</a>
 			</div>
 			
-			<div class="col-xs-6 col-sm-6 col-md-6">
-			
+			<div class="col-xs-7 col-sm-7 col-md-7">
+				<section id = "graficas" style="background: #FFF; margin-top: 5%; overflow: auto;" >
+					<section class="modal-header">
+						<h4> Graficas </h4>
+					</section>
+					<section class="modal-body" style="text-align: -webkit-center;">
+						<div id="dual_y_div" style="width: 900px; height: 500px;"></div>
+					</section>
+				</section>
 			</div>
 			<!--
 				TABLA JUGADORES E IMAGENES
 			-->
-			<div id="list_players" class="col-xs-4 col-sm-4 col-md-4">	
+			<div id="list_players" class="col-xs-3 col-sm-3 col-md-3">	
 				<?php
 					$sql = "select customersweb.img_path AS img_trainer, team.img_path AS img_team from team 
 					left join customersweb_team on customersweb_team.id_team = team.id_team
@@ -257,10 +269,13 @@ $(document).ready(function(){
 					</div>");			
 				?>				
 			</div>
+			
 	</div>
 		
 
-		
+<!-- 
+	Script para el Calendario 
+	-->		
 <script>
 	
 	function generar_calendario(mes,anio){
@@ -413,7 +428,97 @@ $(document).ready(function(){
 	});
 
 </script>
+<!-- 
+	Script para el grafico 
+	-->
+<script type="text/javascript">
+		
+		google.load("visualization", "1.1", {packages:["bar"]});
+		google.setOnLoadCallback(drawStuff);
 
+		function drawStuff() {
+			var data = new google.visualization.arrayToDataTable(
+			[				
+				['Fecha', 'Puntuacion', 'Personas']
+			<?php
+				$mediaequipo = "SELECT AVG(c.calification*TIMESTAMPDIFF(MINUTE, c.start_time, c.end_time)) AS totalCalification,
+									CONCAT(CONCAT(DAY(DATE(c.start_time)),'-'), MONTHNAME(DATE(c.start_time))) AS Day,
+									COUNT(c.calification) AS Num_Personas
+									FROM training_event  a
+									LEFT JOIN training_player b ON a.id_training = b.id_training
+									LEFT JOIN training_data c ON b.id_training_player = c.id_training_player
+									WHERE a.id_team = ".$_SESSION['id_team']." and c.start_time is not null
+									AND MONTH(DATE(c.start_time)) = ".date("n")." AND YEAR(DATE(c.start_time)) = ".date('Y')."
+									GROUP BY DATE(c.start_time)
+									ORDER BY c.start_time";
+					
+				foreach ($db->query($mediaequipo) as $row)
+				{
+					$avgTeamCalification = $row['totalCalification'];
+					$day = $row['Day'];
+					$numpersonas = $row['Num_Personas'];
+								
+					if($day!=null){
+						echo(",['".$day."',".$avgTeamCalification.",".$numpersonas."]");
+					}
+				}
+			?>
+			]);
+			
+			var dataTable = new google.visualization.DataTable();
+			dataTable.addColumn('string', 'Fecha');
+			dataTable.addColumn('number', 'Puntuacion');
+			// A column for custom tooltip content
+			dataTable.addColumn({type: 'string', role: 'tooltip'});
+			dataTable.addRows(
+			[
+				<?php
+				$primero = 0;
+				foreach ($db->query($mediaequipo) as $row)
+				{
+					$avgTeamCalification = $row['totalCalification'];
+					$day = $row['Day'];
+					$numpersonas = $row['Num_Personas'];
+								
+					if($day!=null){
+						if($primero==0){
+							 $primero=1;
+							 echo("['".$day."',".$avgTeamCalification.", '".$day." Personas: ".$numpersonas."']");
+						 }
+						 else{
+							echo(",['".$day."',".$avgTeamCalification.",'".$day." Personas: ".$numpersonas."']");
+						 }
+					}
+				}
+				?>
+			]);
+
+			var options = {
+				width: 900,
+				chart: {
+					title: 'Media entrenamientos',
+					subtitle: 'Media a la izquierda, personas entrenando a la derecha'
+				},
+				// series: {
+					// 0: { axis: 'media' }, // Bind series 0 to an axis named 'media'.
+					// 1: { axis: 'nº personas' } // Bind series 1 to an axis named 'nº personas'.
+				// },
+				// axes: {
+					// y: {
+						// distance: {label: 'parsecs'}, // Left y-axis.
+						// brightness: {side: 'right', label: 'apparent magnitude'} // Right y-axis.
+					// }
+				// },
+				tooltip: {isHtml: true},
+				legend: 'none'
+			};
+
+			var chart = new google.charts.Bar(document.getElementById('dual_y_div'));
+			//var chart = new google.visualization.ColumnChart(document.getElementById('dual_y_div'));
+			//chart.draw(data, options);
+			chart.draw(dataTable, options);
+		};
+</script>
 	<!-- 
 		Modal Calendario 
 	-->

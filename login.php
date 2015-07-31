@@ -31,7 +31,7 @@
 
 <script>
 
-	var bg = ['selectRandom', 'selectTeam', 'selectCalendario'];
+	var bg = ['selectRandom', 'selectTeam', 'selectCalendario','selectRandom', 'selectTeam', 'selectCalendario'];
 	$.each(bg, function(index, ui) {
 		setTimeout(function() {
 			$('body').removeAttr('class').addClass(ui);
