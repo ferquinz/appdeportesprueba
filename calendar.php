@@ -164,12 +164,24 @@ $(document).ready(function(){
 			</div>
 			
 			<div class="col-xs-7 col-sm-7 col-md-7">
-				<section id = "graficas" style="background: #FFF; margin-top: 5%; overflow: auto;" >
+				<section id = "graficas" style="background: #FFF; margin-top: 5%; margin-bottom: 5%; overflow: auto;" >
 					<section class="modal-header">
 						<h4> Graficas </h4>
 					</section>
 					<section class="modal-body" style="text-align: -webkit-center;">
 						<div id="dual_y_div" style="width: 900px; height: 500px;"></div>
+					</section>
+					<section>
+						<hr noshade size=7 width="70%" align=center style="border-top-color: blueviolet;   display: -webkit-inline-box;">
+					</section>
+					<section class="modal-body" style="text-align: -webkit-center;">
+						<div id="chart_div" style="width: 900px; height: 500px;"></div>
+					</section>
+					<section>
+						<hr noshade size=7 width="70%" align=center style="border-top-color: blueviolet;   display: -webkit-inline-box;">
+					</section>
+					<section class="modal-body" style="text-align: -webkit-center;">
+						<div id="chart_div2" style="width: 900px; height: 500px;"></div>
 					</section>
 				</section>
 			</div>
@@ -310,9 +322,9 @@ $(document).ready(function(){
 			var id = $(this).data('evento');
 			var fecha = $(this).attr('rel');
 			
-			//$('#mask').fadeIn(1000).html("<div id='nuevo_evento' class='window' rel='"+fecha+"'>Agregar un evento el "+formatDate(fecha)+"</h2><a href='#' class='close' rel='"+fecha+"'>&nbsp;</a><div id='respuesta_form'></div><form class='formeventos'><input type='text' name='title' id='title' class='required'><input type='text' name='place' id='place' class='required'><input type='text' name='hour_training' id='hour_training' class='required'><input type='text' name='evento_titulo' id='evento_titulo' class='required'><input type='button' name='Enviar' value='Guardar' class='enviar'><input type='hidden' name='evento_fecha' id='evento_fecha' value='"+fecha+"'></form></div>");
+			//$('#mask').fadeIn(1000).html("<div style='border: 6px; border-style: solid;' id='nuevo_evento' class='window' rel='"+fecha+"'>Agregar un evento el "+formatDate(fecha)+"</h2><a href='#' class='close' rel='"+fecha+"'>&nbsp;</a><div id='respuesta_form'></div><form class='formeventos'><input type='text' name='title' id='title' class='required'><input type='text' name='place' id='place' class='required'><input type='text' name='hour_training' id='hour_training' class='required'><input type='text' name='evento_titulo' id='evento_titulo' class='required'><input type='button' name='Enviar' value='Guardar' class='enviar'><input type='hidden' name='evento_fecha' id='evento_fecha' value='"+fecha+"'></form></div>");
 			$('#mask').fadeIn(1000).html(
-			"<div id='nuevo_evento' class='window' rel='"+fecha
+			"<div id='nuevo_evento' class='window' style='border: 6px; border-style: solid;' rel='"+fecha
 			+"'>Agregar un evento el "+formatDate(fecha)+"</h2><a href='#' class='close' rel='"+fecha+"'>&nbsp;</a>"
 			+"<div id='respuesta_form'></div>"
 			+"<form class='formeventos'>"
@@ -333,7 +345,7 @@ $(document).ready(function(){
 			e.preventDefault();
 			var fecha = $(this).attr('rel');
 			
-			$('#mask').fadeIn(1000).html("<div id='nuevo_evento' class='window' rel='"+fecha+"'>Eventos del "+formatDate(fecha)+"</h2><a href='#' class='close' rel='"+fecha+"'>&nbsp;</a><div id='respuesta'></div><div id='respuesta_form'></div></div>");
+			$('#mask').fadeIn(1000).html("<div id='nuevo_evento' class='window' style='border: 6px; border-style: solid;' rel='"+fecha+"'>Eventos del "+formatDate(fecha)+"</h2><a href='#' class='close' rel='"+fecha+"'>&nbsp;</a><div id='respuesta'></div><div id='respuesta_form'></div></div>");
 			$.ajax({
 				type: "GET",
 				url: "ajax_calendario.php",
@@ -518,6 +530,81 @@ $(document).ready(function(){
 			//chart.draw(data, options);
 			chart.draw(dataTable, options);
 		};
+
+		google.load('visualization', '1', {packages: ['corechart', 'bar']});
+		google.setOnLoadCallback(drawTitleSubtitle);
+
+		function drawTitleSubtitle() {
+			  var data = google.visualization.arrayToDataTable([
+				['City', '2010 Population', '2000 Population'],
+				['New York City, NY', 8175000, 8008000],
+				['Los Angeles, CA', 3792000, 3694000],
+				['Chicago, IL', 2695000, 2896000],
+				['Houston, TX', 2099000, 1953000],
+				['Philadelphia, PA', 1526000, 1517000]
+			  ]);
+
+			  var options = {
+				chart: {
+				  title: 'Population of Largest U.S. Cities',
+				  subtitle: 'Based on most recent and previous census data'
+				},
+				hAxis: {
+				  title: 'Total Population',
+				  minValue: 0,
+				},
+				vAxis: {
+				  title: 'City'
+				},
+				bars: 'horizontal'
+			  };
+			  var material = new google.charts.Bar(document.getElementById('chart_div'));
+			  material.draw(data, options);
+		}
+		
+		google.load('visualization', '1', {packages: ['corechart', 'bar']});
+		google.setOnLoadCallback(drawMultSeries);
+
+		function drawMultSeries() {
+			var data = new google.visualization.DataTable();
+			  data.addColumn('timeofday', 'Time of Day');
+			  data.addColumn('number', 'Motivation Level');
+			  data.addColumn('number', 'Energy Level');
+
+			  data.addRows([
+				[{v: [8, 0, 0], f: '8 am'}, 1, .25],
+				[{v: [9, 0, 0], f: '9 am'}, 2, .5],
+				[{v: [10, 0, 0], f:'10 am'}, 3, 1],
+				[{v: [11, 0, 0], f: '11 am'}, 4, 2.25],
+				[{v: [12, 0, 0], f: '12 pm'}, 5, 2.25],
+				[{v: [13, 0, 0], f: '1 pm'}, 6, 3],
+				[{v: [14, 0, 0], f: '2 pm'}, 7, 4],
+				[{v: [15, 0, 0], f: '3 pm'}, 8, 5.25],
+				[{v: [16, 0, 0], f: '4 pm'}, 9, 7.5],
+				[{v: [17, 0, 0], f: '5 pm'}, 10, 10],
+			  ]);
+
+			  var options = {
+				title: 'Motivation and Energy Level Throughout the Day',
+				hAxis: {
+				  title: 'Time of Day',
+				  format: 'h:mm a',
+				  viewWindow: {
+					min: [7, 30, 0],
+					max: [17, 30, 0]
+				  }
+				},
+				vAxis: {
+				  title: 'Rating (scale of 1-10)'
+				}
+			  };
+
+			  var chart = new google.charts.Bar(
+				document.getElementById('chart_div2'));
+
+			  chart.draw(data, options);
+		}
+		
 </script>
 	<!-- 
 		Modal Calendario 
