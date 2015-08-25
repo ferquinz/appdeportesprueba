@@ -12,75 +12,25 @@
 		<link href="icons/IconNav23.ico" type="image/x-icon" rel="shortcut icon" />
 		<link rel="stylesheet" type="text/css" href="css/Estilo.css">
 		<!-- Bootstrap -->
-		<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">		
-		<link rel="stylesheet" type="text/css" href="css/xcharts.css"> 
+		<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">	
 		<link rel="stylesheet" type="text/css" href="css/xcharts.min.css"> 
 	  	
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="js/bootstrap/bootstrap.js"></script>
 
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+		<script src="js/xcharts.js"></script>
+		
 		<!-- Add fancyBox main JS and CSS files -->
 		<script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
 		<link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
 		
-		<script src="http://d3js.org/d3.v3.min.js"></script>
-		<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-		<script src="js/xcharts.js"></script>	
-		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		
 		<!--[if lt IE 9]>
 		  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		<style>
-			.axis path,
-			.axis line {
-			  fill: none;
-			  stroke: #000;
-			  shape-rendering: crispEdges;
-			}
-
-			.bar {
-			  fill: orange;
-			}
-
-			.bar:hover {
-			  fill: orangered ;
-			}
-
-			.x.axis path {
-			  display: none;
-			}
-
-			.d3-tip {
-			  line-height: 1;
-			  font-weight: bold;
-			  padding: 12px;
-			  background: rgba(0, 0, 0, 0.8);
-			  color: #fff;
-			  border-radius: 2px;
-			}
-
-			/* Creates a small triangle extender for the tooltip */
-			.d3-tip:after {
-			  box-sizing: border-box;
-			  display: inline;
-			  font-size: 10px;
-			  width: 100%;
-			  line-height: 1;
-			  color: rgba(0, 0, 0, 0.8);
-			  content: "\25BC";
-			  position: absolute;
-			  text-align: center;
-			}
-
-			/* Style northward tooltips differently */
-			.d3-tip.n:after {
-			  margin: -1px 0 0 0;
-			  top: 100%;
-			  left: 0;
-			}
-		</style>		
+	
 	</head>
 
 <script>
@@ -383,86 +333,10 @@
 			<button id="btnSiguiente" type="button" class="btn btn-primary btn-lg" style="display: inline;" 
 					onclick="goNextMonth(<?php echo $month . ", " . $year; ?>)">Siguiente</button>
 		</div>
-		<div id="dual_y_div" style="width: 900px; height: 500px;"></div>
-		<div id="chart_div" style="width: 900px; height: 500px;"></div>
+
+		<!-- Script para la carga de las 3 gráficas -->
 		<script>
-
-			var margin = {top: 40, right: 20, bottom: 30, left: 40},
-				width = 960 - margin.left - margin.right,
-				height = 500 - margin.top - margin.bottom;
-
-			var formatPercent = d3.format(".0%");
-
-			var x = d3.scale.ordinal()
-				.rangeRoundBands([0, width], .1);
-
-			var y = d3.scale.linear()
-				.range([height, 0]);
-
-			var xAxis = d3.svg.axis()
-				.scale(x)
-				.orient("bottom");
-
-			var yAxis = d3.svg.axis()
-				.scale(y)
-				.orient("left")
-				.tickFormat(formatPercent);
-
-			var tip = d3.tip()
-			  .attr('class', 'd3-tip')
-			  .offset([-10, 0])
-			  .html(function(d) {
-				return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
-			  })
-
-			var svg = d3.select("body").append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-				.attr("fill", 'white')
-			  .append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-			svg.call(tip);
-			
-			d3.tsv("data.tsv", type, function(error, data) {
-			  x.domain(data.map(function(d) { return d.letter; }));
-			  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
-
-			  svg.append("g")
-				  .attr("class", "x axis")
-				  .attr("transform", "translate(0," + height + ")")
-				  .call(xAxis);
-
-			  svg.append("g")
-				  .attr("class", "y axis")
-				  .call(yAxis)
-				.append("text")
-				  .attr("transform", "rotate(-90)")
-				  .attr("y", 6)
-				  .attr("dy", ".71em")
-				  .style("text-anchor", "end")
-				  .text("Frequency");
-
-			  svg.selectAll(".bar")
-				  .data(data)
-				.enter().append("rect")
-				  .attr("class", "bar")
-				  .attr("x", function(d) { return x(d.letter); })
-				  .attr("width", x.rangeBand())
-				  .attr("y", function(d) { return y(d.frequency); })
-				  .attr("height", function(d) { return height - y(d.frequency); })
-				  .on('mouseover', tip.show)
-				  .on('mouseout', tip.hide)
-
-			});
-
-			function type(d) {
-			  d.frequency = +d.frequency;
-			  return d;
-			}
-
-		</script>
-		<script>
+		
 			(function($){
 			var data1 = {
 			  "xScale": "ordinal",
@@ -547,9 +421,6 @@
 				}
 			  ]
 			};
-			var opts = {
-			  "empty": function (self, selector, data) {d3.select(selector).text('SVG is not supported on your browser');}
-			};
 			var myChart2 = new xChart('bar', data2, '#myChart2');
 			})(jQuery);
 
@@ -631,70 +502,6 @@
 			var myChart3 = new xChart('bar', data3, '#myChart3');
 			})(jQuery);
 		
-		</script>
-		
-		<script type="text/javascript">
-			  google.load("visualization", "1.1", {packages:["bar"]});
-			  google.setOnLoadCallback(drawStuff);
-
-			  function drawStuff() {
-				var data = new google.visualization.arrayToDataTable([
-				  ['Galaxy', 'Distance', 'Brightness'],
-				  ['Canis Major Dwarf', 8000, 23.3],
-				  ['Sagittarius Dwarf', 24000, 4.5],
-				  ['Ursa Major II Dwarf', 30000, 14.3],
-				  ['Lg. Magellanic Cloud', 50000, 0.9],
-				  ['Bootes I', 60000, 13.1]
-				]);
-
-				var options = {
-				  width: 900,
-				  chart: {
-					title: 'Nearby galaxies',
-					subtitle: 'distance on the left, brightness on the right'
-				  },
-				  series: {
-					0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
-					1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
-				  },
-				  axes: {
-					y: {
-					  distance: {label: 'parsecs'}, // Left y-axis.
-					  brightness: {side: 'right', label: 'apparent magnitude'} // Right y-axis.
-					}
-				  }
-				};
-
-			  var chart = new google.charts.Bar(document.getElementById('dual_y_div'));
-			  chart.draw(data, options);
-			};
-		</script>
-		<script type="text/javascript">
-			google.load("visualization", "1", {packages:["corechart"]});
-			google.setOnLoadCallback(drawVisualization);
-
-			function drawVisualization() {
-			  // Some raw data (not necessarily accurate)
-			  var data = google.visualization.arrayToDataTable([
-				['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
-				['2004/05',  165,      938,         522,             998,           450,      614.6],
-				['2005/06',  135,      1120,        599,             1268,          288,      682],
-				['2006/07',  157,      1167,        587,             807,           397,      623],
-				['2007/08',  139,      1110,        615,             968,           215,      609.4],
-				['2008/09',  136,      691,         629,             1026,          366,      569.6]
-			  ]);
-
-			  var options = {
-				title : 'Monthly Coffee Production by Country',
-				vAxis: {title: "Cups"},
-				hAxis: {title: "Month"},
-				seriesType: "bars",
-				series: {5: {type: "line"}}
-			  };
-
-			  var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-			  chart.draw(data, options);
-			}
 		</script>
 
 	</body>

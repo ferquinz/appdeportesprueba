@@ -17,10 +17,9 @@
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="js/bootstrap/bootstrap.js"></script>
-		<!-- Registro jQuery -->
-	<script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+	<!-- Registro jQuery -->
 	<script src="js/funciones.js" type="text/javascript"></script>
-	<script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
+	<!-- <script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script> -->
 
 	<!-- Add fancyBox main JS and CSS files -->
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox.js?v=2.1.5"></script>

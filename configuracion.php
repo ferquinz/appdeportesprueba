@@ -328,8 +328,8 @@
 			</form>
 		</div>
 	</div>
-	<div class="col-xs-12 col-sm-12 col-md-12" id="footer">
+	<footer class="col-xs-12 col-sm-12 col-md-12" id="footer">
 		<p>&copy; 2015 Monitorizando Lab. All rights reserved.</p>
-	</div>
+	</footer>
 </body>
 </html>

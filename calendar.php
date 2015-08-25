@@ -37,7 +37,12 @@
 	<link href="css/bootstrap/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 	<script src="js/bootstrap/bootstrap-dialog.min.js"></script>
 
+	<!-- Graficos Google -->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	
+	<!-- ScrollBar -->
+	<link rel="stylesheet" href="css/malihu/jquery.mCustomScrollbar.css" />
+	<script src="js/malihu/jquery.mCustomScrollbar.min.js"></script>
 	
 	<!--[if lt IE 9]>
 	  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -124,8 +129,26 @@ $(document).ready(function(){
 });
 
 </script>
+
+<script>
+
+  (function($){
+    $(window).load(function(){
+		$("#tablajugadores").mCustomScrollbar({
+			theme:"light-3",
+			scrollButtons:{
+				enable:true
+			}
+		});
+		$("body").mCustomScrollbar({
+			theme:"minimal"
+		});
+    });
+  })(jQuery);
+  
+</script>
 	
-<body class="selectCalendario">
+<body class="selectCalendario" style="height: 100% !important">
 	<input type="hidden" id="PlayerId" value="">
 	<header class="col-xs-12 col-sm-12 col-md-12" id='cssmenu'>
 		<ul>	   
@@ -251,7 +274,7 @@ $(document).ready(function(){
 									</tr>
 									<tr>
 									<td>
-									<div style='height: 600px; overflow: auto;'>
+									<div id='tablajugadores' style='height: 600px; overflow: auto;' class='mCustomScrollbar'>
 										<table class='table table-bordered'>");
 					foreach ($db->query($sql) as $row)
 					{		
@@ -442,7 +465,7 @@ $(document).ready(function(){
 </script>
 <!-- 
 	Script para el grafico 
-	-->
+-->
 <script type="text/javascript">
 		
 		google.load("visualization", "1.1", {packages:["bar"]});
@@ -511,23 +534,19 @@ $(document).ready(function(){
 					title: 'Media entrenamientos',
 					subtitle: 'Media a la izquierda, personas entrenando a la derecha'
 				},
-				// series: {
-					// 0: { axis: 'media' }, // Bind series 0 to an axis named 'media'.
-					// 1: { axis: 'nº personas' } // Bind series 1 to an axis named 'nº personas'.
-				// },
-				// axes: {
-					// y: {
-						// distance: {label: 'parsecs'}, // Left y-axis.
-						// brightness: {side: 'right', label: 'apparent magnitude'} // Right y-axis.
-					// }
-				// },
+				axes: {
+					y: {
+						0: {label: 'Puntuación media', minValue: 0, maxValue: 1000}
+					},
+					x: {
+						0: {label: 'Día de entrenamiento'}
+					}
+				},
 				tooltip: {isHtml: true},
 				legend: 'none'
 			};
 
 			var chart = new google.charts.Bar(document.getElementById('dual_y_div'));
-			//var chart = new google.visualization.ColumnChart(document.getElementById('dual_y_div'));
-			//chart.draw(data, options);
 			chart.draw(dataTable, options);
 		};
 
@@ -535,76 +554,139 @@ $(document).ready(function(){
 		google.setOnLoadCallback(drawTitleSubtitle);
 
 		function drawTitleSubtitle() {
-			  var data = google.visualization.arrayToDataTable([
-				['City', '2010 Population', '2000 Population'],
-				['New York City, NY', 8175000, 8008000],
-				['Los Angeles, CA', 3792000, 3694000],
-				['Chicago, IL', 2695000, 2896000],
-				['Houston, TX', 2099000, 1953000],
-				['Philadelphia, PA', 1526000, 1517000]
-			  ]);
-
-			  var options = {
+			var data = new google.visualization.arrayToDataTable(
+			[				
+				['Fecha', 'Participantes']
+			<?php
+				/* Calculamos el numero de jugadores en el equipo */
+				$personas = 0;
+				$numpersonasequipo = "SELECT COUNT(id_customer) AS Numero
+										FROM customersweb_team
+										WHERE id_team = ".$_SESSION['id_team']." ";
+				foreach ($db->query($numpersonasequipo) as $row)
+				{
+					if($row['Numero'] != null){
+						$personas = $row['Numero'] - 1;
+					}
+				}					
+				/* Calculamos el número de participantes por entrenamiento */
+				$participantesequipo = "SELECT CONCAT(CONCAT(DAY(DATE(c.start_time)),'-'), MONTHNAME(DATE(c.start_time))) AS Day,
+									COUNT(c.calification) AS Num_Personas
+									FROM training_event  a
+									LEFT JOIN training_player b ON a.id_training = b.id_training
+									LEFT JOIN training_data c ON b.id_training_player = c.id_training_player
+									WHERE a.id_team = ".$_SESSION['id_team']." and c.start_time is not null
+									AND MONTH(DATE(c.start_time)) = ".date("n")." AND YEAR(DATE(c.start_time)) = ".date('Y')."
+									GROUP BY DATE(c.start_time)
+									ORDER BY c.start_time";
+					
+				foreach ($db->query($participantesequipo) as $row)
+				{
+					$day = $row['Day'];
+					$numpersonas = $row['Num_Personas'];
+								
+					if($day!=null){
+						echo(",['".$day."',".$numpersonas."]");
+					}
+				}
+			?>
+			]);
+	
+			var view = new google.visualization.DataView(data);
+			view.setColumns([0, 1,
+								{ calc: "stringify",
+								sourceColumn: 1,
+								type: "string",
+								role: "annotation" }]);
+							
+			var options = {
+				colors: ['#9575cd', '#33ac71'],
 				chart: {
-				  title: 'Population of Largest U.S. Cities',
-				  subtitle: 'Based on most recent and previous census data'
+					title: 'Participación de los Jugadores',
+					subtitle: 'Cantidad de jugadores que han valorado el entrenamiento'
 				},
-				hAxis: {
-				  title: 'Total Population',
-				  minValue: 0,
+				axes: {
+					y: {
+						0: {label: 'Cantidad de participantes',
+							viewWindowMode:'explicit',
+							viewWindow:{
+								min:0, 
+								max:<?php echo("".$personas.""); ?>
+							}
+						}
+					},
+					x: {
+						0: {label: 'Día de entrenamiento'}
+					}
 				},
-				vAxis: {
-				  title: 'City'
-				},
-				bars: 'horizontal'
-			  };
-			  var material = new google.charts.Bar(document.getElementById('chart_div'));
-			  material.draw(data, options);
+				bar: {
+					groupWidth: "90%"
+				}
+			};
+			  
+			var material = new google.charts.Bar(document.getElementById('chart_div'));
+			material.draw(view, options);
 		}
-		
-		google.load('visualization', '1', {packages: ['corechart', 'bar']});
+				
+		google.load('visualization', '1.1', {packages: ['bar']});
 		google.setOnLoadCallback(drawMultSeries);
 
 		function drawMultSeries() {
-			var data = new google.visualization.DataTable();
-			  data.addColumn('timeofday', 'Time of Day');
-			  data.addColumn('number', 'Motivation Level');
-			  data.addColumn('number', 'Energy Level');
-
-			  data.addRows([
-				[{v: [8, 0, 0], f: '8 am'}, 1, .25],
-				[{v: [9, 0, 0], f: '9 am'}, 2, .5],
-				[{v: [10, 0, 0], f:'10 am'}, 3, 1],
-				[{v: [11, 0, 0], f: '11 am'}, 4, 2.25],
-				[{v: [12, 0, 0], f: '12 pm'}, 5, 2.25],
-				[{v: [13, 0, 0], f: '1 pm'}, 6, 3],
-				[{v: [14, 0, 0], f: '2 pm'}, 7, 4],
-				[{v: [15, 0, 0], f: '3 pm'}, 8, 5.25],
-				[{v: [16, 0, 0], f: '4 pm'}, 9, 7.5],
-				[{v: [17, 0, 0], f: '5 pm'}, 10, 10],
-			  ]);
-
-			  var options = {
-				title: 'Motivation and Energy Level Throughout the Day',
-				hAxis: {
-				  title: 'Time of Day',
-				  format: 'h:mm a',
-				  viewWindow: {
-					min: [7, 30, 0],
-					max: [17, 30, 0]
-				  }
-				},
-				vAxis: {
-				  title: 'Rating (scale of 1-10)'
+			var data = new google.visualization.arrayToDataTable(
+			[				
+				['Fecha', 'Puntuacion', 'Personas']
+			<?php
+				$mediaequipo = "SELECT AVG(c.calification*TIMESTAMPDIFF(MINUTE, c.start_time, c.end_time)) AS totalCalification,
+									CONCAT(CONCAT(DAY(DATE(c.start_time)),'-'), MONTHNAME(DATE(c.start_time))) AS Day,
+									COUNT(c.calification) AS Num_Personas
+									FROM training_event  a
+									LEFT JOIN training_player b ON a.id_training = b.id_training
+									LEFT JOIN training_data c ON b.id_training_player = c.id_training_player
+									WHERE a.id_team = ".$_SESSION['id_team']." and c.start_time is not null
+									AND MONTH(DATE(c.start_time)) = ".date("n")." AND YEAR(DATE(c.start_time)) = ".date('Y')."
+									GROUP BY DATE(c.start_time)
+									ORDER BY c.start_time";
+					
+				foreach ($db->query($mediaequipo) as $row)
+				{
+					$avgTeamCalification = $row['totalCalification'];
+					$day = $row['Day'];
+					$numpersonas = $row['Num_Personas'];
+								
+					if($day!=null){
+						echo(",['".$day."',".$avgTeamCalification.",".$numpersonas."]");
+					}
 				}
-			  };
+			?>
+			]);
 
-			  var chart = new google.charts.Bar(
-				document.getElementById('chart_div2'));
+			var options = {
+				chart: {
+					title: 'Participación vs. Puntuación media',
+					subtitle: 'Cantidad de jugadores que han valorado el entrenamiento y la puntuación media'
+				},
+				series: {
+					0: { axis: 'media' }, // Bind series 0 to an axis named 'distance'.
+					1: { axis: 'participantes' } // Bind series 1 to an axis named 'brightness'.
+				},
+				axes: {
+					y: {
+						media: {label: 'Puntuación media'},
+						participantes: {side: 'right', label: 'Cantidad de participantes'}
+					},
+					x: {
+						0: {label: 'Día de entrenamiento'}
+					}
+				},
+				bar: {
+					groupWidth: "90%"
+				}
+			};
 
+			  var chart = new google.charts.Bar(document.getElementById('chart_div2'));
 			  chart.draw(data, options);
 		}
-		
+				
 </script>
 	<!-- 
 		Modal Calendario 
