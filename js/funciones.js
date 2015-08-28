@@ -9,7 +9,7 @@
 				$(function() {
 					$('#activator').click(function(){						
 						$('#registro').fadeIn('fast',function(){
-							$('#cuadroRegistro').animate({'top':'50%'},500);
+							$('#cuadroRegistro').animate({'top':'150%'},500);
 						});
 						//Devuelve falso para que no recargue la pag y muestre el desplegable del registro
 						return false;
@@ -17,7 +17,7 @@
 					
 					$('#activator').submit(function(){
 						$('#registro').fadeIn('fast',function(){
-							$('#cuadroRegistro').animate({'top':'50%'},500);
+							$('#cuadroRegistro').animate({'top':'150%'},500);
 						});
 					});
 					$('#cierreCuadroRegistro').click(function(){

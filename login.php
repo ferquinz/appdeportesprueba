@@ -11,6 +11,8 @@
 	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
 	<title>Monitorizando Lab</title>
     <link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
+	<link href="css/fontello/fontello.css" rel="stylesheet">
+
 	<!-- Bootstrap -->
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
 	<!-- Animation -->
@@ -34,10 +36,10 @@
 	var bg = ['selectRandom', 'selectTeam', 'selectCalendario','selectRandom', 'selectTeam', 'selectCalendario'];
 	$.each(bg, function(index, ui) {
 		setTimeout(function() {
-			$('body').removeAttr('class').addClass(ui);
-			$('body').fadeIn('slow', function() {
+			$('#section2').removeAttr('class').addClass(ui);
+			$('#section2').fadeIn('slow', function() {
 				setTimeout(function() {
-					$('body').fadeOut('slow', run);
+					$('#section2').fadeOut('slow', run);
 				}, 6000 * index);
 			});
 		}, 6000 * index)
@@ -490,12 +492,29 @@ $(document).ready(function () {
 });
 </script>
 
-<body>
-	<div class='col-xs-12 col-sm-12 col-md-12'>
+<body style="height: 100%; background-size: cover; color: #444;">
+	<!--<div class='col-xs-12 col-sm-12 col-md-12'>
 		<span style="text-align: center; display: block; margin-top: 2%;">
 			<img src="images/Logos/TituloV1.png" alt="TituloV1" style="max-width: 80%; max-height: 99%; margin: auto;" >
 		</span>
-	</div>
+	</div>-->
+	<section class="container-fluid" id="section1">
+    <div class="v-center">
+
+            <span class="text-center" style="text-align: center; display: block; margin-top: 2%;">
+			<img src="images/Logos/TituloV1.png" alt="TituloV1" style="max-width: 80%; max-height: 99%; margin: auto;" >
+		</span>
+
+    </div>
+    <a href="#section2" class="scroll-down bounceInDown animated">
+
+		<i class="icon-angle-double-down animated gi-2x"></i>
+
+	</a>
+</section>
+
+<section class="container-fluid" id="section2">
+    <div class="v-center">
 	<!--
 		CUADRO DIALOGO LOGIN
 	-->	
@@ -535,8 +554,8 @@ $(document).ready(function () {
 	 <!--
 		CIERRE CUADRO DIALOGO LOGIN
 	-->
-	
-	
+	</div>
+</section>
 	<!-- Menu al pulsar sobre el menu de registro -->
 	<div class="registro" id="registro" style="display:none;"></div>
 	<!--
@@ -732,5 +751,6 @@ $(document).ready(function () {
 				</div>
 		  </div>
 	</div>
+	
 </body>
 </html>

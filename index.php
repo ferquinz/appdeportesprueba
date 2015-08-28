@@ -316,7 +316,11 @@ echo("<div class='col-md-8 col-md-offset-2' style='margin-top: 5%;'>
 				</td>
 			</tr>
 					<tr>					
-					<td class='boton' colspan='5'><a id='activator'> Añadir Equipo </a> </td>
+					<td colspan='5'>
+						<span class='boton' style='width: 100%; display: block;'>
+							<a id='activator'> Añadir Equipo </a>
+						</span>
+					</td>
 				</tr>
 				 </table>  
 			   </div>
