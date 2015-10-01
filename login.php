@@ -8,15 +8,21 @@
 <html>
 <head>
     <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
 	<link rel="shortcut icon" href="images/Logos/LogoV2.jpg" type="image/png" />
 	<title>Monitorizando Lab</title>
     <link rel="stylesheet" type="text/css" href="css/Estilo.css"> 
 	<link href="css/fontello/fontello.css" rel="stylesheet">
-
 	<!-- Bootstrap -->
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
 	<!-- Animation -->
 	<link href="css/animate.css" rel="stylesheet">
+	<!-- Bootstrap Dialog -->
+	<link href="css/bootstrap/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 	
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -25,25 +31,30 @@
 	<!-- <script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script> -->
 	<script src="js/funciones.js" type="text/javascript"></script>
 	<!-- <script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script> -->
-	
 	<!-- Bootstrap Dialog -->
-	<link href="css/bootstrap/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 	<script src="js/bootstrap/bootstrap-dialog.min.js"></script>
+	
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <script>
 
-	var bg = ['selectRandom', 'selectTeam', 'selectCalendario','selectRandom', 'selectTeam', 'selectCalendario'];
-	$.each(bg, function(index, ui) {
-		setTimeout(function() {
-			$('#section2').removeAttr('class').addClass(ui);
-			$('#section2').fadeIn('slow', function() {
-				setTimeout(function() {
-					$('#section2').fadeOut('slow', run);
-				}, 6000 * index);
-			});
-		}, 6000 * index)
-	});
+	// var bg = ['selectRandom', 'selectTeam', 'selectCalendario','selectRandom', 'selectTeam', 'selectCalendario'];
+	// $.each(bg, function(index, ui) {
+		// setTimeout(function() {
+			// $('#section2').removeAttr('class').addClass(ui);
+			// $('#section2').fadeIn('slow', function() {
+				// setTimeout(function() {
+					// $('#section2').fadeOut('slow', run);
+				// }, 6000 * index);
+			// });
+		// }, 6000 * index)
+	// });
 	
 	function validateForm() {			
 	
@@ -489,7 +500,13 @@ $(document).ready(function () {
 		return resultado;
 	});
 
+	
+	$('.carousel').carousel({
+	  interval: 5000
+	});
 });
+
+  
 </script>
 
 <body style="height: 100%; background-size: cover; color: #444;">
@@ -507,55 +524,77 @@ $(document).ready(function () {
 
     </div>
     <a href="#section2" class="scroll-down bounceInDown animated">
-
 		<i class="icon-angle-double-down animated gi-2x"></i>
-
 	</a>
 </section>
 
-<section class="container-fluid" id="section2">
-    <div class="v-center">
-	<!--
-		CUADRO DIALOGO LOGIN
-	-->	
-	<div class="col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4" id="content">
-		<div id="login-box" style="margin-top: auto !important;">
-			<div class="inset">
-				<div class="login-head">
-					<h1>Login</h1>
-					 <div class="alert-close"> </div> 			
+<section id="section2" class="carousel slide" data-ride="carousel">
+
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner" role="listbox" alt="section1">
+			<div class="item active">
+				<img src="../images/background/1.jpg" alt="section1" style="width: 100%;">
+				<div class="carousel-caption">
 				</div>
-				<form name="LoginForm" action="index.php" class="form">
-					<div class="form-group logindiv" >
-						<input type="text" class="textlogin" name="Username" value="" placeholder="Correo" >
-						<span id="iconuser" class="icon glyphicon glyphicon-user"></span>
+			</div>
+			<div class="item">
+			<img src="../images/background/2.jpg" alt="section1" style="width: 100%;">
+				<div class="carousel-caption">
+				</div>
+			</div>
+			<div class="item">
+			<img src="../images/background/3.jpg" alt="section1" style="width: 100%;">
+				<div class="carousel-caption">
+				</div>
+			</div>
+		</div>
+
+		
+		<div class="v-center" >	
+		
+		<!--
+			CUADRO DIALOGO LOGIN
+		-->	
+		<div class="col-xs-4 col-xs-offset-4 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 " id="content">
+			<div id="login-box" style="margin-top: auto !important;">
+				<div class="inset ">
+					<div class="login-head">
+						<h1>Login</h1>
+						 <div class="alert-close"> </div> 			
 					</div>
-					<div class="clear"></div>
-					<div class="form-group logindiv" >
-						<input type="Password" class="passwordlogin" name="Password" value=""  placeholder="Password">
-						<span id="iconuser" class="icon glyphicon glyphicon-lock"></span>
-					</div>
-					<div class="clear">  </div>	
-					<div class="submit">
-						<div id="signIn">
-							<input type="submit" onclick="return validateForm();" value="Entrar" >					
-						</div>							
-						<div class="register" id="register">
-							<input type="submit" id="activator" value="Registro" >
-						</div>			
-						<div class="clear">  </div>		
-					</div>
-					<br>
-					<center><h4><a href="#myModal" data-toggle="modal">¿Olvidó su contraseña?</a></h4></center>
-				</form>
-			</div>	
+					<form name="LoginForm" action="index.php" class="form">
+						<div class="form-group logindiv" >
+							<input type="text" class="textlogin" name="Username" value="" placeholder="Correo" >
+							<span id="iconuser" class="icon glyphicon glyphicon-user"></span>
+						</div>
+						<div class="clear"></div>
+						<div class="form-group logindiv" >
+							<input type="Password" class="passwordlogin" name="Password" value=""  placeholder="Password">
+							<span id="iconuser" class="icon glyphicon glyphicon-lock"></span>
+						</div>
+						<div class="clear">  </div>	
+						<div class="submit">
+							<div id="signIn">
+								<input type="submit" onclick="return validateForm();" value="Entrar" >					
+							</div>							
+							<div class="register" id="register">
+								<input type="submit" id="activator" value="Registro" >
+							</div>			
+							<div class="clear">  </div>		
+						</div>
+						<br>
+						<center><h4><a href="#myModal" data-toggle="modal">¿Olvidó su contraseña?</a></h4></center>
+					</form>
+				</div>	
+			 </div>
 		 </div>
-	 </div>
-	 <!--
-		CIERRE CUADRO DIALOGO LOGIN
-	-->
-	</div>
+		 <!--
+			CIERRE CUADRO DIALOGO LOGIN
+		-->
+		</div>
+
 </section>
+
 	<!-- Menu al pulsar sobre el menu de registro -->
 	<div class="registro" id="registro" style="display:none;"></div>
 	<!--
@@ -751,6 +790,12 @@ $(document).ready(function () {
 				</div>
 		  </div>
 	</div>
-	
+		
+	<!-- Footer 
+    <footer>
+        <div class="container text-center">
+            <p>Copyright &copy; Your Website 2014</p>
+        </div>
+    </footer>-->
 </body>
 </html>

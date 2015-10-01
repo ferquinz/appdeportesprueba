@@ -188,7 +188,7 @@ $(document).ready(function(){
 			
 			<div class="col-xs-7 col-sm-7 col-md-7">
 				<section id = "graficas" style="background: #FFF; margin-top: 5%; margin-bottom: 5%; overflow: auto;" >
-					<section class="modal-header">
+					<section class="modal-header" >
 						<h4> Graficas </h4>
 					</section>
 					<section class="modal-body" style="text-align: -webkit-center;">
@@ -476,6 +476,7 @@ $(document).ready(function(){
 			[				
 				['Fecha', 'Puntuacion', 'Personas']
 			<?php
+				$flag = 0;
 				$mediaequipo = "SELECT AVG(c.calification*TIMESTAMPDIFF(MINUTE, c.start_time, c.end_time)) AS totalCalification,
 									CONCAT(CONCAT(DAY(DATE(c.start_time)),'-'), MONTHNAME(DATE(c.start_time))) AS Day,
 									COUNT(c.calification) AS Num_Personas
@@ -489,6 +490,7 @@ $(document).ready(function(){
 					
 				foreach ($db->query($mediaequipo) as $row)
 				{
+					$flag = 1;
 					$avgTeamCalification = $row['totalCalification'];
 					$day = $row['Day'];
 					$numpersonas = $row['Num_Personas'];
@@ -496,6 +498,10 @@ $(document).ready(function(){
 					if($day!=null){
 						echo(",['".$day."',".$avgTeamCalification.",".$numpersonas."]");
 					}
+				}
+				
+				if ($flag == 0){
+					echo(",['".date("d/m/y")."',0,25]");
 				}
 			?>
 			]);
@@ -511,6 +517,7 @@ $(document).ready(function(){
 				$primero = 0;
 				foreach ($db->query($mediaequipo) as $row)
 				{
+					$flag = 1;
 					$avgTeamCalification = $row['totalCalification'];
 					$day = $row['Day'];
 					$numpersonas = $row['Num_Personas'];
@@ -525,6 +532,11 @@ $(document).ready(function(){
 						 }
 					}
 				}
+				
+				 if ($flag == 0){
+					echo("['".date("d-m-y")."',0,'25']");
+				 }
+				
 				?>
 			]);
 
@@ -539,10 +551,11 @@ $(document).ready(function(){
 						0: {label: 'Puntuación media', minValue: 0, maxValue: 1000}
 					},
 					x: {
-						0: {label: 'Día de entrenamiento'}
+						0: {label: 'Día de entrenamiento' }
 					}
 				},
 				tooltip: {isHtml: true},
+				interpolateNulls: true,
 				legend: 'none'
 			};
 
@@ -558,6 +571,7 @@ $(document).ready(function(){
 			[				
 				['Fecha', 'Participantes']
 			<?php
+				$flag = 0;
 				/* Calculamos el numero de jugadores en el equipo */
 				$personas = 0;
 				$numpersonasequipo = "SELECT COUNT(id_customer) AS Numero
@@ -582,6 +596,7 @@ $(document).ready(function(){
 					
 				foreach ($db->query($participantesequipo) as $row)
 				{
+					$flag = 1;
 					$day = $row['Day'];
 					$numpersonas = $row['Num_Personas'];
 								
@@ -589,6 +604,9 @@ $(document).ready(function(){
 						echo(",['".$day."',".$numpersonas."]");
 					}
 				}
+				if ($flag == 0){
+					echo(",['".date("d-m-y")."',0]");
+				 }
 			?>
 			]);
 	
@@ -608,11 +626,9 @@ $(document).ready(function(){
 				axes: {
 					y: {
 						0: {label: 'Cantidad de participantes',
-							viewWindowMode:'explicit',
-							viewWindow:{
-								min:0, 
-								max:<?php echo("".$personas.""); ?>
-							}
+							minValue: 0, 
+							maxValue: <?php echo("".$personas.""); ?>,
+							viewWindowMode:'explicit'
 						}
 					},
 					x: {
@@ -636,6 +652,7 @@ $(document).ready(function(){
 			[				
 				['Fecha', 'Puntuacion', 'Personas']
 			<?php
+				$flag = 0;
 				$mediaequipo = "SELECT AVG(c.calification*TIMESTAMPDIFF(MINUTE, c.start_time, c.end_time)) AS totalCalification,
 									CONCAT(CONCAT(DAY(DATE(c.start_time)),'-'), MONTHNAME(DATE(c.start_time))) AS Day,
 									COUNT(c.calification) AS Num_Personas
@@ -649,6 +666,7 @@ $(document).ready(function(){
 					
 				foreach ($db->query($mediaequipo) as $row)
 				{
+					$flag = 1;
 					$avgTeamCalification = $row['totalCalification'];
 					$day = $row['Day'];
 					$numpersonas = $row['Num_Personas'];
@@ -657,6 +675,9 @@ $(document).ready(function(){
 						echo(",['".$day."',".$avgTeamCalification.",".$numpersonas."]");
 					}
 				}
+				if ($flag == 0){
+					echo(",['".date("d-m-y")."',0,0]");
+				 }
 			?>
 			]);
 
@@ -671,8 +692,8 @@ $(document).ready(function(){
 				},
 				axes: {
 					y: {
-						media: {label: 'Puntuación media'},
-						participantes: {side: 'right', label: 'Cantidad de participantes'}
+						media: {label: 'Puntuación media', minValue: 0, maxValue: 1000},
+						participantes: {side: 'right', label: 'Cantidad de participantes', minValue: 0, maxValue: <?php echo("".$personas.""); ?>}
 					},
 					x: {
 						0: {label: 'Día de entrenamiento'}

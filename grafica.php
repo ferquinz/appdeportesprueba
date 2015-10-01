@@ -217,7 +217,7 @@
 								<tr style='text-align: center;'>
 									<td style='border-top: 0px !important;'>
 										<a class='fancybox' href='".$originalImage."' title='Foto de jugador' >
-											<img src='".$row['img_path']."' style='height: 160px;' class='img-circle'> 
+											<img src='".$row['img_path']."' style='height: 170px; border: hsl(143, 27%, 41%) 3px solid;' class='img-circle'> 
 										</a>
 									</td>
 								</tr>

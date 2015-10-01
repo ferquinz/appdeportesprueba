@@ -25,7 +25,6 @@
 							$('#registro').fadeOut('fast');
 						});
 					});
-					
 
 				});
 				
@@ -143,3 +142,6 @@
 							return false;
 						}
 				}
+				
+				
+
