@@ -30,6 +30,7 @@
 	<!-- Registro jQuery -->
 	<!-- <script src="js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script> -->
 	<script src="js/funciones.js" type="text/javascript"></script>
+	<script src="js/jquery.easing.js" type="text/javascript"></script>
 	<!-- <script src="js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script> -->
 	<!-- Bootstrap Dialog -->
 	<script src="js/bootstrap/bootstrap-dialog.min.js"></script>
@@ -523,7 +524,7 @@ $(document).ready(function () {
 		</span>
 
     </div>
-    <a href="#section2" class="scroll-down bounceInDown animated">
+    <a href="#section2" class="scroll-down bounceInDown animated page-scroll">
 		<i class="icon-angle-double-down animated gi-2x"></i>
 	</a>
 </section>

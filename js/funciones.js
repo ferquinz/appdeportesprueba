@@ -26,6 +26,33 @@
 						});
 					});
 
+					$('#activator').click(function(){						
+						$('#registro').fadeIn('fast',function(){
+							$('#cuadroRegistro1').animate({'top':'50%'},500);
+						});
+						//Devuelve falso para que no recargue la pag y muestre el desplegable del registro
+						return false;
+					});
+					
+					$('#activator').submit(function(){
+						$('#registro').fadeIn('fast',function(){
+							$('#cuadroRegistro1').animate({'top':'50%'},500);
+						});
+					});
+					$('#cierreCuadroRegistro').click(function(){
+						$('#cuadroRegistro1').animate({'top':'-1000px'},500,function(){
+							$('#registro').fadeOut('fast');
+						});
+					});
+					
+					//Scroll página principal
+					$('a.page-scroll').bind('click', function(event) {
+						var $anchor = $(this);
+						$('html, body').stop().animate({
+							scrollTop: $($anchor.attr('href')).offset().top
+						}, 1500, 'easeInOutExpo');
+						event.preventDefault();
+					});
 				});
 				
 				function RegisterForm()
@@ -143,5 +170,5 @@
 						}
 				}
 				
-				
+		
 

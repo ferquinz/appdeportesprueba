@@ -754,7 +754,7 @@ a.cierreCuadroRegistro{
   font-size: 15px;
   line-height: 30px;
 }
-
+/* Animación boton login */
 @-webkit-keyframes pulse {    
     0% {
         -webkit-transform: scale(1);
@@ -810,7 +810,6 @@ section {
 }
   
 #section1 {
-	
 	background-color: rgba(0,0,0,0.7);
 	background-size: cover;
 	color:#fff;
@@ -829,31 +828,13 @@ section {
 	background-attachment: fixed;
 }
 
-/*.slide1, .slide2, .slide3 {
-	background-repeat: no-repeat;
-    background-size:cover;
-	background-position: center center;
-	background-attachment: fixed;
-	height: auto!important;
-}
-.slide1{
-	background-image: url('../images/background/1.jpg');
-}
-.slide2{
-	background-image: url('../images/background/2.jpg');
-}
-.slide3{
-	background-image: url('../images/background/3.jpg');	
-}*/
 .carousel, .item, .active {
-height:100%;
+	height:100%;
 }
 .carousel-inner {
-height:100%;
+	height:100%;
 }
 .carousel .carousel-inner .bg {
-background-repeat:no-repeat;
-background-size:cover;
+	background-repeat:no-repeat;
+	background-size:cover;
 }
-
-

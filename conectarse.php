@@ -19,7 +19,7 @@
 		$passAux=NULL;
 		$customerid;
 		/*Realiza la consulta para obtener el usuario*/
-		$sql = "SELECT password, email, firstname, id_customer from customersweb where email='".$email."' AND password='".$contrasenia."'" ;
+		$sql = "SELECT password, email, firstname, id_customer from customersweb where mister = 1 AND email='".$email."' AND password='".$contrasenia."'" ;
 	 
 		foreach ($db->query($sql) as $row)
 		{

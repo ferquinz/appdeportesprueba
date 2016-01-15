@@ -102,12 +102,6 @@ $(document).ready(function () {
 		if (error == 0) {
 			 //disable the default form submission
 			event.preventDefault();
-			//grab all form data  
-			//var formData = $(this).serialize();
-			//var formData = JSON.parse(JSON.stringify(jQuery('#formulario').serializeArray()))
-			//formData.Append("archivo", $(this).files[0]);
-			//var formData = new FormData(this);
-			//formData.append("archivo", document.forms["formulario"]["archivo"].value);
 			
 			var $form    = $(event.target),
                 formData = new FormData(),
@@ -338,7 +332,7 @@ echo("<div class='col-md-8 col-md-offset-2' style='margin-top: 5%;'>
 	<!--
 		CUADRO REGISTRO EQUIPO
 	-->
-	<div class="cuadroRegistro" id="cuadroRegistro">
+	<div class="cuadroRegistro" id="cuadroRegistro1">
 		<a class="cierreCuadroRegistro" id="cierreCuadroRegistro"></a>
 		<h1>Añadir Equipo</h1>
 		
@@ -400,7 +394,6 @@ echo("<div class='col-md-8 col-md-offset-2' style='margin-top: 5%;'>
 			</div>					
 			<div class="form-group">
 				<div class="col-xs-8 col-sm-offset-3">
-					<!--<input type="submit" id="activator" class="btn btn-primary" value="Aceptar" onclick="return registerTeam();">-->
 					<input type="submit" id="activator" class="btn btn-primary" value="Aceptar">
 				</div>
 			</div>		 
